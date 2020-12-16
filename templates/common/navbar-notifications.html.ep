@@ -1,0 +1,26 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+<% if (my $user = $self->active_user) { %>
+    
+  <script>
+    var my_notification_inbox = '<%= $user->notification_inbox->unique_id %>';
+    var notifications = <%== $self->json_encode([$self->messages->notifications({ user => $self->active_user, limit => 5 })]) %>; 
+  </script>
+
+<% } %>
+<li class="navbar-icon notification-section dropdown" title="Notifications" data-toggle="tooltip" data-placement="bottom">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    <i title="Notifications" class="fa fa-bell icon-white notification-badge-goes-here"></i>
+  </a>
+  <div style="max-height: 400px; overflow: auto;" class="notification-dropdown dropdown-menu dropdown-block">
+    <div class="dropdown-block-heading">
+      Notifications
+    </div>
+    <div id="notifications-go-here">
+    	<div class="alert alert-warning" id="no-notifications">
+    		<p>You have no notifications.</p>
+    	</div>
+    </div>
+  </div>
+</li>

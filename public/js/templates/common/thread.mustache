@@ -1,0 +1,25 @@
+<!-- Generic message -->
+
+<div class="thread-parent">
+    <div class="thread-expand-collapse-off col-sm-4 col-sm-offset-8 col-xs-6 col-xs-offset-6"><a href="#" class="btn btn-xs btn-default btn-mini thread-expand-collapse-comments"><i class="fa fa-arrow-down"></i> Expand Post</a></div>
+</div>
+
+<!-- /.feed-message -->
+<!-- thread replies here -->
+<div class="feed-comments"{{^showComments}} style="display: none;"{{/showComments}}>
+  <div class="shadow-sandwich-top"></div>
+  <div class="feed-comments-container"></div>
+  <div class="feed-comment media">
+    <div class="stream-summary">
+      <strong>Note:</strong> Replies will be sent to
+        {{#show_mentions}}<ul class="stream-list">{{#streams}}{{#no_dropdown}}<li><a href="{{link}}" title="Link to profile {{stream_name_abbr}}">{{stream_name_abbr}}</a></li>{{/no_dropdown}}{{/streams}}</ul>{{/show_mentions}}<ul class="stream-list">{{#streams}}{{^no_dropdown}}<li><a href="{{link}}" title="Link to stream {{stream_name}}">{{stream_name}}</a></li>{{/no_dropdown}}{{/streams}}</ul>
+    </div>
+    <div class="form-group">
+      <div class="feed-message-reply" placeholder="Leave a comment..."></div> 
+    </div>
+    <button class="btn pull-right submit-reply-btn meritcommons-button" style="margin-left: 10px"><i class="fa fa-paper-plane"></i> Post Reply</button>
+    <button class="btn pull-right reply-cancel-btn collapse-message"><i class="fa fa-times"></i> Cancel</button>
+  </div>
+  <div class="shadow-sandwich-bottom"></div>
+</div>
+<!-- /.feed (Generic Message) -->

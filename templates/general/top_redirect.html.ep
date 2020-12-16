@@ -1,0 +1,9 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% layout 'simple';
+% title 'On your way...';
+
+<script>window.top.location = '<%== $location %>';</script>
+

@@ -1,0 +1,126 @@
+%#    MeritCommons Portal
+%#    Copyright 2014 Wayne State University
+%#    All Rights Reserved
+
+% $c->stash(layout => 'default', backbone_view => 'views/stream/apply');
+% title 'Apply for Stream Access';
+% my $show_publicly = 1;
+% if (defined($self->stash('show_publicly')) && $self->stash('show_publicly') == 0) {
+%     $show_publicly = 0;
+% }
+% my $stream = stash 'stream';
+% my $user = stash 'user';
+
+<div id="content-wrapper" class="container">
+    <h1>Apply for Access to <%= $stream->common_name %></h1>
+    <div class="well well-lg">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">Stream Information</h3></div>
+        <% if (my $description = $stream->description) { %>
+            <div class="panel-body">
+                <p><%= $description %></p>
+            </div>
+        <% } %>
+        <table class="table table-bordered">
+            <tr>
+                <th>Name</th>
+                <td><%= $stream->common_name %> (<%= $stream->short_name %>)</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td><%= scalar(localtime($stream->create_time)) %> by <a href="/u/<%= $stream->creator->userid %>/"><%= $stream->creator->common_name %></a></td>
+            </tr>
+            <tr>
+                <th>Subscribers / Authors / Moderators</th>
+                <td><%= $stream->subscribers->count %> / <%= $stream->authors->count %> / <%= $stream->moderators->count %></td>
+            </tr>
+            <% if ($stream->keywords) { %>
+                <tr>
+                    <th>Keywords</th>
+                    <td><%= $stream->keywords %></td>
+                </tr>
+            <% } %>
+            <% if ($stream->private) { %>
+                <tr>
+                    <th>Private</th>
+                    <td>This stream is invisible to anyone without appropriate permissions</td>
+                </tr>
+            <% } else { %>
+                <tr>
+                    <th>
+                        Subscriber Policy
+                    </th>
+                    <td>
+                        <% if ($stream->requires_subscriber_authorization) { %>
+                            <input type="hidden" id="requires-subscriber-authorization" value="1">
+                            Moderator approval is required for new subscribers
+                        <% } else { %>
+                            Anyone can become a subscriber to this stream without moderator approval
+                        <% } %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Author Policy
+                    </th>
+                    <td>
+                        <% if ($stream->requires_author_authorization) { %>
+                            <input type="hidden" id="requires-author-authorization" value="1">
+                            Moderator approval is required for new authors
+                        <% } else { %>
+                            Anyone can become an author on this stream without moderator approval
+                        <% } %>
+                    </td>
+                </tr>
+            <% } %>
+        </table>
+    </div>
+
+    <style>
+        #acl-form-container div.checkbox {
+            padding-top: 10px;
+            padding-left: 10px;
+        }
+        #acl-form-container i {
+            color: #009F6B;
+        }
+    </style>
+
+    % my $ath = $user->is_author($stream);
+    % my $sub = $user->is_subscriber($stream);
+    % my $has_invite = $user->invites->find({ stream => $stream });
+
+    <% if ($has_invite && $has_invite->approved) { %>
+        % my $inviter = $has_invite->inviter;
+        <div id="acl-form-panel" class="panel panel-success">
+            <div class="panel-heading"><h3 class="panel-title" id="acl-form-panel-title">Pending Invite</h3></div>
+            <div id="acl-form" class="panel-body">
+                You have been invited to this stream by <a href="/u/<%= $inviter->userid %>"><%= $inviter->common_name %></a>. Would you like to to become a member?
+                <button style="margin-left: 5px;" class="respond-to-invite btn btn-danger pull-right" data-action="respond" data-response="decline" data-stream-id="<%= $stream->unique_id %>">Decline Invite</button>
+                <button class="respond-to-invite btn btn-success pull-right" data-action="respond" data-response="accept" data-stream-id="<%= $stream->unique_id %>">Accept Invite</button>
+            </div>
+        </div>
+    <% } elsif (($ath && !$ath->authorized && $stream->requires_author_authorization) || ($sub && !$sub->authorized && $stream->requires_subscriber_authorization)) { %>
+        <div id="acl-form-panel" class="panel panel-warning">
+            <div class="panel-heading"><h3 class="panel-title" id="acl-form-panel-title">Pending Moderator Approval</h3></div>
+            <div class="panel-body">
+                Your request has been submitted and is currently awaiting moderator approval.
+            </div>
+        </div>
+    <% } else { %>
+        <div id="acl-form-panel" class="panel panel-danger">
+            <div class="panel-heading"><h3 class="panel-title" id="acl-form-panel-title">Stream Access Form</h3></div>
+            <div class="panel-body" id="acl-form-container">
+                <form id="acl-form" class="form-inline" role="form">
+                <input type="hidden" id="stream-id" value="<%= $stream->unique_id %>">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="1" id="membership-option"> I'd like to become a member of this stream.
+                    </label>
+                </div>
+                <button type="submit" id="acl-form-submit" class="btn btn-primary pull-right"><%= $stream->requires_author_authorization || $stream->requires_subscriber_authorization ? "Apply" : "Save" %></button>
+                </form>
+            </div>
+        </div>
+    <% } %>
+</div>

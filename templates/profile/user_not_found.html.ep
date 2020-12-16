@@ -1,0 +1,22 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% $c->stash(layout => 'default', backbone_view => 'views/profile/show');
+% title "The User Doesn't Exist";
+
+  <div class="container">
+    <div class="jumbotron">
+      <h1 class="page-header"><%= $user %> doesn't exist</h1>
+      <p>
+        Are you sure you typed that user ID correctly? Or maybe it was a
+        broken link? Whatever the cause, there doesn't seem to be a user
+        "<%= $user %>".
+      </p>
+
+      <p>
+        If you're pretty confident that something should be here and it isn't, 
+        <a href="mailto:">let us know</a>.
+      </p>
+    </div>
+  </div>

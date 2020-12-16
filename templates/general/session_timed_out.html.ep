@@ -1,0 +1,18 @@
+%#    MeritCommons Portal
+%#    Copyright 2015 Wayne State University
+%#    All Rights Reserved
+% $self->stash(no_navbar => 1);
+% layout 'default';
+% title 'Session Timed Out';
+<script>
+    var DISABLE_WEBSOCKETS = true;
+</script>
+  <div class="container">
+    <div class="jumbotron">
+      <h1 class="page-header">Session Timed Out</h1>
+      <p>
+      	The session you had open with a third party application has timed out.  If you wish to return to the page you were viewing, please <a target="_top" href="https://login.wayne.edu/?logged_out=1&destination_url=<%= b($self->req->headers->referrer) %>">Click Here</a>, otherwise you can <a target="_top" href="https://meritcommons.aws.wayne.edu">return to MeritCommons</a>.
+      </p>
+    </div>
+  </div>
+

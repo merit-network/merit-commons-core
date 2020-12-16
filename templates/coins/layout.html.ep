@@ -1,0 +1,27 @@
+% layout 'default';
+
+<script>
+    MeritCommons.coin_balance = <%= $self->active_user->meritcommonscoin_balance %>;
+</script>
+
+<div id="content-wrapper" class="container">
+    
+    <div class="coins panel panel-default">
+        <div class="panel-heading">MeritCommonscoin Info</div>
+            <div class="panel-body">
+            Current MeritCommonscoin Balance: <span id="coin-balance"><%= int($self->active_user->meritcommonscoin_balance) %></span>
+        </div>
+    </div>
+
+    <ul class="coins nav nav-tabs">
+        <li role="presentation" <% if ($page eq "default") { %> class="active" <% } %>><a href="/coins">Transactions</a></li>
+        <li role="presentation" <% if ($page eq "transfer") { %> class="active" <% } %>><a href="/coins/transfer">Transfer</a></li>
+        <li role="presentation" <% if ($page eq "request") { %> class="active" <% } %>><a href="/coins/request">Request</a></li>
+        <% if ($self->active_user->is_admin) { %>
+            <li role="presentation" <% if ($page eq "admin") { %> class="active" <% } %>><a href="/coins/admin">Admin</a></li>
+        <% } %>
+    </ul>
+
+    <%= content_for 'coin_body' %>
+
+</div>

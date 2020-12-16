@@ -1,0 +1,57 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% $c->stash(layout => 'default', backbone_view => 'views/profile/edit');
+% title 'Edit Profile';
+<link href="/css/jquery.tagsinput.css" rel="stylesheet" />
+<style>
+.attribute-values {
+    width: 299px;
+}
+</style>
+<script type="text/javascript">
+        var standardProfileAttributes = <%== $standard_profile_attributes %>;
+        var profileAttributes = <%== $profile_attributes %>;
+</script>
+
+<div id="content-wrapper" class="container">
+    <div class="row">
+        <div class="tabbable">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab1" data-toggle="tab">Profile Picture</a></li>
+                <li><a href="#tab2" data-toggle="tab">About</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="box-vanilla tab-pane active" id="tab1">
+                    <form id="profile-picture-form" method="post" enctype="multipart/form-data" action="profile_picture">
+                        <div class="row">
+                            <div style="text-align: center" class="col-md-offset-2 col-md-8 col-xs-12">
+                                <img src="<%= $self->profile_picture_url_for($profile_user, 'medium') %>" />
+                            </div>
+                            <% if ($profile_user->profile_picture) { %>
+                                <div style="text-align: center; padding-top: 5px;" class="col-md-offset-2 col-md-8 col-xs-12">
+                                    <a id="remove_profile_picture" class="btn btn-sm btn-danger">Remove Profile Picture</a>
+                                </div>
+                            <% } %>
+                        </div>
+                        <div style="padding-top: 15px" class="row">
+                            <div class="col-md-offset-2 col-md-8 col-xs-12">
+                                <input type="file" class="file" id="profile_picture" name="profile_picture" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="box-vanilla tab-pane" id="tab2">
+                    <form action="profile_attributes" method="post">
+                        <table class="table table-no-top-border" id="profile-attributes">
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

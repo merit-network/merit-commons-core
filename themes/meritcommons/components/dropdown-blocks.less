@@ -1,0 +1,30 @@
+// Dropdown Blocks
+// ----------------------------
+.dropdown-block {
+  z-index: 1040;
+  width: @dropdownBlockWidth;
+  padding: 0px inherit;
+  // Section Wrapper (To get padding with full-width backgrounds)
+  .dropdown-block-section {
+    display: block;
+    padding: 10px;
+  }
+  // Dropdown Heading section
+  .dropdown-block-heading {
+    .dropdown-block-section;
+    background: @dropdownBlockHeadingBackground;
+    color: @dropdownBlockHeadingColor;
+    font-weight: bold;
+  }
+  // Dropdown Footer section
+  .dropdown-block-footer {
+    .dropdown-block-section;
+    background: @dropdownBlockFooterBackground;
+    color: @dropdownBlockFooterColor;
+    font-weight: bold;
+  }
+  // Forms within dropdown block
+  > form {
+    margin-bottom: 0px;
+  }
+}

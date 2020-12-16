@@ -1,0 +1,5320 @@
+---
+schema:
+  procedures: {}
+  tables:
+    meritcommons_dataagent:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        common_name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: common_name
+          order: 5
+          size:
+            - 255
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 4
+          size:
+            - 0
+        enc_pub_key:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: enc_pub_key
+          order: 2
+          size:
+            - 255
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        sign_pub_key:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: sign_pub_key
+          order: 3
+          size:
+            - 255
+        source_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: source_user
+          order: 7
+          size:
+            - 0
+        unique_id:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: unique_id
+          order: 6
+          size:
+            - 64
+      indices:
+        - fields:
+            - unique_id
+          name: meritcommons_dataagent_uuid_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - common_name
+          name: meritcommons_dataagent_cn_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_dataagent
+      options: []
+      order: 1
+    meritcommons_demo_attachable:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        attachment1_content_type:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: attachment1_content_type
+          order: 8
+          size:
+            - 255
+        attachment1_modify_time:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: attachment1_modify_time
+          order: 9
+          size:
+            - 255
+        attachment1_name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: attachment1_name
+          order: 5
+          size:
+            - 255
+        attachment1_pretty_size:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: attachment1_pretty_size
+          order: 7
+          size:
+            - 255
+        attachment1_size:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: attachment1_size
+          order: 6
+          size:
+            - 255
+        attachment2_content_type:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: attachment2_content_type
+          order: 13
+          size:
+            - 255
+        attachment2_modify_time:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: attachment2_modify_time
+          order: 14
+          size:
+            - 255
+        attachment2_name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: attachment2_name
+          order: 10
+          size:
+            - 255
+        attachment2_pretty_size:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: attachment2_pretty_size
+          order: 12
+          size:
+            - 255
+        attachment2_size:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: attachment2_size
+          order: 11
+          size:
+            - 255
+        attachment3_content_type:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: attachment3_content_type
+          order: 18
+          size:
+            - 255
+        attachment3_modify_time:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: attachment3_modify_time
+          order: 19
+          size:
+            - 255
+        attachment3_name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: attachment3_name
+          order: 15
+          size:
+            - 255
+        attachment3_pretty_size:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: attachment3_pretty_size
+          order: 17
+          size:
+            - 255
+        attachment3_size:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: attachment3_size
+          order: 16
+          size:
+            - 255
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 3
+          size:
+            - 0
+        title:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: title
+          order: 4
+          size:
+            - 255
+      indices: []
+      name: meritcommons_demo_attachable
+      options: []
+      order: 2
+    meritcommons_link:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - short_loc
+          match_type: ''
+          name: shortened_location
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - creator
+          match_type: ''
+          name: meritcommons_link_fk_creator
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+      fields:
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        creator:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: creator
+          order: 4
+          size:
+            - 0
+        href:
+          data_type: text
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: href
+          order: 5
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 3
+          size:
+            - 0
+        short_loc:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: short_loc
+          order: 7
+          size:
+            - 64
+        title:
+          data_type: text
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: title
+          order: 6
+          size:
+            - 0
+      indices:
+        - fields:
+            - creator
+          name: meritcommons_link_idx_creator
+          options: []
+          type: NORMAL
+        - fields:
+            - short_loc
+          name: short_loc_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_link
+      options: []
+      order: 9
+    meritcommons_link_click:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - identity
+          match_type: ''
+          name: meritcommons_link_click_fk_identity
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user_identity
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - link
+          match_type: ''
+          name: meritcommons_link_click_fk_link
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_link
+          type: FOREIGN KEY
+      fields:
+        counter:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: counter
+          order: 5
+          size:
+            - 0
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        identity:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: identity
+          order: 3
+          size:
+            - 0
+        link:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: link
+          order: 4
+          size:
+            - 0
+      indices:
+        - fields:
+            - identity
+          name: meritcommons_link_click_idx_identity
+          options: []
+          type: NORMAL
+        - fields:
+            - link
+          name: meritcommons_link_click_idx_link
+          options: []
+          type: NORMAL
+        - fields:
+            - identity
+          name: user_identity_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_link_click
+      options: []
+      order: 34
+    meritcommons_link_collection:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+            - parent
+          match_type: ''
+          name: link_collection_hierarchy
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - creator
+          match_type: ''
+          name: meritcommons_link_collection_fk_creator
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - parent
+          match_type: ''
+          name: meritcommons_link_collection_fk_parent
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_link_collection
+          type: FOREIGN KEY
+      fields:
+        common_name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: common_name
+          order: 2
+          size:
+            - 255
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 4
+          size:
+            - 0
+        creator:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: creator
+          order: 3
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 1
+          name: id
+          order: 1
+          size:
+            - 0
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 5
+          size:
+            - 0
+        parent:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 1
+          name: parent
+          order: 6
+          size:
+            - 0
+      indices:
+        - fields:
+            - creator
+          name: meritcommons_link_collection_idx_creator
+          options: []
+          type: NORMAL
+        - fields:
+            - parent
+          name: meritcommons_link_collection_idx_parent
+          options: []
+          type: NORMAL
+      name: meritcommons_link_collection
+      options: []
+      order: 10
+    meritcommons_link_collection_member:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - link
+            - collection
+          match_type: ''
+          name: link_collection_membership
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - collection
+          match_type: ''
+          name: meritcommons_link_collection_member_fk_collection
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_link_collection
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - link
+          match_type: ''
+          name: meritcommons_link_collection_member_fk_link
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_link
+          type: FOREIGN KEY
+      fields:
+        collection:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: collection
+          order: 3
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        link:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: link
+          order: 2
+          size:
+            - 0
+      indices:
+        - fields:
+            - collection
+          name: meritcommons_link_collection_member_idx_collection
+          options: []
+          type: NORMAL
+        - fields:
+            - link
+          name: meritcommons_link_collection_member_idx_link
+          options: []
+          type: NORMAL
+      name: meritcommons_link_collection_member
+      options: []
+      order: 35
+    meritcommons_localauth:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+            - password
+          match_type: ''
+          name: credentials
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+          match_type: ''
+          name: meritcommons_localauth_fk_meritcommons_user
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+      fields:
+        meritcommons_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: meritcommons_user
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        password:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: password
+          order: 3
+          size:
+            - 255
+      indices:
+        - fields:
+            - meritcommons_user
+          name: meritcommons_localauth_idx_meritcommons_user
+          options: []
+          type: NORMAL
+      name: meritcommons_localauth
+      options: []
+      order: 11
+    meritcommons_profile_standard_attribute:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        is_default:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: is_default
+          order: 4
+          size:
+            - 0
+        k:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: k
+          order: 5
+          size:
+            - 255
+        label:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: label
+          order: 7
+          size:
+            - 255
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 3
+          size:
+            - 0
+        type:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: type
+          order: 6
+          size:
+            - 1
+      indices: []
+      name: meritcommons_profile_standard_attribute
+      options: []
+      order: 3
+    meritcommons_session:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+          match_type: ''
+          name: meritcommons_session_fk_meritcommons_user
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+      fields:
+        meritcommons_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: meritcommons_user
+          order: 9
+          size:
+            - 0
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        created_from:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: created_from
+          order: 3
+          size:
+            - 255
+        expire_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: expire_time
+          order: 6
+          size:
+            - 0
+        heartbeat_from:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: heartbeat_from
+          order: 5
+          size:
+            - 255
+        heartbeat_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: heartbeat_time
+          order: 4
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        session_id:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: session_id
+          order: 8
+          size:
+            - 255
+        session_length:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: session_length
+          order: 7
+          size:
+            - 0
+      indices:
+        - fields:
+            - meritcommons_user
+          name: meritcommons_session_idx_meritcommons_user
+          options: []
+          type: NORMAL
+      name: meritcommons_session
+      options: []
+      order: 12
+    meritcommons_session_attribute:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - session
+          match_type: ''
+          name: meritcommons_session_attribute_fk_session
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_session
+          type: FOREIGN KEY
+      fields:
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        k:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: k
+          order: 3
+          size:
+            - 255
+        session:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: session
+          order: 2
+          size:
+            - 0
+      indices:
+        - fields:
+            - session
+          name: meritcommons_session_attribute_idx_session
+          options: []
+          type: NORMAL
+        - fields:
+            - k
+          name: session_attribute_name_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - session
+          name: session_attribute_session_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_session_attribute
+      options: []
+      order: 24
+    meritcommons_session_attribute_value:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - attribute
+          match_type: ''
+          name: meritcommons_session_attribute_value_fk_attribute
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_session_attribute
+          type: FOREIGN KEY
+      fields:
+        attribute:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: attribute
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        v:
+          data_type: text
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: v
+          order: 3
+          size:
+            - 0
+      indices:
+        - fields:
+            - attribute
+          name: meritcommons_session_attribute_value_idx_attribute
+          options: []
+          type: NORMAL
+        - fields:
+            - attribute
+          name: session_attribute_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_session_attribute_value
+      options: []
+      order: 36
+    meritcommons_session_keystore:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - session
+          match_type: ''
+          name: meritcommons_session_keystore_fk_session
+          on_delete: CASCADE
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_session
+          type: FOREIGN KEY
+      fields:
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        k:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: k
+          order: 3
+          size:
+            - 255
+        session:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: session
+          order: 2
+          size:
+            - 0
+      indices:
+        - fields:
+            - session
+          name: meritcommons_session_keystore_idx_session
+          options: []
+          type: NORMAL
+      name: meritcommons_session_keystore
+      options: []
+      order: 25
+    meritcommons_stream:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - external_unique_id
+          match_type: ''
+          name: meritcommons_stream_external_unique_id
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - unique_id
+          match_type: ''
+          name: meritcommons_stream_unique_id
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - url_name
+          match_type: ''
+          name: meritcommons_stream_url_name
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - creator
+          match_type: ''
+          name: meritcommons_stream_fk_creator
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+      fields:
+        allow_unsubscribe:
+          data_type: integer
+          default_value: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: allow_unsubscribe
+          order: 16
+          size:
+            - 0
+        common_name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: common_name
+          order: 5
+          size:
+            - 255
+        configuration:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: configuration
+          order: 6
+          size:
+            - 0
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        creator:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: creator
+          order: 8
+          size:
+            - 0
+        description:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: description
+          order: 21
+          size:
+            - 0
+        disabled:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: disabled
+          order: 11
+          size:
+            - 0
+        earns_return:
+          data_type: integer
+          default_value: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: earns_return
+          order: 12
+          size:
+            - 0
+        external_unique_id:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 1
+          name: external_unique_id
+          order: 25
+          size:
+            - 255
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        keywords:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: keywords
+          order: 22
+          size:
+            - 0
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 3
+          size:
+            - 0
+        notification_inbox_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: notification_inbox_user
+          order: 20
+          size:
+            - 0
+        open_reply:
+          data_type: integer
+          default_value: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: open_reply
+          order: 17
+          size:
+            - 0
+        origin:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: origin
+          order: 7
+          size:
+            - 255
+        personal_inbox_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: personal_inbox_user
+          order: 18
+          size:
+            - 0
+        personal_outbox_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: personal_outbox_user
+          order: 19
+          size:
+            - 0
+        requires_author_authorization:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: requires_author_authorization
+          order: 15
+          size:
+            - 0
+        requires_subscriber_authorization:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: requires_subscriber_authorization
+          order: 14
+          size:
+            - 0
+        single_author:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: single_author
+          order: 9
+          size:
+            - 0
+        single_subscriber:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: single_subscriber
+          order: 10
+          size:
+            - 0
+        toll_required:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: toll_required
+          order: 13
+          size:
+            - 0
+        type:
+          data_type: enum
+          default_value: ~
+          extra:
+            list:
+              - user
+              - system
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: type
+          order: 24
+          size:
+            - 0
+        unique_id:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: unique_id
+          order: 4
+          size:
+            - 255
+        url_name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 1
+          name: url_name
+          order: 23
+          size:
+            - 255
+      indices:
+        - fields:
+            - creator
+          name: meritcommons_stream_idx_creator
+          options: []
+          type: NORMAL
+        - fields:
+            - url_name
+          name: url_name_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - url_name
+            - type
+          name: url_name_type_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - external_unique_id
+          name: meritcommons_stream_external_unique_id_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_stream
+      options: []
+      order: 7
+    meritcommons_stream_author:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+            - stream
+          match_type: ''
+          name: authorship
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+          match_type: ''
+          name: meritcommons_stream_author_fk_meritcommons_user
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - added_by
+          match_type: ''
+          name: meritcommons_stream_author_fk_added_by
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - stream
+          match_type: ''
+          name: meritcommons_stream_author_fk_stream
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_stream
+          type: FOREIGN KEY
+      fields:
+        meritcommons_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: meritcommons_user
+          order: 4
+          size:
+            - 0
+        added_by:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: added_by
+          order: 8
+          size:
+            - 0
+        allow_edit:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: allow_edit
+          order: 7
+          size:
+            - 0
+        authorized:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: authorized
+          order: 6
+          size:
+            - 0
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 3
+          size:
+            - 0
+        stream:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: stream
+          order: 5
+          size:
+            - 0
+      indices:
+        - fields:
+            - meritcommons_user
+          name: meritcommons_stream_author_idx_meritcommons_user
+          options: []
+          type: NORMAL
+        - fields:
+            - added_by
+          name: meritcommons_stream_author_idx_added_by
+          options: []
+          type: NORMAL
+        - fields:
+            - stream
+          name: meritcommons_stream_author_idx_stream
+          options: []
+          type: NORMAL
+      name: meritcommons_stream_author
+      options: []
+      order: 13
+    meritcommons_stream_message:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - external_unique_id
+          match_type: ''
+          name: meritcommons_stream_message_external_unique_id
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - unique_id
+          match_type: ''
+          name: meritcommons_stream_message_unique_id
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - regarding
+          match_type: ''
+          name: meritcommons_stream_message_fk_regarding
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - unique_id
+          reference_table: meritcommons_stream_message
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - in_reply_to
+          match_type: ''
+          name: meritcommons_stream_message_fk_in_reply_to
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - unique_id
+          reference_table: meritcommons_stream_message
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - submitter
+          match_type: ''
+          name: meritcommons_stream_message_fk_submitter
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+      fields:
+        body:
+          data_type: text
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: body
+          order: 15
+          size:
+            - 0
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        external_unique_id:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 1
+          name: external_unique_id
+          order: 7
+          size:
+            - 255
+        external_url:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: external_url
+          order: 8
+          size:
+            - 0
+        gizmo_code:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: gizmo_code
+          order: 12
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 18
+        in_reply_to:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: in_reply_to
+          order: 10
+          size:
+            - 64
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 3
+          size:
+            - 0
+        original_body:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: original_body
+          order: 14
+          size:
+            - 0
+        post_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: post_time
+          order: 4
+          size:
+            - 0
+        public:
+          data_type: integer
+          default_value: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: public
+          order: 9
+          size:
+            - 0
+        regarding:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: regarding
+          order: 21
+          size:
+            - 64
+        render_as:
+          data_type: varchar
+          default_value: generic
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: render_as
+          order: 11
+          size:
+            - 255
+        score:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: score
+          order: 20
+          size:
+            - 0
+        serialized:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: serialized
+          order: 16
+          size:
+            - 2
+        serialized_payload:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: serialized_payload
+          order: 13
+          size:
+            - 0
+        signature:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: signature
+          order: 17
+          size:
+            - 255
+        signed_by:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: signed_by
+          order: 18
+          size:
+            - 255
+        submitter:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: submitter
+          order: 5
+          size:
+            - 0
+        subtype:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: subtype
+          order: 22
+          size:
+            - 64
+        thread_id:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: thread_id
+          order: 19
+          size:
+            - 64
+        unique_id:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: unique_id
+          order: 6
+          size:
+            - 64
+      indices:
+        - fields:
+            - regarding
+          name: meritcommons_stream_message_idx_regarding
+          options: []
+          type: NORMAL
+        - fields:
+            - in_reply_to
+          name: meritcommons_stream_message_idx_in_reply_to
+          options: []
+          type: NORMAL
+        - fields:
+            - submitter
+          name: meritcommons_stream_message_idx_submitter
+          options: []
+          type: NORMAL
+        - fields:
+            - thread_id
+          name: meritcommons_stream_message_thread_id_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - unique_id
+          name: meritcommons_stream_message_uuid_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - post_time
+          name: meritcommons_stream_message_post_time_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - modify_time
+          name: meritcommons_stream_message_modify_time_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - render_as
+          name: meritcommons_stream_message_render_as_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - subtype
+          name: meritcommons_stream_message_subtype_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - regarding
+            - subtype
+          name: meritcommons_stream_message_regarding_subtype_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - external_unique_id
+          name: meritcommons_stream_message_external_unique_id_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_stream_message
+      options: []
+      order: 14
+    meritcommons_stream_message_attachment:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - message
+          match_type: ''
+          name: meritcommons_stream_message_attachment_fk_message
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_stream_message
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - uploader
+          match_type: ''
+          name: meritcommons_stream_message_attachment_fk_uploader
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+      fields:
+        file_content_type:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: file_content_type
+          order: 7
+          size:
+            - 255
+        file_modify_time:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: file_modify_time
+          order: 8
+          size:
+            - 255
+        file_name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: file_name
+          order: 4
+          size:
+            - 255
+        file_pretty_size:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: file_pretty_size
+          order: 6
+          size:
+            - 255
+        file_size:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: file_size
+          order: 5
+          size:
+            - 255
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 18
+        message:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: message
+          order: 2
+          size:
+            - 18
+        uploader:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: uploader
+          order: 3
+          size:
+            - 0
+      indices:
+        - fields:
+            - message
+          name: meritcommons_stream_message_attachment_idx_message
+          options: []
+          type: NORMAL
+        - fields:
+            - uploader
+          name: meritcommons_stream_message_attachment_idx_uploader
+          options: []
+          type: NORMAL
+      name: meritcommons_stream_message_attachment
+      options: []
+      order: 26
+    meritcommons_stream_message_gizmo:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - author
+          match_type: ''
+          name: meritcommons_stream_message_gizmo_fk_author
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - message
+          match_type: ''
+          name: meritcommons_stream_message_gizmo_fk_message
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_stream_message
+          type: FOREIGN KEY
+      fields:
+        author:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: author
+          order: 4
+          size:
+            - 0
+        gizmo_code:
+          data_type: text
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: gizmo_code
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 18
+        message:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: message
+          order: 3
+          size:
+            - 18
+      indices:
+        - fields:
+            - author
+          name: meritcommons_stream_message_gizmo_idx_author
+          options: []
+          type: NORMAL
+        - fields:
+            - message
+          name: meritcommons_stream_message_gizmo_idx_message
+          options: []
+          type: NORMAL
+      name: meritcommons_stream_message_gizmo
+      options: []
+      order: 27
+    meritcommons_stream_message_info:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+          match_type: ''
+          name: meritcommons_stream_message_info_fk_meritcommons_user
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - message
+          match_type: ''
+          name: meritcommons_stream_message_info_fk_message
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_stream_message
+          type: FOREIGN KEY
+      fields:
+        meritcommons_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: meritcommons_user
+          order: 3
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 18
+        info:
+          data_type: text
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: info
+          order: 4
+          size:
+            - 0
+        message:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: message
+          order: 2
+          size:
+            - 18
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 5
+          size:
+            - 0
+      indices:
+        - fields:
+            - meritcommons_user
+          name: meritcommons_stream_message_info_idx_meritcommons_user
+          options: []
+          type: NORMAL
+        - fields:
+            - message
+          name: meritcommons_stream_message_info_idx_message
+          options: []
+          type: NORMAL
+        - fields:
+            - message
+            - meritcommons_user
+          name: meritcommons_stream_message_info_message_user_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_stream_message_info
+      options: []
+      order: 28
+    meritcommons_stream_message_tag:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+          match_type: ''
+          name: meritcommons_stream_message_tag_fk_meritcommons_user
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - message
+          match_type: ''
+          name: meritcommons_stream_message_tag_fk_message
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_stream_message
+          type: FOREIGN KEY
+      fields:
+        meritcommons_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: meritcommons_user
+          order: 3
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 18
+        message:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: message
+          order: 2
+          size:
+            - 18
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 5
+          size:
+            - 0
+        tag:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: tag
+          order: 4
+          size:
+            - 255
+      indices:
+        - fields:
+            - meritcommons_user
+          name: meritcommons_stream_message_tag_idx_meritcommons_user
+          options: []
+          type: NORMAL
+        - fields:
+            - message
+          name: meritcommons_stream_message_tag_idx_message
+          options: []
+          type: NORMAL
+        - fields:
+            - message
+            - meritcommons_user
+          name: meritcommons_stream_message_tag_message_user_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_stream_message_tag
+      options: []
+      order: 29
+    meritcommons_stream_message_vote:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - message
+          match_type: ''
+          name: meritcommons_stream_message_vote_fk_message
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_stream_message
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - voter
+          match_type: ''
+          name: meritcommons_stream_message_vote_fk_voter
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+      fields:
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 5
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 18
+        message:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: message
+          order: 2
+          size:
+            - 18
+        vote:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: vote
+          order: 4
+          size:
+            - 0
+        voter:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: voter
+          order: 3
+          size:
+            - 0
+      indices:
+        - fields:
+            - message
+          name: meritcommons_stream_message_vote_idx_message
+          options: []
+          type: NORMAL
+        - fields:
+            - voter
+          name: meritcommons_stream_message_vote_idx_voter
+          options: []
+          type: NORMAL
+      name: meritcommons_stream_message_vote
+      options: []
+      order: 30
+    meritcommons_stream_message_watcher:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - target
+            - watcher
+          match_type: ''
+          name: meritcommons_stream_message_watcher_target_watcher
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - target
+          match_type: ''
+          name: meritcommons_stream_message_watcher_fk_target
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - unique_id
+          reference_table: meritcommons_stream_message
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - watcher
+          match_type: ''
+          name: meritcommons_stream_message_watcher_fk_watcher
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+      fields:
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 4
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        target:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: target
+          order: 2
+          size:
+            - 64
+        watcher:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: watcher
+          order: 3
+          size:
+            - 0
+      indices:
+        - fields:
+            - target
+          name: meritcommons_stream_message_watcher_idx_target
+          options: []
+          type: NORMAL
+        - fields:
+            - watcher
+          name: meritcommons_stream_message_watcher_idx_watcher
+          options: []
+          type: NORMAL
+      name: meritcommons_stream_message_watcher
+      options: []
+      order: 31
+    meritcommons_stream_messagelink:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - link
+          match_type: ''
+          name: meritcommons_stream_messagelink_fk_link
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_link
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - message
+          match_type: ''
+          name: meritcommons_stream_messagelink_fk_message
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_stream_message
+          type: FOREIGN KEY
+      fields:
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 18
+        link:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: link
+          order: 3
+          size:
+            - 0
+        message:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: message
+          order: 2
+          size:
+            - 18
+      indices:
+        - fields:
+            - link
+          name: meritcommons_stream_messagelink_idx_link
+          options: []
+          type: NORMAL
+        - fields:
+            - message
+          name: meritcommons_stream_messagelink_idx_message
+          options: []
+          type: NORMAL
+        - fields:
+            - link
+          name: messagelink_link_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - message
+          name: messagelink_message_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_stream_messagelink
+      options: []
+      order: 37
+    meritcommons_stream_messagestream:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - message
+          match_type: ''
+          name: meritcommons_stream_messagestream_fk_message
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_stream_message
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - stream
+          match_type: ''
+          name: meritcommons_stream_messagestream_fk_stream
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_stream
+          type: FOREIGN KEY
+      fields:
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 4
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 18
+        message:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: message
+          order: 2
+          size:
+            - 18
+        stream:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: stream
+          order: 3
+          size:
+            - 0
+      indices:
+        - fields:
+            - message
+          name: meritcommons_stream_messagestream_idx_message
+          options: []
+          type: NORMAL
+        - fields:
+            - stream
+          name: meritcommons_stream_messagestream_idx_stream
+          options: []
+          type: NORMAL
+        - fields:
+            - create_time
+          name: create_time_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_stream_messagestream
+      options: []
+      order: 32
+    meritcommons_stream_moderator:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+            - stream
+          match_type: ''
+          name: moderatorship
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+          match_type: ''
+          name: meritcommons_stream_moderator_fk_meritcommons_user
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - added_by
+          match_type: ''
+          name: meritcommons_stream_moderator_fk_added_by
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - stream
+          match_type: ''
+          name: meritcommons_stream_moderator_fk_stream
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_stream
+          type: FOREIGN KEY
+      fields:
+        meritcommons_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: meritcommons_user
+          order: 4
+          size:
+            - 0
+        added_by:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: added_by
+          order: 7
+          size:
+            - 0
+        allow_add_moderator:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: allow_add_moderator
+          order: 6
+          size:
+            - 0
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 3
+          size:
+            - 0
+        stream:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: stream
+          order: 5
+          size:
+            - 0
+      indices:
+        - fields:
+            - meritcommons_user
+          name: meritcommons_stream_moderator_idx_meritcommons_user
+          options: []
+          type: NORMAL
+        - fields:
+            - added_by
+          name: meritcommons_stream_moderator_idx_added_by
+          options: []
+          type: NORMAL
+        - fields:
+            - stream
+          name: meritcommons_stream_moderator_idx_stream
+          options: []
+          type: NORMAL
+      name: meritcommons_stream_moderator
+      options: []
+      order: 15
+    meritcommons_stream_subscriber:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+            - stream
+          match_type: ''
+          name: subscription
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+          match_type: ''
+          name: meritcommons_stream_subscriber_fk_meritcommons_user
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - added_by
+          match_type: ''
+          name: meritcommons_stream_subscriber_fk_added_by
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - stream
+          match_type: ''
+          name: meritcommons_stream_subscriber_fk_stream
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_stream
+          type: FOREIGN KEY
+      fields:
+        meritcommons_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: meritcommons_user
+          order: 4
+          size:
+            - 0
+        added_by:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: added_by
+          order: 8
+          size:
+            - 0
+        allow_history:
+          data_type: integer
+          default_value: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: allow_history
+          order: 7
+          size:
+            - 0
+        authorized:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: authorized
+          order: 6
+          size:
+            - 0
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 3
+          size:
+            - 0
+        stream:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: stream
+          order: 5
+          size:
+            - 0
+      indices:
+        - fields:
+            - meritcommons_user
+          name: meritcommons_stream_subscriber_idx_meritcommons_user
+          options: []
+          type: NORMAL
+        - fields:
+            - added_by
+          name: meritcommons_stream_subscriber_idx_added_by
+          options: []
+          type: NORMAL
+        - fields:
+            - stream
+          name: meritcommons_stream_subscriber_idx_stream
+          options: []
+          type: NORMAL
+        - fields:
+            - authorized
+          name: authorized_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - added_by
+          name: added_by_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - meritcommons_user
+          name: user_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - stream
+          name: stream_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_stream_subscriber
+      options: []
+      order: 16
+    meritcommons_stream_watcher:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - target
+            - watcher
+          match_type: ''
+          name: meritcommons_stream_watcher_target_watcher
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - target
+          match_type: ''
+          name: meritcommons_stream_watcher_fk_target
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - unique_id
+          reference_table: meritcommons_stream
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - watcher
+          match_type: ''
+          name: meritcommons_stream_watcher_fk_watcher
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+      fields:
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 4
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        target:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: target
+          order: 2
+          size:
+            - 64
+        watcher:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: watcher
+          order: 3
+          size:
+            - 0
+      indices:
+        - fields:
+            - target
+          name: meritcommons_stream_watcher_idx_target
+          options: []
+          type: NORMAL
+        - fields:
+            - watcher
+          name: meritcommons_stream_watcher_idx_watcher
+          options: []
+          type: NORMAL
+      name: meritcommons_stream_watcher
+      options: []
+      order: 17
+    meritcommons_user:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - external_unique_id
+          match_type: ''
+          name: meritcommons_user_external_unique_id
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - unique_id
+          match_type: ''
+          name: meritcommons_user_unique_id
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - userid
+          match_type: ''
+          name: meritcommons_user_userid
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - notification_inbox
+          match_type: ''
+          name: meritcommons_user_fk_notification_inbox
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_stream
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - personal_inbox
+          match_type: ''
+          name: meritcommons_user_fk_personal_inbox
+          on_delete: CASCADE
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_stream
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - personal_outbox
+          match_type: ''
+          name: meritcommons_user_fk_personal_outbox
+          on_delete: CASCADE
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_stream
+          type: FOREIGN KEY
+      fields:
+        meritcommonscoin_balance:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: meritcommonscoin_balance
+          order: 16
+          size:
+            - 0
+        common_name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: common_name
+          order: 2
+          size:
+            - 255
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 8
+          size:
+            - 0
+        email_address:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: email_address
+          order: 3
+          size:
+            - 255
+        external_unique_id:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 1
+          name: external_unique_id
+          order: 20
+          size:
+            - 255
+        home_server:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: home_server
+          order: 15
+          size:
+            - 255
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        identity_resource:
+          data_type: text
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: identity_resource
+          order: 21
+          size:
+            - 0
+        last_login_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: last_login_time
+          order: 11
+          size:
+            - 0
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 10
+          size:
+            - 0
+        nick_name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: nick_name
+          order: 6
+          size:
+            - 255
+        notification_inbox:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: notification_inbox
+          order: 19
+          size:
+            - 0
+        organization:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: organization
+          order: 4
+          size:
+            - 255
+        personal_inbox:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: personal_inbox
+          order: 17
+          size:
+            - 0
+        personal_outbox:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: personal_outbox
+          order: 18
+          size:
+            - 0
+        profile_picture_content_type:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: profile_picture_content_type
+          order: 25
+          size:
+            - 255
+        profile_picture_modify_time:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: profile_picture_modify_time
+          order: 26
+          size:
+            - 255
+        profile_picture_name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: profile_picture_name
+          order: 22
+          size:
+            - 255
+        profile_picture_pretty_size:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: profile_picture_pretty_size
+          order: 24
+          size:
+            - 255
+        profile_picture_size:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: profile_picture_size
+          order: 23
+          size:
+            - 255
+        public_key:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: public_key
+          order: 12
+          size:
+            - 0
+        secret_key:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: secret_key
+          order: 13
+          size:
+            - 0
+        title:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: title
+          order: 5
+          size:
+            - 255
+        unique_id:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: unique_id
+          order: 9
+          size:
+            - 64
+        userid:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: userid
+          order: 7
+          size:
+            - 255
+        visiting_user:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: visiting_user
+          order: 14
+          size:
+            - 0
+      indices:
+        - fields:
+            - notification_inbox
+          name: meritcommons_user_idx_notification_inbox
+          options: []
+          type: NORMAL
+        - fields:
+            - personal_inbox
+          name: meritcommons_user_idx_personal_inbox
+          options: []
+          type: NORMAL
+        - fields:
+            - personal_outbox
+          name: meritcommons_user_idx_personal_outbox
+          options: []
+          type: NORMAL
+        - fields:
+            - userid
+          name: userid_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - unique_id
+          name: uuid_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - common_name
+          name: cn_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - identity_resource
+          name: identity_resource_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - external_unique_id
+          name: meritcommons_user_external_unique_id_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_user
+      options: []
+      order: 8
+    meritcommons_user_meritcommonscointransaction:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+          match_type: ''
+          name: meritcommons_user_meritcommonscointransaction_fk_meritcommons_user
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+      fields:
+        meritcommons_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: meritcommons_user
+          order: 9
+          size:
+            - 0
+        amount:
+          data_type: real
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: amount
+          order: 5
+          size:
+            - 0
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        previous_balance:
+          data_type: real
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: previous_balance
+          order: 3
+          size:
+            - 0
+        resulting_balance:
+          data_type: real
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: resulting_balance
+          order: 4
+          size:
+            - 0
+        role:
+          data_type: enum
+          default_value: ~
+          extra:
+            list:
+              - buyer
+              - sender
+              - seller
+              - receieiver
+              - creditor
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: role
+          order: 7
+          size:
+            - 0
+        transaction_type:
+          data_type: enum
+          default_value: ~
+          extra:
+            list:
+              - credit
+              - exchange
+              - spend
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: transaction_type
+          order: 6
+          size:
+            - 0
+        unique_id:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: unique_id
+          order: 8
+          size:
+            - 64
+      indices:
+        - fields:
+            - meritcommons_user
+          name: meritcommons_user_meritcommonscointransaction_idx_meritcommons_user
+          options: []
+          type: NORMAL
+        - fields:
+            - transaction_type
+          name: txn_type_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_user_meritcommonscointransaction
+      options: []
+      order: 18
+    meritcommons_user_alias:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+          match_type: ''
+          name: meritcommons_user_alias_fk_meritcommons_user
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - owner
+          match_type: ''
+          name: meritcommons_user_alias_fk_owner
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+      fields:
+        meritcommons_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: meritcommons_user
+          order: 2
+          size:
+            - 0
+        common_name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: common_name
+          order: 5
+          size:
+            - 255
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        owner:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: owner
+          order: 3
+          size:
+            - 0
+        used:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: used
+          order: 4
+          size:
+            - 0
+      indices:
+        - fields:
+            - meritcommons_user
+          name: meritcommons_user_alias_idx_meritcommons_user
+          options: []
+          type: NORMAL
+        - fields:
+            - owner
+          name: meritcommons_user_alias_idx_owner
+          options: []
+          type: NORMAL
+        - fields:
+            - common_name
+          name: user_alias_common_name_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_user_alias
+      options: []
+      order: 19
+    meritcommons_user_assignment:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+          match_type: ''
+          name: meritcommons_user_assignment_fk_meritcommons_user
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - grp
+          match_type: ''
+          name: meritcommons_user_assignment_fk_grp
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user_group
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - identity
+          match_type: ''
+          name: meritcommons_user_assignment_fk_identity
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user_identity
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - role
+          match_type: ''
+          name: meritcommons_user_assignment_fk_role
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user_role
+          type: FOREIGN KEY
+      fields:
+        meritcommons_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: meritcommons_user
+          order: 2
+          size:
+            - 0
+        grp:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: grp
+          order: 3
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        identity:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: identity
+          order: 6
+          size:
+            - 0
+        role:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: role
+          order: 4
+          size:
+            - 0
+        tag:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: tag
+          order: 5
+          size:
+            - 0
+      indices:
+        - fields:
+            - meritcommons_user
+          name: meritcommons_user_assignment_idx_meritcommons_user
+          options: []
+          type: NORMAL
+        - fields:
+            - grp
+          name: meritcommons_user_assignment_idx_grp
+          options: []
+          type: NORMAL
+        - fields:
+            - identity
+          name: meritcommons_user_assignment_idx_identity
+          options: []
+          type: NORMAL
+        - fields:
+            - role
+          name: meritcommons_user_assignment_idx_role
+          options: []
+          type: NORMAL
+      name: meritcommons_user_assignment
+      options: []
+      order: 39
+    meritcommons_user_attribute:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+          match_type: ''
+          name: meritcommons_user_attribute_fk_meritcommons_user
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+      fields:
+        meritcommons_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: meritcommons_user
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        k:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: k
+          order: 3
+          size:
+            - 255
+      indices:
+        - fields:
+            - meritcommons_user
+          name: meritcommons_user_attribute_idx_meritcommons_user
+          options: []
+          type: NORMAL
+        - fields:
+            - k
+          name: user_attribute_name_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - meritcommons_user
+          name: user_attribute_session_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_user_attribute
+      options: []
+      order: 20
+    meritcommons_user_attribute_value:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - attribute
+          match_type: ''
+          name: meritcommons_user_attribute_value_fk_attribute
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user_attribute
+          type: FOREIGN KEY
+      fields:
+        attribute:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: attribute
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        v:
+          data_type: text
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: v
+          order: 3
+          size:
+            - 0
+      indices:
+        - fields:
+            - attribute
+          name: meritcommons_user_attribute_value_idx_attribute
+          options: []
+          type: NORMAL
+        - fields:
+            - attribute
+          name: user_attribute_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_user_attribute_value
+      options: []
+      order: 33
+    meritcommons_user_group:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - owner
+          match_type: ''
+          name: meritcommons_user_group_fk_owner
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+      fields:
+        common_name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: common_name
+          order: 4
+          size:
+            - 255
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 3
+          size:
+            - 0
+        owner:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: owner
+          order: 5
+          size:
+            - 0
+      indices:
+        - fields:
+            - owner
+          name: meritcommons_user_group_idx_owner
+          options: []
+          type: NORMAL
+      name: meritcommons_user_group
+      options: []
+      order: 21
+    meritcommons_user_identity:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        identity:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: identity
+          order: 5
+          size:
+            - 64
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 3
+          size:
+            - 0
+        multiplier:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: multiplier
+          order: 4
+          size:
+            - 0
+      indices:
+        - fields:
+            - identity
+          name: user_identity_string_idx
+          options: []
+          type: NORMAL
+      name: meritcommons_user_identity
+      options: []
+      order: 4
+    meritcommons_user_profile_attribute:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - standard_attribute
+          match_type: ''
+          name: meritcommons_user_profile_attribute_fk_standard_attribute
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_profile_standard_attribute
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - user_attribute
+          match_type: ''
+          name: meritcommons_user_profile_attribute_fk_user_attribute
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user_attribute
+          type: FOREIGN KEY
+      fields:
+        attr_group:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: attr_group
+          order: 7
+          size:
+            - 255
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        label:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: label
+          order: 8
+          size:
+            - 255
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 3
+          size:
+            - 0
+        standard_attribute:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: standard_attribute
+          order: 4
+          size:
+            - 0
+        type:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: type
+          order: 6
+          size:
+            - 1
+        user_attribute:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: user_attribute
+          order: 5
+          size:
+            - 0
+      indices:
+        - fields:
+            - standard_attribute
+          name: meritcommons_user_profile_attribute_idx_standard_attribute
+          options: []
+          type: NORMAL
+        - fields:
+            - user_attribute
+          name: meritcommons_user_profile_attribute_idx_user_attribute
+          options: []
+          type: NORMAL
+      name: meritcommons_user_profile_attribute
+      options: []
+      order: 38
+    meritcommons_user_profile_attribute_value:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - profile_attribute
+          match_type: ''
+          name: meritcommons_user_profile_attribute_value_fk_profile_attribute
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user_profile_attribute
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - user_attribute_value
+          match_type: ''
+          name: meritcommons_user_profile_attribute_value_fk_user_attribute_value
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user_attribute_value
+          type: FOREIGN KEY
+      fields:
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 3
+          size:
+            - 0
+        ordinal:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: ordinal
+          order: 6
+          size:
+            - 0
+        profile_attribute:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: profile_attribute
+          order: 4
+          size:
+            - 0
+        user_attribute_value:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: user_attribute_value
+          order: 5
+          size:
+            - 0
+      indices:
+        - fields:
+            - profile_attribute
+          name: meritcommons_user_profile_attribute_value_idx_profile_attribute
+          options: []
+          type: NORMAL
+        - fields:
+            - user_attribute_value
+          name: meritcommons_user_profile_attribute_value_idx_user_attribute_value
+          options: []
+          type: NORMAL
+      name: meritcommons_user_profile_attribute_value
+      options: []
+      order: 40
+    meritcommons_user_role:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        common_name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: common_name
+          order: 4
+          size:
+            - 255
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 3
+          size:
+            - 0
+      indices: []
+      name: meritcommons_user_role
+      options: []
+      order: 5
+    meritcommons_user_tag:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        common_name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: common_name
+          order: 4
+          size:
+            - 255
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 2
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 3
+          size:
+            - 0
+      indices: []
+      name: meritcommons_user_tag
+      options: []
+      order: 6
+    meritcommons_user_watcher:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - target
+            - watcher
+          match_type: ''
+          name: meritcommons_user_watcher_target_watcher
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - target
+          match_type: ''
+          name: meritcommons_user_watcher_fk_target
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - unique_id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - watcher
+          match_type: ''
+          name: meritcommons_user_watcher_fk_watcher
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+      fields:
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 4
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        target:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: target
+          order: 2
+          size:
+            - 64
+        watcher:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: watcher
+          order: 3
+          size:
+            - 0
+      indices:
+        - fields:
+            - target
+          name: meritcommons_user_watcher_idx_target
+          options: []
+          type: NORMAL
+        - fields:
+            - watcher
+          name: meritcommons_user_watcher_idx_watcher
+          options: []
+          type: NORMAL
+      name: meritcommons_user_watcher
+      options: []
+      order: 22
+    ap_casserver_ticket:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - meritcommons_user
+          match_type: ''
+          name: ap_casserver_ticket_fk_meritcommons_user
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: meritcommons_user
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - issued_by_ticket
+          match_type: ''
+          name: ap_casserver_ticket_fk_issued_by_ticket
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - id
+          reference_table: ap_casserver_ticket
+          type: FOREIGN KEY
+      fields:
+        meritcommons_user:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: meritcommons_user
+          order: 2
+          size:
+            - 0
+        consumed:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: consumed
+          order: 7
+          size:
+            - 0
+        create_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 10
+          size:
+            - 0
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        issue_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: issue_time
+          order: 9
+          size:
+            - 0
+        issued_by_ticket:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: issued_by_ticket
+          order: 6
+          size:
+            - 0
+        modify_time:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: modify_time
+          order: 11
+          size:
+            - 0
+        pgt_url:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: pgt_url
+          order: 5
+          size:
+            - 255
+        renew:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: renew
+          order: 8
+          size:
+            - 0
+        service:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: service
+          order: 4
+          size:
+            - 255
+        ticket_id:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: ticket_id
+          order: 3
+          size:
+            - 255
+      indices:
+        - fields:
+            - meritcommons_user
+          name: ap_casserver_ticket_idx_meritcommons_user
+          options: []
+          type: NORMAL
+        - fields:
+            - issued_by_ticket
+          name: ap_casserver_ticket_idx_issued_by_ticket
+          options: []
+          type: NORMAL
+        - fields:
+            - ticket_id
+          name: ap_casserver_ticket_ticket_id_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - meritcommons_user
+          name: ap_casserver_ticket_user_idx
+          options: []
+          type: NORMAL
+        - fields:
+            - create_time
+          name: ap_casserver_ticket_create_time_idx
+          options: []
+          type: NORMAL
+      name: ap_casserver_ticket
+      options: []
+      order: 23
+  triggers: {}
+  views: {}
+translator:
+  add_drop_table: 0
+  filename: ~
+  no_comments: 0
+  parser_args:
+    sources:
+      - Stream::MessageLink
+      - DemoAttachable
+      - User::Role
+      - Stream::Author
+      - Session::Attribute
+      - Stream::Message::Gizmo
+      - DataAgent
+      - User::Profile::Attribute::Value
+      - User::Assignment
+      - User::Alias
+      - Stream::Message::Info
+      - User::Group
+      - User::Watcher
+      - Session::Attribute::Value
+      - User::Attribute
+      - Stream::Message
+      - LocalAuth
+      - Stream::Watcher
+      - Session::Keystore
+      - Link
+      - Profile::StandardAttribute
+      - Stream::Message::Tag
+      - Stream::Message::Watcher
+      - User::Attribute::Value
+      - Link::Collection::Member
+      - Link::Click
+      - User::Identity
+      - Ticket
+      - Link::Collection
+      - User::Profile::Attribute
+      - Stream
+      - Stream::MessageStream
+      - Stream::Subscriber
+      - Session
+      - User
+      - User::MeritCommonscoinTransaction
+      - Stream::Message::Vote
+      - Stream::Moderator
+      - Stream::Message::Attachment
+      - User::Tag
+  parser_type: SQL::Translator::Parser::DBIx::Class
+  producer_args: {}
+  producer_type: SQL::Translator::Producer::YAML
+  show_warnings: 0
+  trace: 0
+  version: 0.11016

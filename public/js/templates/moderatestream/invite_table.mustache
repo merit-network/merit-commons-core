@@ -1,0 +1,29 @@
+<!-- Invite table -->
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Invitee</th>
+      <th>Inviter</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#invs}}
+      <tr invitee="{{invitee.unique_id}}">
+        <td><a href="/u/{{invitee.unique_id}}">{{invitee.common_name}}</a></td>
+        <td><a href="/u/{{inviter.unique_id}}">{{inviter.common_name}}</a></td>
+        <td>
+          {{#approved}}
+            Pending Invitee Response
+          {{/approved}}
+          {{^approved}}
+            <button class="stream-moderate-approve-invite btn btn-mini" data-what="invite" data-action="approve" data-stream-id="{{stream.unique_id}}" data-invitee="{{invitee.unique_id}}">
+              Approve Invite
+            </button>
+          {{/approved}}
+        </td>
+      </tr>
+    {{/invs}}
+  </tbody>
+</table>

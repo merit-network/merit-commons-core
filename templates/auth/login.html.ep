@@ -1,0 +1,19 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% layout 'idp';
+% title 'Login';
+% my $back = b(stash('back') // '');
+% my $heading_title = stash('heading_title') // "Please Log In";
+% my $invalid_login = $c->param('invalid_login');
+% my $message = stash('message');
+% my $ext_auth_url = $c->app->global_config->{auth_url};
+
+<script>
+    var DISABLE_WEBSOCKETS = true;
+</script>
+
+<div id="content-wrapper" class="container">
+% include $ext_auth_url ? "auth/login/message" : "auth/login/form"
+</div>

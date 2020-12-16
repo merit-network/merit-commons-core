@@ -1,0 +1,50 @@
+%# entity_select - widget for searching for and selecting one or more MeritCommons users or streams
+%# 
+%# Options (specified in variable named $us_config before including)
+%# search_contexts - arrayref of what search contexts to use (see Hydrant/Command/RecipientSearch)
+%# multiple - boolean value, if true select2 is rendered for multiple selections, otherwise a single selection
+%# label - the <label for="">'s text.  used to label the input field itself.
+%# name - the name to use for the select field itself
+%# placeholder - what text to use as a placeholder when no values are selected
+%# class - specify a custom class for the select element
+%# 
+% my $ec;
+% unless ($ec = stash 'es_config') {
+%   $ec = { search_contexts => ['subscribed_with_me'], multiple => 0, label => "Find a user", name => "user-search", class => "baller"};
+% }
+% use strict 'vars';
+% $ec->{search_contexts} = ['subscribed_with_me'] unless $ec->{search_contexts};
+%# 
+<script>  
+  var init_entity_select = function() {
+    if (typeof require === "function" && typeof require.specified === "function" && require.specified("backbone")) {
+      require([
+        'backbone_components/views/widgets/entity_select'
+      ], function(EntitySelect) {
+        entitySelect = new EntitySelect(JSON.parse('<%== $self->json_encode($ec) %>'));
+        if (entitySelect.render != undefined) {
+          entitySelect.render();
+        }
+        return entitySelect;
+      });
+    } else {
+      // try again in .25 seconds...
+      setTimeout(init_entity_select, 250);
+    }
+  };
+
+  if (document.readyState != 'loading') { 
+    init_entity_select();
+  } else {
+    document.addEventListener('DOMContentLoaded', init_entity_select);
+  }
+</script>
+<form name="entity-select" class="entity-select">
+  <div class="form-group">
+    <% if ($ec->{label}) { %>
+      <label for="<%= $ec->{name} || 'entity-search' %>"><%= $ec->{label} %></label>
+    <% } %>
+    <select style="display: none" class="meritcommons-entity-select<%= ' ' . $ec->{class} if $ec->{class} %>" <%= "multiple" if $ec->{multiple} %> name="<%= $ec->{name} || 'user-search' %>">
+    </select>
+  </div>
+</form>

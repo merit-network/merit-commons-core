@@ -1,0 +1,67 @@
+% layout 'iframe-content';
+% if (my $alt_title_link = $self->stash('alt_title_link')) {
+%   title $alt_title_link->{title};
+% } else {
+%   title "External Resource";
+% }
+
+<style>
+    div.full-page-iframe-container {
+        -webkit-overflow-scrolling: touch;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: calc(100% - 4px); 
+    }
+    
+    iframe.full-page-iframe {
+        width: 100%;
+        height: -moz-calc(100% - 3px);
+        height: -webkit-calc(100% - 3px);
+        height: calc(100% - 4px);
+        margin: 0;
+        padding: 0;
+    }
+    
+    body, html {
+        -ms-overflow-style: none !important;
+    }
+</style>
+<div class="full-page-iframe-container"><iframe class="full-page-iframe" src="<%= $target_url %>" id="content-iframe"></iframe></div>
+<% if ($self->msie || $self->hixie76) { %> 
+    <!-- terrible browser detected.  taking evasive action. -->
+    <script>
+        var ssb_sb_buffer = 7; //scroll bar buffer
+        var ssb_iframe = document.getElementById('content-iframe');
+
+        function pageY(elem) {
+            return elem.offsetParent ? (elem.offsetTop + pageY(elem.offsetParent)) : elem.offsetTop;
+        }
+
+        function resizeIframe() {
+            var height = document.documentElement.clientHeight;
+            height -= pageY(document.getElementById('content-iframe')) + ssb_sb_buffer ;
+            height = (height < 0) ? 0 : height;
+            document.getElementById('content-iframe').style.height = height + 'px';
+            if (!DISABLE_WEBSOCKETS) {
+                MeritCommons.WebSocket.conn.send("session_heartbeat", {
+                    times: 1,
+                    callback: function(e, data) {
+                        if (typeof data !== "undefined") {
+                            console.log("[heartbeat] " + data);
+                        }
+                    }  
+                );
+            }
+        }
+
+        // .onload doesn't work with IE8 and older.
+        if (ssb_iframe.attachEvent) {
+            ssb_iframe.attachEvent("onload", resizeIframe);
+        } else {
+            ssb_iframe.onload=resizeIframe;
+        }
+
+        window.onresize = resizeIframe;
+    </script>
+<% } %>

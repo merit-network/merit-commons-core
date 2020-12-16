@@ -1,0 +1,58 @@
+<!-- AOM message -->
+<div class="feed-message" data-message-id="{{message.message_id}}">
+  <div class="pull-right btn-group">
+    <button class="feed-message-options-link btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" title="Message Options"><i class="fa fa-chevron-down"></i></button>
+  </div>
+
+  <a class="feed-message-avatar pull-left" href="{{{message.submitter_profile_url}}}" title="{{message.submitter_userid}}">
+    <img class="media-object img-rounded" src="{{{message.submitter_profile_thumb_url}}}"/>
+  </a>
+
+  <div class="feed-message-header">
+    <h4 class="media-heading">
+      <a href="{{{message.submitter_profile_url}}}">{{message.submitter_common_name}}</a>
+      <span class="muted feed-time"> <span class="feed-time-bullet">&bull;</span> <a href="/m/{{#message.in_reply_to}}{{message.thread_id}}#m{{/message.in_reply_to}}{{message.message_id}}" title="Permalink" class="feed-time-stamp">{{message.abbr_ago}}</a></span>
+    </h4>
+  </div>
+
+  <div class="feed-message-body">
+    <div class="body message-read">AOM Functionality Removed; This message is irretrievable</div>
+    {{#message.full_body}}
+      <div style="display: none" class="full-body message-read">{{{message.full_body}}}</div>
+      <a href="#" class="message-read message-read-more"> <em>Read More</em></a>
+      <a href="#" style="display: none" class="message-read message-read-less"> <em>Read Less</em></a>
+    {{/message.full_body}}
+  </div>
+
+  <div class="clearfix"></div>
+
+  <!-- /.media -->
+  <div class="feed-message-footer clearfix">
+    <div class="upvote">
+      <span class="upvote-animation">+1</span>
+      <a href="#" class="feed-message-upvote-link btn btn-mini btn-link">{{message.upvotes}} <i class="fa fa-thumbs-up"></i></a>
+    </div>
+    <div class="downvote">
+      <span class="downvote-animation">-1</span>
+      <a href="#" class="feed-message-downvote-link btn btn-mini btn-link">{{message.downvotes}} <i class="fa fa-thumbs-down"></i></a>
+    </div>
+    <a href="#" class="feed-message-comments-link btn btn-mini btn-link">{{message.number_of_replies}} <i class="fa fa-comment"></i></a>
+    <div class="message-streams pull-right">
+        <span>Streams:</span>
+        {{#message.streams}}
+          <div class="btn-group">
+            <button class="btn btn-xs{{#no_dropdown}} btn-default disabled{{/no_dropdown}}{{^no_dropdown}} stream-link dropdown-toggle{{/no_dropdown}}{{#mention}} mention{{/mention}}"
+              {{^no_dropdown}}data-toggle="dropdown" data-loading-text="{{stream_name_abbr}}"{{/no_dropdown}} id="{{stream_id}}" title="{{stream_name}}">
+              {{stream_name_abbr}}{{^no_dropdown}} <span class="caret"></span>{{/no_dropdown}}
+            </button>
+          </div>
+        {{/message.streams}}
+    </div>
+  </div>
+  <div class="feed-message-info">
+    &nbsp;
+  </div>
+</div>
+<!-- /.feed-message -->
+<!-- thread replies here -->
+<!-- /.feed (Generic Message) -->

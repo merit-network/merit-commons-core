@@ -1,0 +1,177 @@
+{
+   "belongs_to" : {
+      "fetch" : 0
+   },
+   "has_many" : {
+      "fetch" : 0
+   },
+   "sets" : [
+      {
+         "quantity" : "all",
+         "class" : "User::MeritCommonscoinTransaction"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Link::Click"
+      },
+      {
+         "class" : "Stream::Moderator",
+         "quantity" : "all"
+      },
+      {
+         "class" : "User::Tag",
+         "quantity" : "all"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Link::Collection"
+      },
+      {
+         "class" : "User::Attribute",
+         "quantity" : "all"
+      },
+      {
+         "class" : "User::Attribute::Value",
+         "quantity" : "all"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Stream::Author"
+      },
+      {
+         "class" : "User::Role",
+         "quantity" : "all"
+      },
+      {
+         "class" : "Stream::Message::Tag",
+         "quantity" : "all"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Stream"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Stream::Message::Attachment"
+      },
+      {
+         "class" : "User::Profile::Attribute::Value",
+         "quantity" : "all"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Ticket"
+      },
+      {
+         "quantity" : "all",
+         "class" : "DemoAttachable"
+      },
+      {
+         "class" : "Stream::Message::Vote",
+         "quantity" : "all"
+      },
+      {
+         "class" : "User::Assignment",
+         "quantity" : "all"
+      },
+      {
+         "class" : "Link",
+         "quantity" : "all"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Stream::Watcher"
+      },
+      {
+         "quantity" : "all",
+         "class" : "DataAgent"
+      },
+      {
+         "class" : "Stream::Message::Watcher",
+         "quantity" : "all"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Stream::Message"
+      },
+      {
+         "class" : "Profile::StandardAttribute",
+         "quantity" : "all"
+      },
+      {
+         "class" : "Link::Collection::Role",
+         "quantity" : "all"
+      },
+      {
+         "class" : "User::Identity",
+         "quantity" : "all"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Link::Collection::Member"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Stream::Message::Gizmo"
+      },
+      {
+         "class" : "Stream::MessageStream",
+         "quantity" : "all"
+      },
+      {
+         "quantity" : "all",
+         "class" : "User::Profile::Attribute"
+      },
+      {
+         "quantity" : "all",
+         "class" : "User::Alias"
+      },
+      {
+         "class" : "Stream::MessageLink",
+         "quantity" : "all"
+      },
+      {
+         "class" : "Session::Attribute::Value",
+         "quantity" : "all"
+      },
+      {
+         "class" : "Session::Attribute",
+         "quantity" : "all"
+      },
+      {
+         "class" : "LocalAuth",
+         "quantity" : "all"
+      },
+      {
+         "class" : "Session",
+         "quantity" : "all"
+      },
+      {
+         "quantity" : "all",
+         "class" : "User::Watcher"
+      },
+      {
+         "class" : "Stream::Message::Info",
+         "quantity" : "all"
+      },
+      {
+         "class" : "User::Group",
+         "quantity" : "all"
+      },
+      {
+         "class" : "Stream::Subscriber",
+         "quantity" : "all"
+      },
+      {
+         "quantity" : "all",
+         "class" : "User"
+      },
+      {
+         "class" : "Session::Keystore",
+         "quantity" : "all"
+      }
+   ],
+   "might_have" : {
+      "fetch" : 0
+   }
+}

@@ -1,0 +1,109 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% $c->stash(layout => 'default', backbone_view => 'views/search/show');
+% title 'Search';
+% my $user = $self->active_user;
+% my $lsw = scalar($user->config('links-in-same-window'));
+
+<script>
+    var subscriptions = <%== $self->stash('subscriptions') %>;
+    var searchOptions = <%== $self->stash('search_options') %>;
+    var messages = <%== $self->stash('payload_messages_json') %>    
+
+    // this toggles off the delete 'x' in the upper right, as the delete functionality
+    // can't work without a stream/subscription context.
+    var show_deletes = false;
+
+    // this toggles off the functionality that deletes messages that don't belong in a
+    // stream context.
+    var stream_context = false;
+</script>
+
+<div id="content-wrapper" class="container merge-container">
+    <h3 style="padding-bottom: 15px">Search: <%= $query %></h3>
+    <% if ($user && $user->config('narrow-message-column')) { %>
+      <% if ($user->config('links-on-right')) { %>
+          <div id="sidebar" class="col-lg-8 col-lg-push-4 col-md-8 col-md-push-4">
+      <% } else { %>
+          <div id="sidebar" class="col-lg-8 col-md-8">
+      <% } %>
+    <% } elsif ($user && $user->config('links-on-right')) { %>
+      <div id="sidebar" class="col-lg-4 col-lg-push-8 col-md-4 col-md-push-8">
+    <% } else { %>
+      <div id="sidebar" class="col-lg-4 col-md-4">
+    <% } %>
+        <% if (@{$link_results} > 0) { %>
+        <div class="sidebar-section sidebar-search-results">
+            <div class="sidebar-section-header">
+                Links
+            </div>
+            <ul class="nav nav-tabs nav-stacked">
+                <% foreach my $link (@{$link_results}) { %>
+                  <li class="navlist-child-leaf">
+                    <div class="navlist-link"> 
+                      <a id="link-<%= $link->id %>" target="<%= $lsw ? "_self" : $link->target %>" href="/link/<%= $link->short_loc %>"><%= $link->title %></a> 
+                      <a class="superclick pull-right" href="/superclick/<%= $link->short_loc %>" data-shortloc="<%= $link->short_loc %>" target="<%= $lsw ? "_self" : $link->target %>" data-toggle="tooltip" data-placement="right" title="Pin to 'My Frequent Links'"><i class="fa fa-thumb-tack"></i></a>
+                    </div>
+                  </li>
+                <% } %>
+            </ul>
+        </div>
+        <%  } %>
+        <% if (@{$stream_results} > 0) { %>
+        <div class="sidebar-section sidebar-search-results">
+            <div class="sidebar-section-header">
+                Streams
+            </div>
+            <ul class="nav nav-tabs nav-stacked">
+                <% foreach my $stream (@{$stream_results}) { %>
+                <li><a class="navlist-link" href="<%= $self->url_for('get_stream', stream_identifier => $stream->url_name) %>"><%= $stream->common_name %></a></li>
+                <% } %>
+            </ul>
+        </div>
+        <%  } %>  
+        <% if (@{$user_results} > 0) { %>
+        <div class="sidebar-section sidebar-search-results">
+            <div class="sidebar-section-header">
+                People
+            </div>
+            <ul class="nav nav-tabs nav-stacked">
+                <% foreach my $user (@{$user_results}) { %>
+                <li><a class="navlist-link" href="/u/<%= $user->userid %>"><%= $user->common_name %></a></li>
+                <% } %>
+            </ul>
+        </div>
+        <%  } %>                                
+    </div>
+
+    <% if ($user->config('narrow-message-column')) { %>
+      <% if ($user->config('links-on-right')) { %>
+        <div class="col-lg-4 col-lg-pull-8 col-md-4 col-md-pull-8">
+      <% } else { %>
+        <div class="col-lg-4 col-md-4">
+      <% } %>
+    <% } elsif ($user->config('links-on-right')) { %>
+      <div class="col-lg-8 col-lg-pull-4 col-md-8 col-md-pull-4">
+    <% } else { %>
+      <div class="col-lg-8 col-md-8">
+    <% } %> 
+        <div class="row">
+            <!-- Main Content (MESSAGES GO HERE!)
+                ======================= -->
+            <% if (@{$message_results_payload} > 0) { %>
+            <div id="messages-go-here">
+            <% foreach my $payload (@{$self->stash('message_results_payload')}) { %>
+            <div class="thread" id="<%= $payload->{message_id} %>"><div class="thread-parent"><div date="<%= $payload->{post_time} %>" class="feed message">
+                <%== $self->render_mustache("message/$payload->{render_as}", { message => $payload }) %>
+            </div></div></div>
+            <% } %>
+                <% } else { %>
+                <div id="messages-go-here" class="empty">
+                    <div class="well">No messages found.</div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

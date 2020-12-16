@@ -1,0 +1,40 @@
+%#    MeritCommons Portal
+%#    Copyright 2015 Wayne State University
+%#    All Rights Reserved
+
+<% my $stream_options = begin %>
+    % my ($stream) = (@_);
+    <% if (!$stream->{my_personal_outbox}) { %>
+        <% if ($stream->{is_moderator}) { %>
+            <li><a href="<%= $stream->{url} %>/m"><i class="fa fa-microphone-slash"></i> Moderate</a></li>
+        <% } %>
+        <% if ($stream->{is_subscriber} && $stream->{can_unsubscribe}) { %>
+            <li><a href="#" data-stream-name="<%= $stream->{common_name} %>" data-stream-id="<%= $stream->{unique_id} %>" class="unsubscribe"><i class="fa fa-times"></i> Unsubscribe</a></li>
+        <% } elsif (!$stream->{is_subscriber} && $stream->{can_subscribe}) { %>
+            <li><a href="#" data-stream-name="<%= $stream->{common_name} %>" data-stream-id="<%= $stream->{unique_id} %>" class="subscribe"><i class="fa fa-bookmark"></i> Subscribe</a></li>
+        <% } %>
+    <% } %>
+    <% if ($stream->{can_read}) { %>
+        <li><a href="<%= $stream->{url} %>"><i class="fa fa-arrow-circle-right"></i> Visit</a></li>
+    <% } %>
+<% end %>
+
+<ul class="dropdown-menu stream-summary-dropdown" role="menu">
+    <% if (scalar(@$dropdown_streams) == 1) { %>
+        <%= $stream_options->($dropdown_streams->[0]) %>
+    <% } else { %>
+        <% foreach my $stream (@$dropdown_streams) { %>
+            <% if ($stream->{personal_inbox}) { %>
+                <li>
+                <a href="<%= $stream->{url} %>"><i class="fa fa-user"></i> <%= $stream->{common_name} %></a>
+            <% } else { %>
+                <li class="dropdown-submenu">
+                <a href="<%= $stream->{url} %>"><i class="fa fa-streams"></i> <%= $stream->{common_name} %></a>
+                <ul class="dropdown-menu">
+                    <%= $stream_options->($stream) %>
+                </ul>
+            <% } %>
+            </li>
+        <% } %>
+    <% } %>
+</ul>

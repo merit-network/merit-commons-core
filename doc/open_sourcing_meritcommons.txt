@@ -1,0 +1,25 @@
+The Case for Open Sourcing MeritCommons
+------------------------------------
+
+Open sourcing MeritCommons can feel like a very difficult decision.  On one hand, you have some cold hard facts about what went into creating the software: personnel costs, server costs, and the market value of similar products can all make you feel that your project is "too valuable" to open source or "give away for free".  However, as most software companies will tell you, developing software is only a small part of what it takes to bring a matured platform to market.  The hardest problems we face now are adoption and marketing.
+
+Simply put, we do not have the money or talent required to put together an adequate commercial marketing campaign for MeritCommons, nor are we the kind of organization that usually does that sort of thing.  Open sourcing allows us to crowdsource this important part of the software launch process by drastically lowering the bar to organizations interested in trying out the software.  By withholding all of the Banner integration components, we retain most of the market value of MeritCommons, while allowing our unique, revolutionary software to make its way into customers hands at their own pace.  If we do not do this, I am extremely concerned that the slow pace of university politics and the limited selection of the somewhat less than able partners at our disposal will prevent MeritCommons from gaining real traction in our target and other markets.
+
+It is much easier to sell services and support to someone who is using your product.  MeritCommons is rife with opportunities for customization and integration, which most organizations will assuredly need in order to get the most out of their MeritCommons installation.  We can generate leads for selling services by tracking what IP addresses and organizations download our open source edition and follow up ourselves or sell these leads to Merit or other partners.  In this way, open sourcing MeritCommons is complementary to forming partnerships with external vendors, without giving them sole control over its distribution and marketing.
+
+Last but not least, as has been true throughout the life of the project, we only have so many development resources we can afford to put behind MeritCommons.  Community contributions for open source projects include bug fixes, security reviews and enhancements, new features, novel deployments, and documentation which is often as much needed in any technical project as the code itself.
+
+Our open source strategy should include a project site, hosted at a wayne.edu domain, branded with both WSU and MeritCommons assets which includes feature overviews, forums for community participation, "Download" links gatekept with registration forms and surveys, and links to code repositories, which I recommend we host at github.com, which offers free hosting for open source projects.  This site would be as much for distributing MeritCommons as it would be for WSU PR.  We would get all the benefits that come with developing and releasing a state-of-the-art piece of software.  Our online presence would generate prestige and give our computer related programs a positive reputation worldwide.  We should license MeritCommons under the GPLv3 license which requires that people release any changes they make to the code under the same license.
+
+The modules we should withhold from the public repository are all under the "MeritCommons::Plugin" namespace and include:
+
+lib/MeritCommons/Plugin/Banner/Command/banner_event_listener.pm
+lib/MeritCommons/Plugin/Banner/Command/banner_sync_user.pm
+lib/MeritCommons/Plugin/Banner/Controller/Ssb.pm
+lib/MeritCommons/Plugin/Banner/Helper/BannerUtil.pm
+lib/MeritCommons/Plugin/Banner.pm
+lib/MeritCommons/Plugin/Wayne.pm
+
+All other MeritCommons code, assets, and documentation that WSU owns should be released as GPLv3 on github.com, and packaged with an "MeritCommons System" build script that allows users to build their own MeritCommons System environments using other open source projects' public repositories to use to deploy the MeritCommons application.
+
+M. Gregorowicz, 01/2014

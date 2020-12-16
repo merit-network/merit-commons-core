@@ -1,0 +1,70 @@
+%#    MeritCommons Portal
+%#    Copyright 2015 Wayne State University
+%#    All Rights Reserved
+
+% extends 'coins/layout', backbone_view => 'views/coins/admin', page => 'admin';
+% title 'MeritCommonscoin Request';
+
+% content_for coin_body => begin
+
+<div class="col-md-12 panel panel-default coin-admin">
+    <div class="panel-body">
+        <h2>Credit MeritCommonscoins</h2>
+            <p>Fill out the form to credit MeritCommonscoins. Please fill in all of the required* fields.</p>
+            % stash es_config => { name => 'recipient', label => 'Recipient*', class => 'form-control', search_contexts => ['subscribed_with_me', 'global'] };
+            <%= include 'widgets/entity_select'; %>
+            <div class="form-group">
+                <label class="control-label">Amount*</label>
+                <input type="text" class="form-control" name="amount" id="amount" placeholder="0">
+            </div>
+            <button id="credit" class="btn btn-success">Credit</button>
+            <hr />
+            <h3>MeritCommonscoin Requests</h3>
+            <table class="table">
+            <thead>
+                <tr>
+                    <th><input class="check-all" type="checkbox"></th>
+                    <th>Date</th>
+                    <th>Requested By</th>
+                    <th>Amount</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Respond</th>
+                </tr>
+            </thead>
+            <tbody> 
+                % my $requests = $self->m->resultset('User::MeritCommonscoinRequest')->search(
+                %    { 
+                %        approved => 0,
+                %    }, 
+                %    {  
+                %        order_by => {
+                %            "-desc" => ["me.create_time"]
+                %        },
+                %    }
+                % );
+                % if ($requests) {
+                    % while (my $request = $requests->next) {
+                        <tr id="<%= $request->id %>">
+                            % my @time = localtime($request->create_time);
+                            <td><input class="request" type="checkbox" value="<%= $request->id %>"></td>
+                            <td><%= ($time[4] + 1) . "/" . $time[3] . "/" . ($time[5] + 1900) %></td>
+                            <td><a target="_blank" href="/u/<%= $request->requested_by->userid %>"><%= $request->requested_by->common_name %></a></td>
+                            <td><%= int($request->amount_requested) %></td>
+                            <td><%= $request->reason %></td>
+                            <td><%= $request->approved ? ( $request->approved > 0 ? "Approved" : "Denied" ) : "Pending" %></td>
+                            <td>
+                                <button class="btn btn-success respond" data-approve="1">Approve</button> 
+                                <button class="btn btn-danger respond" data-approve="0">Deny</button>
+                            </td>
+                        </tr>
+                    % }
+                % }
+            </tbody>
+        </table>
+        <button class="btn btn-success respond-multiple" data-approve="1" disabled>Approve Selected</button>
+        <button class="btn btn-danger respond-multiple" data-approve="0" disabled>Deny Selected</button>
+    </div>
+</div>
+
+% end

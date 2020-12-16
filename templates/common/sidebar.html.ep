@@ -1,0 +1,375 @@
+%#    MeritCommons Portal
+%#    Copyright 2013-2015 Wayne State University
+%#    All Rights Reserved
+
+% my $hc_sup;
+% my $session;
+% if ($session = $self->meritcommons_session) {
+%     $hc_sup = $self->meritcommons_session->hashchange_supported->first;
+% }
+% my $user = $self->active_user;
+% my $top = $self->app->m->resultset('Link::Collection')->find({common_name => '_top'});
+% my ($collection, @collections, $link_title, $nav_tree);
+% if ($self->param('nav') && $self->param('nav') ne "_top" && $self->param('nav') != $top->id) {
+%     $collection = $self->app->m->resultset('Link::Collection')->find({ id => $self->param('nav') }, {
+%         prefetch => {
+%             'collection_members' => { 'link' => 'link_roles' },
+%         },
+%         result_class => 'DBIx::Class::ResultClass::HashRefInflator'
+%     });
+%     $link_title = $collection->{common_name};
+%     $nav_tree = $self->nav_tree($collection);
+% } else {
+%     $link_title = $self->app->config->{default_link_title} || "Resources";
+%     $nav_tree = $self->nav_tree;
+% }
+%
+% my $lsw = scalar($user->config('links-in-same-window'));
+
+  <% if ($hc_sup) { %>
+    <!-- sure -->
+    <script id='mustache-nav-list' type='text/x-mustache-template'>
+        {{#items}}
+          {{#collection}}
+            <li class="navlist-child-collection"><a class="navlist-link-collection" id="{{id}}" href="{{id_hash}}">{{common_name}}</a></li>
+          {{/collection}}
+          {{#link}}
+            <li class="navlist-child-leaf">
+              <div class="row navlist-link">
+                <a class="navlist-link col-xs-10" id="{{id}}" target="{{target}}" href="{{relative_short}}">{{title}}</a>
+                <a class="superclick pull-right col-xs-2" href="{{superclick}}" data-shortloc="{{short_loc}}" target="{{target}}" title="Pin to 'My Frequent Links'"><i class="fa fa-thumb-tack"></i></a> 
+              </div>
+            </li>
+          {{/link}}
+        {{/items}}
+    </script>
+    <script id='mustache-nav-item' type='text/x-mustache-template'>
+        {{#collection}}
+          <li class="navlist-child-collection{{#expanded}} expanded{{/expanded}}"><a class="navlist-link-collection navlist-child" id="{{id}}" href="{{id_hash}}">{{common_name}}</a></li>
+        {{/collection}}
+        {{#link}}
+          <li class="navlist-child-leaf">
+            <div class="row navlist-link">
+              <a class="navlist-link col-xs-10" id="{{id}}" target="{{target}}" href="{{relative_short}}">{{title}}</a>
+              <a class="superclick pull-right col-xs-2" href="{{superclick}}" data-shortloc="{{short_loc}}" target="{{target}}" title="Pin to 'My Frequent Links'"><i class="fa fa-thumb-tack"></i></a> 
+            </div>
+          </li>        
+        {{/link}}
+    </script>
+    <script>
+      var nav_tree = <%== $self->nav_tree_json($collection) %>;
+    </script>
+  <% } %>
+
+<!-- Sidebar (Right) -->
+<% if ($user && $user->config('narrow-message-column')) { %>
+  <% if ($user->config('links-on-right')) { %>
+      <div id="sidebar" class="col-lg-8 col-lg-push-4 col-md-8 col-md-push-4">
+  <% } else { %>
+      <div id="sidebar" class="col-lg-8 col-md-8">
+  <% } %>
+<% } elsif ($user && $user->config('links-on-right')) { %>
+  <div id="sidebar" class="col-lg-4 col-lg-push-8 col-md-4 col-md-push-8">
+<% } else { %>
+  <div id="sidebar" class="col-lg-4 col-md-4">
+<% } %>
+
+  <!-- Stream Button Group -->
+  <% if (my $stream = $self->stash('stream')) { %>
+    <% unless ($stream->single_subscriber) { %>
+      <%= include 'stream/context_buttons'; %>
+    <% } %>
+  <% } %>
+    <!-- /Stream Button Group -->
+
+  <!-- Frequent Links -->
+  <% my @most_clicked_links = $self->most_clicked_links($self->active_user->config('my-frequent-links') || 5); %>
+  <% if (scalar(@most_clicked_links) > 0) { %>
+  <div class="sidebar-section sidebar-menu" id="frequent-links">
+    <div class="sidebar-section-header">
+      <button class="sidebar-collapse pull-right">
+        <i class="fa fa-bars"></i>
+      </button>
+      <i class="fa fa-bookmark sidebar-show-lg pull-right"></i>
+      My Frequent Links
+    </div>
+    <ul class="nav nav-tabs nav-stacked">
+      <% foreach my $link (@most_clicked_links) { %>
+        <li class="navlist-child-leaf">
+            <div class="row navlist-link"> 
+              <a class="navlist-link col-xs-10" id="link-<%= $link->{id} %>" target="<%= $lsw ? "_self" : $link->{target} %>" href="<%= $link->{relative_short} %>"> <%= $link->{title} %></a> 
+              <% if ($link->{click_count} && $link->{click_count} >= 10000) { %>
+                <a class="unsuperclick pull-right col-xs-2" href="/unsuperclick/<%= $link->{short_loc} %>" target="_self" data-shortloc="<%= $link->{short_loc} %>" data-toggle="tooltip" data-placement="right" title="Remove from 'My Frequent Links'"><i class="fa fa-times"></i></a>
+              <% } %>
+            </div>
+        </li>
+      <% } %>
+    </ul>
+  </div>
+  <% } %>
+  <!-- /Frequent Links -->
+
+  <!-- Resources -->
+  <div class="sidebar-section sidebar-menu">
+    <div id="nav-title" class="sidebar-section-header">
+      <!-- HI -->
+      <button class="sidebar-collapse pull-right">
+        <i class="fa fa-bars"></i>
+      </button>
+      <i class="fa fa-search sidebar-show-lg pull-right"></i>
+      <%= $link_title %>
+    </div>
+    <ul class="breadcrumb sidebar-section-breadcrumb" id="navlist-breadcrumbs">
+      <% if ($self->param('nav') && $self->param('nav') ne "_top") { %>
+        <% 
+          my $this_collection = $self->app->m->resultset('Link::Collection')->find({ id => $self->param('nav') }); 
+          my @ancestry = ($this_collection); 
+          my $collection = $this_collection;
+          until (!$collection->parent) {
+            push(@ancestry, $collection->parent) if $collection->parent->id != $top->id;
+            $collection = $collection->parent;
+          }
+        %>
+        <% if (scalar(@ancestry) == 0) { %>
+          <li class="active"><i class="fa fa-home"></i>Home </li>
+          <span class="divider">/</span>
+        <% } else { %>
+          <li><a class="navlist-link-collection" id="_top" href="?nav=_top"><i class="fa fa-home"></i>Home</a></li>
+          <span class="divider">/</span>
+        <% foreach my $ancestor (reverse(@ancestry)) { %>
+          <% next if $ancestor->id == $this_collection->id; %>
+            <li> <a class="navlist-link-collection" id="<%= $ancestor->id %>" href="?nav=<%= $ancestor->id %>"><%= (substr($ancestor->common_name, 0, 5) . "...") %></a></li>
+            <span class="divider">/</span>
+          <% } %>
+          <li class="active"><%= $this_collection->common_name %></li>
+        <% } %>
+      <% } else { %>
+        <li class="active"><i class="fa fa-home"></i>Home</li>
+      <% } %>
+    </ul>
+    <ul id="nav-main" class="nav nav-tabs nav-stacked">
+      <% no warnings 'uninitialized'; %>
+      <% foreach my $child (sort { $b->{collection} <=> $a->{collection} } sort { $a->{title} cmp $b->{title} } @{$nav_tree}) { %> 
+        <% if ($child->{collection}) { %>
+          <li class="navlist-child-collection"><a class="navlist-link-collection" id="link-collection-<%= $child->{id} %>" <% if ($hc_sup) { %> href="#c<%= $child->{id} %>" <% } else { %> href="?nav=<%= $child->{id} %>" <% } %>><%= $child->{common_name} %></a></li> 
+        <% } elsif ($child->{link}) { %>
+          <li class="navlist-child-leaf">
+            <div class="row navlist-link">
+              <a class="navlist-link col-xs-10" id="link-<%= $child->{id} %>" target="<%= $lsw ? "_self" : $child->{target} %>" href="<%= $child->{relative_short} %>"> <%= $child->{title} %></a> 
+              <a class="superclick pull-right col-xs-2" href="<%= $child->{superclick} %>" target="<%= $lsw ? "_self" : $child->{target} %>" data-shortloc="<%= $child->{short_loc} %>" data-toggle="tooltip" data-placement="right" title="Pin to 'My Frequent Links'"><i class="fa fa-thumb-tack"></i></a>
+            </div>
+          </li>
+        <% } %>
+      <% } %>
+      <% use warnings 'uninitialized'; %>
+    </ul>
+  </div>
+  <!-- /Resources -->
+
+  <!-- Stream -->
+  <% if (my $s = $self->stash('stream')) { %>
+    <!-- Stream Details -->
+    <% my @kw = split(',',$s->keywords) if $s->keywords; %>
+    <div class="sidebar-section sidebar-menu">
+      <div class="sidebar-section-header">
+        <button class="sidebar-collapse pull-right">
+          <i class="fa fa-bars"></i>
+        </button>
+        <%= $s->common_name %>
+      </div>
+      <div class="stream-details">
+        <% if ($self->active_user->can_moderate($s)) { %>
+          <a class="edit-link" title="Edit" href="/s/<%= $s->url_name %>/e"><span class="fa fa-pencil"></span></a>
+        <% } %>
+        <div class="stream-subscribers">
+          This stream has <%= $s->get_authed_subscribers  %> <%= $s->get_authed_subscribers == 1 ? "subscriber" : "subscribers" %>.
+        </div>
+        <div class="stream-description">
+          <% if ($s->description) { %>
+            <%== $s->{description_html} %>
+          <% } else { %>
+            No description given.
+          <% } %>
+        </div>
+        <% if (scalar @kw > 0) { %>
+          <div class="keywords">Keywords:
+            <% 
+              my $fpass = 0;
+              foreach my $x (@kw) {
+                $x =~ s/^\s+|\s+$//g; %>
+              <% if ($fpass++ > 0) { %>&middot;<% } %><a href="/search?query=<%= $x %>"><%= $x %></a>
+            <% } %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+    <% if ($user->can_moderate($s)) { %>
+      <div class="sidebar-section sidebar-menu">
+        <div class="sidebar-section-header">
+          <button class="sidebar-collapse pull-right">
+            <i class="fa fa-bars"></i>
+          </button>
+          Stream Moderator Information
+        </div>
+        <div class="stream-details">
+          <table class="table table-condensed">
+            <tr>
+              <td>Pending Subscription Requests</td>
+              <td><%= $s->subscriber_count - scalar($s->get_authed_subscribers) %></td>
+            </tr>
+            <tr>
+              <td>Pending Authorship Requests</td>
+              <td><%= $s->author_count - scalar($s->get_authed_authors) %></td>
+            </tr>
+            <tr>
+              <td>Current Subscribers</td>
+              <td><%= $s->subscriber_count %></td>
+            </tr>
+            <tr>
+              <td>Current Authors</td>
+              <td><%= $s->author_count %></td>
+            </tr>
+            <tr>
+              <td>Current Moderators</td>
+              <td><%= $s->moderator_count %></td>
+            </tr>
+          </table>
+          <p>
+            Created <%= $self->day_hhmmss($s->create_time) %> by <a href="/u/<%= $s->creator->userid %>"><%= $s->creator->common_name %></a>.<br />
+            Last modified <%= $self->day_hhmmss($s->modify_time) %>.
+          </p>
+        </div>
+      </div>
+    <% }  %>
+    <!-- /Stream Details -->
+
+    <!-- Stream Subscribers -->
+    <% if ($s->display_subscribers) { %>
+      <div class="sidebar-section sidebar-menu">
+        <div class="sidebar-section-header">
+          <button class="sidebar-collapse pull-right">
+            <i class="fa fa-bars"></i>
+          </button>
+          <%= $s->common_name %> Subscribers
+        </div>
+        <div class="stream-subscribers">
+          <ul class="nav nav-tabs nav-stacked">
+            <%
+              my $i = 0;
+              my @subs = sort {$a->meritcommons_user->common_name cmp $b->meritcommons_user->common_name} $s->get_authed_subscribers;
+              foreach my $x (@subs) {
+                if ($i == 20) { last; }
+                $i++;
+            %>
+                <li>
+                  <a href="/u/<%= $x->meritcommons_user->userid %>"><%= $x->meritcommons_user->common_name %>
+                    <% if ($x->meritcommons_user->moderatorships->search({stream => $s->id})->first) { %>
+                      <span class="fa fa-gavel" title="Moderator"></span>
+                    <% } %>
+                  </a>
+                </li>
+            <% } %>
+            <% if ($i >= 20) { %>
+              <li><a class="pull-right" href="/s/<%= $s->url_name %>/subscribers/1">and more...</a></li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    <% }  %>
+    <!-- /Stream Subscribers -->
+  <% } %> 
+  <!-- /Stream -->
+
+  <!-- Subscribed Streams -->
+  % my %all_subscriptions = %{$self->stash('all_subscriptions_by_subtype')};
+  <% if (scalar(keys %all_subscriptions) > 0) { %>
+    <%
+      foreach my $subtype (sort { $a cmp $b } keys %all_subscriptions) {
+        my @local_subs = ();
+        foreach my $sub (sort {$a->common_name cmp $b->common_name} @{$all_subscriptions{$subtype}}) {
+          next if $sub->common_name =~ /^_/;
+          next if $sub->id == 1;
+          push(@local_subs, $sub);
+        }
+      %>
+      <% if (scalar(@local_subs) > 0) { %>
+        <div class="sidebar-section sidebar-menu">
+          <div class="sidebar-section-header">
+            <button class="sidebar-collapse pull-right">
+              <i class="fa fa-bars"></i>
+            </button>
+            <% if ($subtype eq 'People') { %>
+              <i class="fa fa-users sidebar-show-lg pull-right"></i>
+            <% } elsif ($subtype eq 'Roles') { %>
+              <i class="fa fa-institution sidebar-show-lg pull-right"></i>
+            <% } %>
+            <% if ($subtype eq '__UNDEFINED__') { %>
+              <i class="fa fa-streams sidebar-show-lg pull-right"></i>
+              Subscribed Streams
+            <% } else { %>
+              <%= $subtype %>
+            <% } %>
+          </div>
+          <ul class="nav nav-tabs nav-stacked">
+            <% foreach my $sub (@local_subs) { %>
+              <li>
+                <a class="navlist-link" href="<%= $self->url_for('get_stream', stream_identifier => $sub->url_name) %>">
+                  <%= $sub->common_name %>
+                  <% if ((defined $sub->requires_subscriber_authorization && $sub->requires_subscriber_authorization == 1) || (defined $sub->private && $sub->private == 1)) { %>
+                    <span style="float:right" title="Private stream" class="fa fa-lock"></span>
+                  <% } %>
+                </a>
+              </li>
+            <% } %>
+            <% if ($subtype eq "__UNDEFINED__") { %>
+              <li><a class="navlist-link pull-right" href="/streams">Browse public streams &raquo;</a></li>
+            <% } %>
+          </ul>
+        </div>
+      <% } %>
+    <% } %>
+  <% } %>
+  <!-- /Subscribed Streams -->
+
+  <!-- Trending Links -->
+  <!--
+  <div class="sidebar-section">
+    <div class="sidebar-section-header">
+      Trending
+    </div>
+    <div class="sidebar-section-body">
+      <div class="row-fluid">
+        <ul class="unstyled span6">
+          <li>#Trend 1</li>
+          <li>#Trend 2</li>
+          <li>#Trend 3</li>
+          <li>#Trend 4</li>
+          <li>#Trend 5</li>
+        </ul>
+
+        <ul class="unstyled span6">
+          <li>#Trend 1</li>
+          <li>#Trend 2</li>
+          <li>#Trend 3</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  -->
+  <!-- /Trending Links -->
+
+  <div class="sidebar-section sidebar-menu">
+    <div class="sidebar-section-header">
+      <button class="sidebar-collapse pull-right">
+        <i class="fa fa-bars"></i>
+      </button>
+      MeritCommons Portal
+    </div>
+    <ul class="nav nav-tabs nav-stacked">
+      <li><a href="http://wayne.edu"><i class="fa fa-copyright"></i> 2012-2019 Wayne State University</a></li>
+    </ul>
+  </div>
+
+</div>
+<!-- /Sidebar -->

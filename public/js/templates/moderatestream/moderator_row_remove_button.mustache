@@ -1,0 +1,5 @@
+<!-- Moderator row remove button -->
+
+<button class="btn btn-mini {{#my_own_mod}}stream-moderate-remove-myself{{/my_own_mod}}{{^my_own_mod}}stream-moderate-remove{{/my_own_mod}}" data-what="moderatorship" data-action="remove" data-stream-id="{{stream.unique_id}}" data-user-unique-id="{{meritcommons_user.unique_id}}" {{#my_own_mod}}data-toggle="modal" data-target="#save-moderator-clobber-modal"{{/my_own_mod}}>
+  Remove
+</button>

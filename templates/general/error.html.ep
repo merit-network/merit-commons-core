@@ -1,0 +1,11 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% layout 'simple';
+% title 'MeritCommons // Oops...';
+
+<h2>We have found the error of our ways</h2>
+
+<%== $message %>
+

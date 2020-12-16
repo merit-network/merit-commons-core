@@ -1,0 +1,564 @@
+{
+    # what order to check user roles in, priority goes left to right.
+    ssb_role_order => [qw/employee student other/],
+
+    # the TTL for SSB connectivity
+    ssb_inactivity_timeout => {
+        student => 3600 / 4, # 15 mins for students
+        employee => 3600 / 2, # 30 mins for faculty
+        other => 3600 / 2, # we don't know what they are, 30 mins.
+    },
+
+    # Define Banner person events that will trigger a user sync.  The key represents the
+    # entity operation (defined in GURMESG, as the GURMESG_ENTITY_NAME field).  Entity
+    # operations must be enabled (GURMESG_ENABLED_IND='Y') before they can be considered.
+    #
+    # The following values can be set for each entity operation:
+    #
+    #   message_pidm_field     The PIDM field name in the event message (optional)
+    #   message_rowid_fields   The ROWID field name in the event message (optional)
+    #   table                  The affected table name (required if using message_rowid_fields)
+    #   table_pidm_field       The field in the affected table name (required if using message_rowid_fields)
+    user_sync_events => {
+        'IDENTIFICATION'      => {
+            message_rowid_fields => ["\@ROWID"],
+            message_pidm_field => 'SPRIDEN_PIDM',
+            table => 'SPRIDEN',
+            table_pidm_field => 'SPRIDEN_PIDM'
+        },
+        'COURSE_REGISTRATION' => {
+            message_pidm_field => 'SFRSTCR_PIDM'
+        },
+        'CURRICULUM'          => {
+            message_rowid_fields => ['SORLCUR_STYP_CODE'],
+            table => 'SORLCUR',
+            table_pidm_field => 'SORLCUR_PIDM'
+        },
+        'FACASSIGNMENT'       => {
+            message_pidm_field => 'SIRASGN_PIDM'
+        },
+        'FIELDOFSTUDY'        => {
+            message_rowid_fields => ["\@ROWID"],
+            table => 'SORLFOS',
+            table_pidm_field => 'SORLFOS_PIDM'
+        },
+        'LEARNER'             => {
+            message_rowid_fields => ["\@ROWID"],
+            table => 'SGBSTDN',
+            table_pidm_field => 'SGBSTDN_PIDM'
+        },
+        'LEARNEROUTCOME'      => {
+            message_pidm_field => 'SHRDGMR_PIDM'
+        },
+        'GRADING'             => {
+            message_pidm_field => 'SFRSTCR_PIDM'
+        },
+        'JOB_DETAIL'          => {
+            message_pidm_field => 'NBRJOBS_PIDM'
+        },
+        'INSTITUTION_ROLE'    => {
+            message_rowid_fields => ["\@ROWID"],
+            message_pidm_field => 'GORIROL_PIDM',
+            table => 'GORIROL',
+            table_pidm_field => 'GORIROL_PIDM'
+        }
+    },
+
+    user_mappings => {
+        # Query must return values common_name and title given :pidm
+        base_sql => qq/
+            SELECT
+              CASE
+                WHEN confidential_ind                     ='Y'
+                AND NVL(employees.is_standard_active,'N') = 'N'
+                THEN 'Unavailable'
+                ELSE first_name
+                  || ' '
+                  || last_name
+              END common_name,
+              CASE
+                WHEN employees.is_standard_active='Y'
+                THEN employee_positions.title
+                WHEN students.is_standard_active='Y' AND confidential_ind = 'N'
+                THEN college_description
+                ELSE 'Affiliate'
+              END title,
+              CASE
+                WHEN employees.is_standard_active='Y'
+                THEN orgs.title
+                WHEN students.is_standard_active='Y' AND confidential_ind = 'N'
+                THEN college_description
+                ELSE 'Wayne State University'
+              END organization
+            FROM wsugeneral.people_v
+            LEFT JOIN wsugeneral.employees
+            ON employees.pidm=people_v.pidm
+            LEFT JOIN wsugeneral.employee_positions
+            ON employees.is_standard_active='Y'
+            AND employees.pidm             =employee_positions.pidm
+            AND is_primary                 ='Y'
+            LEFT JOIN wsugeneral.orgs
+            ON wsugeneral.employees.home_orgn_code = orgs.orgn_code
+            LEFT JOIN wsugeneral.students
+            ON students.pidm=people_v.pidm
+            LEFT JOIN
+              (SELECT student_programs.pidm,
+                student_programs.college_description,
+                row_number() over (partition BY student_programs.pidm order by NULL) ordinal
+              FROM wsugeneral.student_programs
+              WHERE is_primary='Y'
+              ) student_programs
+            ON students.is_standard_active='Y'
+            AND student_programs.ordinal  =1
+            AND student_programs.pidm     =people_v.pidm
+            WHERE people_v.pidm           = :pidm 
+            /,
+
+        # This query is used to translate between MeritCommons userids, Banner PIDMs, and Banner PIDs.
+        # The query should return one row for each user, with three fields aliased as userid, pidm,
+        # and pid.
+        id_crosswalk_sql => "select accessid as userid, pidm, pid from wsugeneral.people_v",
+
+        # Define user attributes
+        attributes => [        
+            # Example: Two attributes with a single value
+            {
+                multi => 0,
+                names => ['major','college_description'],
+                sql => "select student_fields_of_study_v.description fields_of_study_description, student_programs_v.college_description college_description from wsugeneral.student_programs_v join wsugeneral.students_v on students_v.pidm=student_programs_v.pidm join wsugeneral.student_fields_of_study_v on student_fields_of_study_v.pidm = student_programs_v.pidm where student_programs_v.is_primary = 'Y' and student_fields_of_study_v.is_primary = 'Y' and student_programs_v.pidm = :pidm"
+            },
+            # Example: One attribute with multiple values
+            {
+                multi => 1,
+                names => ['position_divisions'],
+                sql => "select div_orgn_code || '|' || title div_orgn_title from ( select distinct div_orgn_code div_orgn_code from ( with div_codes as (select orgn_code div_orgn_code from wsugeneral.orgs where level =2 connect by prior orgn_code =parent_orgn_code start with parent_orgn_code='H0' ) select connect_by_root(orgn_code) div_orgn_code, orgn_code dept_orgn_code from wsugeneral.orgs connect by prior orgn_code =parent_orgn_code start with orgn_code in (select div_orgn_code from div_codes ) ) join wsugeneral.employee_positions_v on dept_orgn_code=timesheet_orgn_code where pidm =:pidm and is_active ='Y' and is_retiree ='N' and is_survivor ='N' and is_ltd ='N' and is_attachment='N' ) join wsugeneral.orgs div_orgs on orgn_code =div_orgn_code"
+            },
+            {
+                multi => 1,
+                names => ['position_departments'],
+                sql => "select div_orgn_code || '|' || title div_orgn_title from ( select distinct div_orgn_code div_orgn_code from ( with div_codes as (select orgn_code div_orgn_code from wsugeneral.orgs where level =4 connect by prior orgn_code =parent_orgn_code start with parent_orgn_code='H0' ) select connect_by_root(orgn_code) div_orgn_code, orgn_code dept_orgn_code from wsugeneral.orgs connect by prior orgn_code =parent_orgn_code start with orgn_code in (select div_orgn_code from div_codes ) ) join wsugeneral.employee_positions_v on dept_orgn_code=timesheet_orgn_code where pidm =:pidm and is_active ='Y' and is_retiree ='N' and is_survivor ='N' and is_ltd ='N' and is_attachment='N' ) join wsugeneral.orgs div_orgs on orgn_code =div_orgn_code"
+            },        
+            {
+                multi => 1,
+                names => ['student_courses'],
+                sql => 
+                    qq/
+                      SELECT
+                        CASE
+                          WHEN stvterm_end_date >= sysdate
+                          AND is_canceled        ='N'
+                          THEN 'Y'
+                          ELSE 'N'
+                        END
+                        || '|'
+                        || course_sections_v.bb_course_id
+                        || '|'
+                        || course_sections_v.course_title
+                        || ' ('
+                        || stvterm_desc
+                        || ', Section '
+                        || course_sections_v.seq
+                        || ')' course_section
+                      FROM wsugeneral.student_course_sections_v
+                      JOIN wsugeneral.course_sections_v
+                      ON course_sections_v.term =student_course_sections_v.term
+                      AND course_sections_v.crn =student_course_sections_v.crn
+                      JOIN stvterm
+                      ON TO_CHAR(course_sections_v.term)             =stvterm_code
+                      WHERE pidm                                     = :pidm
+                      AND wsugeneral.student_course_sections_v.term >= '201506'
+                    /
+            },
+            {
+                multi => 1,
+                names => ['instructor_courses'],
+                sql => 
+                    qq/
+                      SELECT
+                        CASE
+                          WHEN stvterm_end_date >= sysdate
+                          AND is_canceled        ='N'
+                          THEN 'Y'
+                          ELSE 'N'
+                        END
+                        || '|'
+                        || course_sections_v.bb_course_id
+                        || '|'
+                        || course_sections_v.course_title
+                        || ' ('
+                        || stvterm_desc
+                        || ', Section '
+                        || course_sections_v.seq
+                        || ')' course_section
+                      FROM wsugeneral.instructor_course_sections_v
+                      JOIN wsugeneral.course_sections_v
+                      ON course_sections_v.term =instructor_course_sections_v.term
+                      AND course_sections_v.crn =instructor_course_sections_v.crn
+                      JOIN stvterm
+                      ON TO_CHAR(course_sections_v.term)             =stvterm_code
+                      WHERE pidm                                     = :pidm
+                      AND wsugeneral.instructor_course_sections_v.term >= '201506'
+                    /
+            },
+            # Examples: Multiple attributes, each with multiple values
+            #{
+            #    multi => 1,
+            #    names => ['instructor_courses_blackboard', 'instructor_courses_banner'],
+            #    sql => "select bb_course_id, banner_course_id from wsugeneral.instructor_course_sections_v join wsugeneral.course_sections_v on course_sections_v.term=instructor_course_sections_v.term and course_sections_v.crn=instructor_course_sections_v.crn where pidm = :pidm and is_canceled='N'"
+            #}
+        ],
+        # Define user roles
+        roles => [
+            # Any returned record(s) against these queries, given :pidm, establishes that the user
+            # has the associated role
+            {
+                names => ['applicant','prospect','faculty'],
+                sql => qq/
+                        SELECT gorirol_pidm pidm,
+                          lower(gorirol_role) role
+                        FROM gorirol
+                        WHERE gorirol_role_group='INTCOMP'
+                        AND gorirol_role       IN ('APPLICANT','PROSPECT','FACULTY')
+                        UNION
+                        SELECT pidm,
+                          'faculty' role
+                        FROM wsugeneral.people
+                        WHERE pidm IN
+                          (SELECT pidm
+                          FROM wsugeneral.employee_positions
+                          WHERE timesheet_orgn_code IN
+                            (SELECT orgn_code
+                            FROM wsugeneral.orgs
+                              START WITH orgn_code     IN ('H83016','H01071','H25023','H25024')
+                              CONNECT BY prior orgn_code=parent_orgn_code
+                            )
+                          AND (is_active   ='Y'
+                          OR is_leave_job  ='Y'
+                          OR is_massend_9m ='Y')
+                          AND is_retiree   ='N'
+                          AND is_survivor  ='N'
+                          AND is_attachment='N'
+                          AND is_ltd       ='N'
+                          )
+                        /
+            },
+            {
+                names => ['alumni'],
+                sql => qq/
+                        select distinct shrdgmr_pidm pidm, 'alumni' role from shrdgmr where shrdgmr_degs_code='AW'
+                        /,
+            },              
+            {
+                names => ['finaid'],
+                sql => qq/
+                        SELECT gorirol_pidm pidm,
+                          'finaid' role
+                        FROM gorirol
+                        WHERE gorirol_role_group='INTCOMP'
+                        AND gorirol_role        = 'FINAID'
+                        UNION
+                        SELECT pidm,
+                          'finaid' role
+                        FROM wsugeneral.people
+                        WHERE pidm IN
+                          (SELECT pidm
+                          FROM wsugeneral.employee_positions
+                          WHERE timesheet_orgn_code IN
+                            (SELECT orgn_code
+                            FROM wsugeneral.orgs
+                              START WITH orgn_code     IN ('H9247','H7502','H83017','H25023','H25024','H92430','H3201B','H8235')
+                              CONNECT BY prior orgn_code=parent_orgn_code
+                            )
+                          AND (is_active   ='Y'
+                          OR is_leave_job  ='Y'
+                          OR is_massend_9m ='Y')
+                          AND is_retiree   ='N'
+                          AND is_survivor  ='N'
+                          AND is_attachment='N'
+                          AND is_ltd       ='N'
+                          )
+                        /,
+            },
+            {
+                names => ['student'],
+                sql => qq/
+                    SELECT sgbstdn_pidm pidm,
+                      'student' ROLE
+                    FROM sgbstdn A
+                    WHERE sgbstdn_term_code_eff =
+                      (SELECT MAX(sgbstdn_term_code_eff)
+                      FROM sgbstdn s
+                      WHERE sgbstdn_pidm = A.sgbstdn_pidm
+                      )
+                    AND sgbstdn_stst_code = 'AS'
+                    UNION
+                    SELECT pidm,
+                      'student' ROLE
+                    FROM wsugeneral.people
+                    WHERE pidm IN
+                      (SELECT pidm
+                      FROM wsugeneral.employee_positions
+                      WHERE timesheet_orgn_code IN
+                        (SELECT orgn_code
+                        FROM wsugeneral.orgs
+                          START WITH orgn_code     IN ('H9247','H7502','H83017','H25023','H25024','H92430','H3201B','H8235')
+                          CONNECT BY PRIOR orgn_code=parent_orgn_code
+                        )
+                      AND (is_active   ='Y'
+                      OR is_leave_job  ='Y'
+                      OR is_massend_9m ='Y')
+                      AND is_retiree   ='N'
+                      AND is_survivor  ='N'
+                      AND is_attachment='N'
+                      AND is_ltd       ='N')
+                        /,
+            },
+            {
+                names => ['inactivestudent'],
+                sql => qq/
+                    SELECT pidm,
+                      'inactivestudent' ROLE
+                    FROM
+                      ( SELECT DISTINCT shrtckn_pidm pidm FROM shrtckn
+                      MINUS
+                      SELECT sgbstdn_pidm
+                      FROM sgbstdn A
+                      WHERE sgbstdn_term_code_eff =
+                        (SELECT MAX(sgbstdn_term_code_eff)
+                        FROM sgbstdn s
+                        WHERE sgbstdn_pidm = A.sgbstdn_pidm
+                        )
+                      AND sgbstdn_stst_code = 'AS'
+                      )
+                        /,
+            },
+            {
+                names => ['undergrad'],
+                sql => qq|
+                    SELECT sgbstdn_pidm pidm,
+                      'undergrad' ROLE
+                    FROM sgbstdn b
+                    WHERE b.sgbstdn_levl_code   = 'UG'
+                    AND b.sgbstdn_stst_code     = 'AS'
+                    AND b.sgbstdn_term_code_eff =
+                      (SELECT MAX(c.sgbstdn_term_code_eff)
+                      FROM sgbstdn c
+                      WHERE c.sgbstdn_pidm = b.sgbstdn_pidm
+                      )
+                    AND ( (SELECT MAX(sfrstcr_term_code)
+                      FROM sfrstcr
+                      WHERE sfrstcr_rsts_code  IN ('RE','RR','AU','WF','WP','WN','PW')
+                      AND sfrstcr_pidm          = b.sgbstdn_pidm) > '201109'
+                    OR b.sgbstdn_term_code_eff >= '201509' )
+                    AND b.sgbstdn_styp_code    <> 'G'
+                    UNION
+                    SELECT sorlcur_pidm pidm,
+                      'undergrad' ROLE
+                    FROM saturn.sorlcur A
+                    WHERE A.sorlcur_lmod_code = 'LEARNER'
+                    AND A.sorlcur_cact_code   = 'ACTIVE'
+                    AND A.sorlcur_term_code   = '201509'
+                    AND A.sorlcur_levl_code   = 'UG'
+                    AND A.sorlcur_current_cde = 'Y'
+                    AND A.sorlcur_seqno       =
+                      (SELECT MAX(b.sorlcur_seqno)
+                      FROM sorlcur b
+                      WHERE b.sorlcur_pidm = A.sorlcur_pidm
+                      )
+                    AND A.sorlcur_activity_date > TO_DATE('2015/09/01', 'yyyy/mm/dd')  
+                    AND sorlcur_current_cde                           = 'Y'
+                    UNION
+                    SELECT pidm,
+                      'undergrad' ROLE
+                    FROM wsugeneral.people
+                    WHERE pidm IN
+                      (SELECT pidm
+                      FROM wsugeneral.employee_positions
+                      WHERE timesheet_orgn_code IN
+                        (SELECT orgn_code
+                        FROM wsugeneral.orgs
+                          START WITH orgn_code     IN ('H9247','H7502','H83017','H25023','H25024','H92430','H3201B','H8235')
+                          CONNECT BY PRIOR orgn_code=parent_orgn_code
+                        )
+                      AND (is_active   ='Y'
+                      OR is_leave_job  ='Y'
+                      OR is_massend_9m ='Y')
+                      AND is_retiree   ='N'
+                      AND is_survivor  ='N'
+                      AND is_attachment='N'
+                      AND is_ltd       ='N'
+                      )
+                  |,
+            },
+            {
+                names => ['degreeworks'],
+                sql => qq/
+                    SELECT sgbstdn_pidm pidm,
+                      'degreeworks' role
+                    FROM sgbstdn b
+                    WHERE ( b.sgbstdn_program_1 LIKE '%_GR_BA'
+                    OR b.sgbstdn_program_1 LIKE '%_GR_LB'
+                    OR b.sgbstdn_program_1 LIKE '%_GR_SW'
+                    OR b.sgbstdn_program_1 LIKE '%_UG_%' )
+                    AND b.sgbstdn_stst_code     = 'AS'
+                    AND b.sgbstdn_term_code_eff =
+                      (SELECT MAX(c.sgbstdn_term_code_eff)
+                      FROM sgbstdn c
+                      WHERE c.sgbstdn_pidm = b.sgbstdn_pidm
+                      )
+                    AND ( (SELECT MAX(sfrstcr_term_code)
+                      FROM sfrstcr
+                      WHERE sfrstcr_rsts_code  IN ('RE','RR','AU','WF','WP','WN','PW')
+                      AND sfrstcr_pidm          = b.sgbstdn_pidm) > '201109'
+                    OR b.sgbstdn_term_code_eff >= '201509' )
+                    AND b.sgbstdn_styp_code    <> 'G'
+                    UNION
+                    SELECT pidm,
+                      'degreeworks' ROLE
+                    FROM wsugeneral.people
+                    WHERE pidm IN
+                      (SELECT pidm
+                      FROM wsugeneral.employee_positions
+                      WHERE timesheet_orgn_code IN
+                        (SELECT orgn_code
+                        FROM wsugeneral.orgs
+                          START WITH orgn_code     IN ('H9247','H7502','H83017','H25023','H25024','H92430','H3201B','H8235')
+                          CONNECT BY PRIOR orgn_code=parent_orgn_code
+                        )
+                      AND (is_active   ='Y'
+                      OR is_leave_job  ='Y'
+                      OR is_massend_9m ='Y')
+                      AND is_retiree   ='N'
+                      AND is_survivor  ='N'
+                      AND is_attachment='N'
+                      AND is_ltd       ='N'
+                      )         
+                        /,
+            },                                              
+            {
+                names => ['research'],
+                sql => "select wsurpop_pidm pidm, 'research' role from wsuresearch.wsurpop"
+            },
+            {
+                names => ['employee'],
+                sql => "select pidm, 'employee' role from wsugeneral.employees_v"
+            },
+            {
+                names => ["fabookvoucher"],
+                sql => qq/
+                            select pidm, 'fabookvoucher' role from gtvsdax join wsugeneral.people on people.accessid=lower(gtvsdax_external_code)
+                            where gtvsdax_internal_code ='FABN'
+                            and gtvsdax_internal_code_group='FABN'
+                        /,
+            },
+            #{
+            #    names => ["wtailoradmin"],
+            #    sql => qq/
+            #                select 'wtailoradmin'
+            #                from twgrrole\@pprd8.world
+            #                join wsugeneral.employees
+            #                on employees.pidm     =twgrrole_pidm
+            #                where twgrrole_role   ='WTAILORADMIN'
+            #                and is_standard_active='Y'
+            #                and twgrrole_pidm=:pidm
+            #            /,
+            #},
+            {
+                names => ["ctaxadmin"],
+                sql => qq/
+                            select pidm, 'ctaxadmin' role
+                            from gtvsdax
+                            join wsugeneral.people
+                            on people.accessid          =lower(gtvsdax_external_code)
+                            where gtvsdax_internal_code ='CTAX'
+                        /,
+            },
+            {
+                names => ["empnadmin"],
+                sql => qq/
+                            select pidm, 'empnadmin' role
+                            from gtvsdax
+                            join wsugeneral.people
+                            on people.accessid          =lower(gtvsdax_external_code)
+                            where gtvsdax_internal_code ='MPERK'
+                        /,
+            },
+            {
+                names => ["developmentofficer"],
+                sql => qq/
+                            select pidm, 'developmentofficer' role
+                            from twgrrole
+                            join wsugeneral.employees
+                            on employees.pidm     =twgrrole_pidm
+                            where twgrrole_role   ='DEVELOPMENTOFFICER'
+                            and is_standard_active='Y'
+                        /,
+            },
+            {
+                names => ["doadmin"],
+                sql => qq/
+                            select pidm, 'developmentofficer' role
+                            from twgrrole
+                            join wsugeneral.employees
+                            on employees.pidm     =twgrrole_pidm
+                            where twgrrole_role   ='DEVELOPMENTOFFICER'
+                            and is_standard_active='Y'
+                        /,
+            },
+            {
+                names => ["workforceadmin"],
+                sql => qq/
+                            select pidm, 'workforceadmin' role
+                            from wsuhrms.workforce_administrators
+                            join wsugeneral.people
+                            on people.accessid=workforce_administrators.accessid
+                        /,
+            },
+            {
+                names => ["medschool"],
+                sql => qq/
+                            SELECT pidm, 'medschool' role
+                            FROM wsugeneral.employee_positions
+                            WHERE timesheet_orgn_code IN
+                              (SELECT orgn_code
+                              FROM wsugeneral.orgs
+                                START WITH orgn_code     IN ('H06')
+                                CONNECT BY PRIOR orgn_code=parent_orgn_code
+                              )
+                            AND (is_active   ='Y'
+                            OR is_leave_job  ='Y'
+                            OR is_massend_9m ='Y')
+                            AND is_retiree   ='N'
+                            AND is_survivor  ='N'
+                            AND is_attachment='N'
+                            AND is_ltd       ='N'
+                            UNION
+                            SELECT student_programs.pidm, 'medschool' role
+                            FROM wsugeneral.student_programs
+                            JOIN wsugeneral.students
+                            ON students.pidm      =student_programs.pidm
+                            AND is_standard_active='Y'
+                            WHERE college_code    ='MD' 
+                        /,
+            }            
+        ]
+    },
+
+    # give up trying to connect to database in this number of seconds
+    database_connection_timeout => 10,
+
+    # how long to wait after database is marked down before retrying, defaults to 120s
+    database_connection_retry_interval => 60,
+
+    banner_connect_info => {
+        dsn => "dbi:Oracle:sid=prod;host=database.meritcommons.edu;port=1521",
+        user => 'meritcommons',
+        password => 'abcd1234',
+    },
+
+    ssb => {
+        cookie_max_age => '10', # this just needs to be long enough to request the first page
+        cookie_domain => '.meritcommons.edu',
+        ssb_root_url => 'http://ssb.meritcommons.edu/pls/instance/',
+    },
+}

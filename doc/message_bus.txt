@@ -1,0 +1,76 @@
+Message Bus Listeners / Pub Sub
+
+Subscribe to a socket / using envelopes.  Envelopes are stream unique ids.
+
+Everyone subscribes to:
+* MeritCommons System Messages
+* Wayne State Announcements
+
+Your average student will subscribe to, by default:
+* All Users In Their Friends List (Streams)
+* All Courses They Attend (Grouped Streams)
+* Their Major(s) (Grouped Streams)
+* Their Instructors (Streams)
+* Any Users or Groups They Have Created (Streams / Grouped Streams)
+
+Streams Have Many Messages
+Messages Have Destinations (Where they end up)
+
+MeritCommons::Model::Stream
+MeritCommons::Model::Stream::Subscriber (link between Stream + user for submission)
+MeritCommons::Model::Stream::Author (link between Stream + user for submission)
+
+user has many subscriptions
+user has many authorships
+
+TODO Tomorrow:
+
+Someone needs to document the config file
+
+Controller::Submission
+ * Make sure that poster is authenticated and an author
+ * Post the message to the db + the message bus
+
+Controller::Profile
+ * Get profile picture uploading working + a basic profile page layout, remember users can have arbitrary properties, so
+   let them load up their info if they want to.
+
+Controller::StreamManager
+ * Create New Stream
+ * Bestows Creator w/ Moderatorship + Authorship On Created Stream
+ * Remove Stream From System (Sole Moderator Only)
+
+Controller::AccessControl
+ * Authorship Authorization
+ * Subscription Authorization
+ * Subscription Apply / Add
+ * Authorship Apply / Add
+ * Grant Moderatorship
+ * Remove Moderatorship
+
+Moderators of "MeritCommons System Messages" (or Stream #1) are considered system administrators, and are therefore moderators of all Streams.
+
+A Moderator Can (On Their Given Stream, For Moderators of MeritCommons System Messages, All Streams)
+ * Delete Posts
+ * Authorize Authorship
+ * Grant Authorship (One Step Create Authorized Authors)
+ * Authorize Subscriptions
+ * Grant Subscriptions (Create Authorized Subscriptions)
+ * Grant Moderatorship
+ * Revoke Moderatorship
+
+default.html.ep
+ * Tune the hydrant watcher to work with the merge
+ 
+
+ GUHHH ok sql for the merged messages.
+
+SELECT meritcommons_stream_message 
+
+SELECT meritcommons_stream_message.* from 
+   meritcommons_stream_message, meritcommons_stream, meritcommons_stream_subscriber
+WHERE
+   meritcommons_stream_subscriber.meritcommons_user = <userid> AND
+   meritcommons_stream_subscruber.stream = 
+
+

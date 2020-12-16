@@ -1,0 +1,78 @@
+%#    MeritCommons Portal
+%#    Copyright 2015 Wayne State University
+%#    All Rights Reserved
+
+% layout 'default';
+% title 'Edit Stream Details';
+% my $user = $self->active_user;
+
+<% my $stream = $self->stash('stream'); %>
+<div id="content-wrapper" class="container">
+    <div class="row">   
+        <div class="col-md-10 col-md-offset-1 well">
+            <h2>Edit the stream "<a href="/s/<%= $stream->url_name %>"><%= $stream->common_name %></a>"</h2>
+            <form id="stream-details-form" name="stream-details-form" method="POST" action="/s/<%= $stream->url_name %>/edit_details">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <th>Badge Name:</th>
+                            <td><input type="text" name="short_name" maxlength="7" value="<%= $stream->short_name %>"> (limit 7)</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td><textarea name="description" rows="5" cols="60"><%= $stream->description %></textarea></td>
+                        </tr>
+                        <tr>
+                            <th>Keywords</th>
+                            <td><input type="text" name="keywords" size="60" value="<%= $stream->keywords %>" /></td>
+                        </tr>
+                        <tr>
+                            <th>Show in lists?</th>
+                            <td><input type="checkbox" value="1" name="show_publicly" <% if($stream->show_publicly == 1) { %>checked="checked"<% } %> /></td>
+                        </tr>
+                        <tr>
+                            <th>Display Subscribers?</th>
+                            <td><input type="checkbox" value="1" name="display_subscribers" <% if($stream->display_subscribers == 1) { %>checked="checked"<% } %> /></td>
+                        </tr>
+                        <tr>
+                            <th>Private Stream?</th>
+                            <td><input type="checkbox" value="1" name="private" <% if($stream->private == 1) { %> checked="checked"<% } %> /></td>
+                        </tr>
+                        <tr>
+                            <th>Subscription:</th>
+                            <td>
+                              <input type="radio" id="subscription-open-radio" value="0" name="subscription" <% if($stream->requires_subscriber_authorization == 0) { %>checked="checked"<% } %> />
+                              <label for="subscription-open-radio">Anyone</label><br />
+                              <input type="radio" id="subscription-moderated-radio" value="1" name="subscription" <% if($stream->requires_subscriber_authorization == 1) { %>checked="checked"<% } %> />
+                              <label for="subscription-moderated-radio">Only Approved Users</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Authorship:</th>
+                            <td>
+                              <input type="radio" id="authorship-open-radio" value="0" name="authorship" <% if($stream->requires_author_authorization == 0) { %>checked="checked"<% } %> />
+                              <label for="authorship-open-radio">Anyone</label><br />
+                              <input type="radio" id="authorship-moderated-radio" value="1" name="authorship" <% if($stream->requires_author_authorization == 1) { %>checked="checked"<% } %> />
+                              <label for="authorship-moderated-radio">Only Approved Users</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Invitation:</th>
+                            <td>
+                              <input type="radio" id="invitation-open-radio" value="open" name="invitation" <% if($stream->members_can_invite == 1 && $stream->membership_requires_moderator_approval == 0) { %>checked="checked"<% } %> />
+                              <label for="invitation-open-radio">Anyone</label><br />
+                              <input type="radio" id="invitation-moderated-radio" value="open_moderated" name="invitation" <% if($stream->members_can_invite == 1 && $stream->membership_requires_moderator_approval == 1) { %>checked="checked"<% } %> />
+                              <label for="invitation-moderated-radio">Anyone with Moderator Approval</label><br />
+                              <input type="radio" id="invitation-moderated-radio" value="moderator_only" name="invitation" <% if($stream->members_can_invite == 0 && $stream->membership_requires_moderator_approval == 1) { %>checked="checked"<% } %> />
+                              <label for="invitation-moderated-radio">Moderators Only</label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <input id="submit-stream-create-button" name="submit-stream-create-button" value="Apply Changes" type="submit" class="btn btn-primary" />
+            </form>
+
+        </div>
+    </div>
+</div>
+

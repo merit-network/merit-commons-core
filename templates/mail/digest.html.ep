@@ -1,0 +1,401 @@
+%#    MeritCommons Portal
+%#    Copyright 2016 Wayne State University
+%#    All Rights Reserved
+
+<!doctype html>
+<html>
+<body bgcolor="#eaeae8" style="margin: 0; font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size: 15px;"> 
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td align="center">
+                <table cellspacing="0" cellpadding="0" border="0" width="600" style="align: center; border-collapse: collapse;">
+                    <tr>
+                        <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center" style="font-size: 12px;">Having trouble viewing? <a style="color: #006858;" href="<%=  $self->stash('digest_url') %>">View Online</a></td>
+                    <tr>
+                    <tr>
+                        <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="left" bgcolor="#0c5449" style="padding-left: 10px; padding-top: 15px; padding-bottom: 15px;">
+                            <a href="<%= $self->config->{front_door_url} %>"><img src="<%= $self->asset_url('img/meritcommons_logo_email.png') %>" alt="MeritCommons" width="250" height="65" style="display: block;" /></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                    </tr>
+                    <% if ($self->stash('mentioned_you') && scalar exclude_shown(@{$self->stash('mentioned_you')})) { %>
+                        <tr>
+                            <td colspan="2" style="color: #474643"><b>PRIVATE MESSAGES</b></td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                        </tr>
+                        <% foreach my $message (exclude_shown(@{$self->stash('mentioned_you')})) { %>
+                            <% if ($message) { %>
+                                % $self->stash->{shown}->{$message->{message_id}} = 1;
+                                <tr>
+                                    <td colspan="2">
+                                        <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                            <tr bgcolor="#f7f7f7">
+                                                <td style="padding-left: 10px; padding-top: 20px; padding-right: 10px;" width="60" valign="top">
+                                                    <% 
+                                                        my $profile_thumb =  $message->{submitter_profile_thumb_url}; 
+                                                        $profile_thumb =~ s/^(\/{2})/http:\/\//; 
+                                                    %>
+                                                    <a href="<%= $self->config->{front_door_url} . $message->{submitter_profile_url} %>"><img width="64" height="64" style="border-radius: 5px;" src="<%= $profile_thumb %>" /></a>
+                                                </td>
+                                                <td style="padding-top: 15px;">
+                                                    <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                                        <tr>
+                                                            <td><b><a href="<%= $self->config->{front_door_url} . $message->{submitter_profile_url} %>" style="text-decoration: none; color: #006858; font-size: 12px;"><%= $message->{submitter_common_name} %></a></b> <span style="font-size: 10px; color: #c3c3c3;">&#8226; <%= $message->{post_day_pretty} %></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-size: 0; line-height: 0;" height="10">&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-size: 12px; line-height: 2; color: #323232; padding-right: 5px;">
+                                                                <% 
+                                                                    my $body = $message->{body};
+                                                                    $body =~ s/\<p\>|\<\/p\>//g; 
+                                                                %>
+                                                                <%== $body %>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                                                    <tr>
+                                                                        <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                                                                    </tr>
+                                                                     <tr>
+                                                                        <td>
+                                                                            <a href="<%= $self->config->{front_door_url} . '/m/' . $message->{message_id} %>"><img src="<%= $self->asset_url('img/view_post_button.png') %>" style="display: block;" /></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                     <tr>
+                                                                        <td style="font-size: 0; line-height: 0;" height="10">&nbsp;</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 0; line-height: 0;" height="2">&nbsp;</td>
+                                </tr>
+                            <% } %>
+                        <% } %>
+                        <tr>
+                            <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                        </tr>
+                    <% } %>
+                    <% if ($self->stash('you_moderate') && scalar exclude_shown(@{$self->stash('you_moderate')})) { %>
+                        <tr>
+                            <td colspan="2" style="color: #474643"><b>STREAMS YOU MODERATE</b></td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                        </tr>
+                        <% foreach my $message (exclude_shown(@{$self->stash('you_moderate')})) { %>
+                            <% if ($message) { %>
+                                % $self->stash->{shown}->{$message->{message_id}} = 1;
+                                <tr>
+                                    <td colspan="2">
+                                        <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                            <tr bgcolor="#f7f7f7">
+                                                <td style="padding-left: 10px; padding-top: 20px; padding-right: 10px;"  width="80" valign="top">
+                                                    <% 
+                                                        my $profile_thumb =  $message->{submitter_profile_thumb_url}; 
+                                                        $profile_thumb =~ s/^(\/{2})/http:\/\//; 
+                                                    %>
+                                                    <a href="<%= $self->config->{front_door_url} . $message->{submitter_profile_url} %>"><img width="64" height="64" style="border-radius: 5px;" src="<%= $profile_thumb%>" /></a>
+                                                </td>
+                                                <td style="padding-top: 15px;">
+                                                    <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                                        <tr>
+                                                            <td><b><a href="<%= $self->config->{front_door_url} . $message->{submitter_profile_url} %>" style="text-decoration: none; color: #006858; font-size: 12px;"><%= $message->{submitter_common_name} %></a></b> <span style="font-size: 10px; color: #c3c3c3;">&#8226; <%= $message->{post_day_pretty} %></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-size: 12px; line-height: 2; color: #323232; padding-right: 5px;">
+                                                                <% 
+                                                                    my $body = $message->{body};
+                                                                    $body =~ s/\<p\>|\<\/p\>//g;
+                                                                %>
+                                                                <%== $body %>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                                                    <tr>
+                                                                        <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                                                                    </tr>
+                                                                     <tr>
+                                                                        <td>
+                                                                            <a href="<%= $self->config->{front_door_url} . '/m/' . $message->{message_id} %>"><img src="<%= $self->asset_url('img/view_post_button.png') %>" style="display: block;" /></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                     <tr>
+                                                                        <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 0; line-height: 0;" height="2">&nbsp;</td>
+                                </tr>
+                            <% } %>
+                        <% } %>
+                        <tr>
+                            <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                        </tr>
+                    <% } %>
+                    <% if ($self->stash('replies') && scalar exclude_shown(@{$self->stash('replies')})) { %>
+                        <tr>
+                            <td colspan="2" style="color: #474643"><b>REPLIES TO YOUR THREADS</b></td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                        </tr>
+                        <% foreach my $message (exclude_shown(@{$self->stash('replies')})) { %>
+                            <% if ($message) { %>
+                                % $self->stash->{shown}->{$message->{message_id}} = 1;
+                                <tr>
+                                    <td colspan="2">
+                                        <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                            <tr bgcolor="#f7f7f7">
+                                                <td style="padding-left: 10px; padding-top: 20px; padding-right: 10px;"  width="80" valign="top">
+                                                    <% 
+                                                        my $profile_thumb =  $message->{submitter_profile_thumb_url}; 
+                                                        $profile_thumb =~ s/^(\/{2})/http:\/\//; 
+                                                    %>
+                                                    <a href="<%= $self->config->{front_door_url} . $message->{submitter_profile_url} %>"><img width="64" height="64" style="border-radius: 5px;" src="<%= $profile_thumb%>" /></a>
+                                                </td>
+                                                <td style="padding-top: 15px;">
+                                                    <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                                        <tr>
+                                                            <td><b><a href="<%= $self->config->{front_door_url} . $message->{submitter_profile_url} %>" style="text-decoration: none; color: #006858; font-size: 12px;"><%= $message->{submitter_common_name} %></a></b> <span style="font-size: 10px; color: #c3c3c3;">&#8226; <%= $message->{post_day_pretty} %></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-size: 12px; line-height: 2; color: #323232; padding-right: 5px;">
+                                                                <% 
+                                                                    my $body = $message->{body};
+                                                                    $body =~ s/\<p\>|\<\/p\>//g;
+                                                                %>
+                                                                <%== $body %>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                                                    <tr>
+                                                                        <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                                                                    </tr>
+                                                                     <tr>
+                                                                        <td>
+                                                                            <a href="<%= $self->config->{front_door_url} . '/m/' . $message->{thread_id} . '#m' . $message->{message_id} %>"><img src="<%= $self->asset_url('img/view_post_button.png') %>" style="display: block;" /></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                     <tr>
+                                                                        <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 0; line-height: 0;" height="2">&nbsp;</td>
+                                </tr>
+                            <% } %>
+                        <% } %>
+                        <tr>
+                            <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                        </tr>
+                    <% } %>
+                    <% if ($self->stash('subscribed_to') && scalar exclude_shown(@{$self->stash('subscribed_to')})) { %>
+                        <tr>
+                            <td colspan="2" style="color: #474643"><b>STREAMS YOU ARE SUBSCRIBED TO</b></td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                        </tr>
+                        <% foreach my $message (exclude_shown(@{$self->stash('subscribed_to')})) { %>
+                            <% if ($message) { %>
+                                % $self->stash->{shown}->{$message->{message_id}} = 1;
+                                <tr>
+                                    <td colspan="2">
+                                        <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                            <tr bgcolor="#f7f7f7">
+                                                <td style="padding-left: 10px; padding-top: 20px; padding-right: 10px;"  width="80" valign="top">
+                                                    <% 
+                                                        my $profile_thumb =  $message->{submitter_profile_thumb_url}; 
+                                                        $profile_thumb =~ s/^(\/{2})/http:\/\//; 
+                                                    %>
+                                                    <a href="<%= $self->config->{front_door_url} . $message->{submitter_profile_url} %>"><img width="64" height="64" style="border-radius: 5px;" src="<%= $profile_thumb%>" /></a>
+                                                </td>
+                                                <td style="padding-top: 15px;">
+                                                    <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                                        <tr>
+                                                            <td><b><a href="<%= $self->config->{front_door_url} . $message->{submitter_profile_url} %>" style="text-decoration: none; color: #006858; font-size: 12px;"><%= $message->{submitter_common_name} %></a></b> <span style="font-size: 10px; color: #c3c3c3;">&#8226; <%= $message->{post_day_pretty} %></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-size: 12px; line-height: 2; color: #323232; padding-right: 5px;">
+                                                                <% 
+                                                                    my $body = $message->{body};
+                                                                    $body =~ s/\<p\>|\<\/p\>//g;
+                                                                %>
+                                                                <%== $body %>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                                                    <tr>
+                                                                        <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                                                                    </tr>
+                                                                     <tr>
+                                                                        <td>
+                                                                            <a href="<%= $self->config->{front_door_url} . '/m/' . $message->{message_id} %>"><img src="<%= $self->asset_url('img/view_post_button.png') %>" style="display: block;" /></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                     <tr>
+                                                                        <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 0; line-height: 0;" height="2">&nbsp;</td>
+                                </tr>
+                            <% } %>
+                        <% } %>
+                        <tr>
+                            <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                        </tr>
+                    <% } %>
+                    <% if ($self->stash('email_digest_notifications') && scalar exclude_shown(@{$self->stash('email_digest_notifications')})) { %>
+                        <tr>
+                            <td colspan="2" style="color: #474643"><b>NOTIFICATIONS</b></td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                        </tr>
+                        <% foreach my $message (exclude_shown(@{$self->stash('email_digest_notifications')})) { %>
+                            <% if ($message) { %>
+                                % $self->stash->{shown}->{$message->{message_id}} = 1;
+                                <tr>
+                                    <td colspan="2">
+                                        <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                            <tr bgcolor="#f7f7f7">
+                                                <td style="padding-left: 10px; padding-top: 20px; padding-right: 10px;"  width="80" valign="top">
+                                                    <% 
+                                                        my $profile_thumb =  $message->{submitter_profile_thumb_url}; 
+                                                        $profile_thumb =~ s/^(\/{2})/http:\/\//; 
+                                                    %>
+                                                    <a href="<%= $self->config->{front_door_url} . $message->{submitter_profile_url} %>"><img width="64" height="64" style="border-radius: 5px;" src="<%= $profile_thumb%>" /></a>
+                                                </td>
+                                                <td style="padding-top: 15px;">
+                                                    <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                                        <tr>
+                                                            <td><b><a href="<%= $self->config->{front_door_url} . $message->{submitter_profile_url} %>" style="text-decoration: none; color: #006858; font-size: 12px;"><%= $message->{submitter_common_name} %></a></b> <span style="font-size: 10px; color: #c3c3c3;">&#8226; <%= $message->{post_day_pretty} %></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-size: 12px; line-height: 2; color: #323232; padding-right: 5px;">
+                                                                <% 
+                                                                    my $body = $message->{body};
+                                                                    my $fdu = $self->config->{front_door_url};
+                                                                    $body =~ s/\<p\>|\<\/p\>//g;
+                                                                    $body =~ s|['"](/u/[^/]+/)['"]|"$fdu$1"|g;
+                                                                    $body =~ s|['"](/m/[0-9A-F]+)['"]|"$fdu$1"|g;
+                                                                    $body =~ s|['"](/s/[^/'"]+)['"]|"$fdu$1"|g;
+                                                                %>
+                                                                <%== $body %>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                                                    <tr>
+                                                                        <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                                                                    </tr>
+                                                                     <tr>
+                                                                        <td>
+                                                                            <a href="<%= $self->config->{front_door_url} . $message->{notification_href} %>"><img src="<%= $self->asset_url('img/view_post_button.png') %>" style="display: block;" /></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                     <tr>
+                                                                        <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 0; line-height: 0;" height="2">&nbsp;</td>
+                                </tr>
+                            <% } %>
+                        <% } %>
+                        <tr>
+                            <td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td>
+                        </tr>
+                    <% } %>
+
+
+                    <tr>
+                        <td colspan="2">
+                            <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse;">
+                                <tr bgcolor="#f7f7f7">
+                                    <td width="200" align="right" colspan="0" style="font-size: 11px; padding-top: 5px; padding-bottom: 5px;"><a style="color: #006858;" href="<%= $self->config->{front_door_url} %>/user_settings">Update Email Preferences</a></td>
+                                    <td width="200" align="center"style="font-size: 11px;"><a style="color: #006858;"  href="<%= $self->config->{front_door_url} %>">MeritCommons</a></td>
+                                    <td width="200" align="left" colspan="0" style="font-size: 11px;"><a style="color: #006858;"  href="http://wayne.edu/">Wayne State University</a></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -1,0 +1,72 @@
+% $c->stash(layout => 'default', backbone_view => 'views/user_settings/default');
+% title 'User Preferences';
+<div id="content-wrapper" class="container">
+  <div class="row">
+    <div class="well user-settings" style="display: none">
+      <h1>User Preferences</h1>
+      <div class="config-row">
+         <small><a href="/alias">Manage Aliases</a></small>
+      </div>
+      <div class="config-row">
+        <label class="col-xs-6 col-sm-4 col-md-3 col-lg-3">Enter Key to Submit Posts</label>
+        <input class="config-switch" type="checkbox" value="1" name="enter-to-post" id="enter-to-post-1">
+      </div>
+      <div class="config-row">
+        <label class="col-xs-6 col-sm-4 col-md-3 col-lg-3">Notification Sounds</label>
+        <input class="config-switch" type="checkbox" value="1" name="notification-sounds" id="notification-sounds-1">
+      </div>
+      <div class="config-row">
+        <label class="col-xs-6 col-sm-4 col-md-3 col-lg-3">Show Followers On Profile Page</label>
+        <input class="config-switch" type="checkbox" value="1" name="show-followers" id="show-followers-1">
+      </div>
+      <div class="config-row">
+        <label class="col-xs-6 col-sm-4 col-md-3 col-lg-3">External Navigation Bar Badges</label>
+        <input class="config-switch" type="checkbox" value="1" name="external-badges" id="external-badges-1">
+      </div>
+      <div class="config-row">
+        <label class="col-xs-6 col-sm-4 col-md-3 col-lg-3">Links on Right</label>
+        <input class="config-switch" type="checkbox" value="1" name="links-on-right" id="links-on-right-1">
+      </div>
+      <div class="config-row">
+        <label class="col-xs-6 col-sm-4 col-md-3 col-lg-3">Narrow Message Column</label>
+        <input class="config-switch" type="checkbox" value="1" name="narrow-message-column" id="narrow-message-column-1">
+      </div>
+      <div class="config-row">
+        <label class="col-xs-6 col-sm-4 col-md-3 col-lg-3">Links In Same Window</label>
+        <input class="config-switch" type="checkbox" value="1" name="links-in-same-window" id="links-in-same-window-1">
+      </div>
+      <div class="config-row">
+        <label class="col-xs-6 col-sm-4 col-md-3 col-lg-3">How Many 'My Frequent Links'</label>
+        <div class="btn-group" data-toggle="buttons">
+          <label class="btn btn-primary my-frequent-links-btn">
+            <input type="radio" name="my-frequent-links" id="my-frequent-links-5" value="5">5
+          </label>
+          <label class="btn btn-primary my-frequent-links-btn">
+            <input type="radio" name="my-frequent-links" id="my-frequent-links-10" value="10">10
+          </label>
+          <label class="btn btn-primary my-frequent-links-btn">
+            <input type="radio" name="my-frequent-links" id="my-frequent-links-15" value="15">15
+          </label> 
+        </div>
+      </div>
+      <div class="config-row">
+        <label class="col-xs-6 col-sm-4 col-md-3 col-lg-3">Email Digest Interval</label>
+        <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary email-digest-interval-btn">
+            <input type="radio" name="email-digest-interval" id="email-digest-interval-0" value="0">Never
+          </label>
+          <label class="btn btn-primary email-digest-interval-btn">
+            <input type="radio" name="email-digest-interval" id="email-digest-interval-24" value="24">Daily
+          </label>
+          <label class="btn btn-primary email-digest-interval-btn">
+            <input type="radio" name="email-digest-interval" id="email-digest-interval-168" value="168">Weekly
+          </label> 
+        </div>
+      </div>
+      <div class="col-sm-2 col-md-2 col-lg-2 col-sm-offset-8 col-md-offset-8 col-lg-offset-8">
+        <a href="<%= $self->req->headers->referrer || "/" %>"<button type="button" class="btn btn-primary">Done</button></a>
+      </div>
+      <p>&nbsp;</p>
+    </div>
+  </div>
+</div>

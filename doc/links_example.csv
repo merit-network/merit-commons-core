@@ -1,0 +1,7 @@
+Category,Subcategory,Link Label,Link URL (w/ Variables),Link URL,Target,Keywords
+Internet,Search Engines,Google,,https://google.com,_blank,search engine
+Internet,Search Engines,Yahoo,,https://yahoo.com,_blank,search engine
+Internet,Search Engines,Microsoft Bing,,https://bing.com,_blank,search engine
+Internet,Social Networks,Facebook,,https://facebook.com,_blank,social network
+Education,ISPs,Merit Networks,,http://merit.edu,_blank,internet service provider
+Education,Universities,Wayne State University,,http://wayne.edu,_blank,higher education provider

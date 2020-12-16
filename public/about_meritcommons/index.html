@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>MeritCommons: Wayne State University's Next-Generation Academic Portal</title>
+
+		<meta name="description" content="Introducing MeritCommons">
+		<meta name="author" content="Michael Gregorowicz">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/wsu.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+                <section>
+                    <h2>Introducing: MeritCommons</h2>
+                    <h4>The Next-Generation Academic Portal</h4>
+                    <p>
+                        <small>Created by <a href="mailto:meritcommons@wayne.edu">The MeritCommons Action Team</a></small>
+                    </p>
+                    <img height="25%" width="25%" src="img/w_transparent.png"/>
+                </section>
+
+
+                <section>
+                    <h2>Innovating Realtime in Realtime</h2>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>What is MeritCommons?</h2>
+                    </section>
+                    <section>
+                        <h2>Realtime accurately represents campus life</h2>
+                    </section>
+                    <section>
+                        <h2>Realtime + Old School Portal = ???</h2>
+                    </section>
+                </section>
+
+                <section>
+                    <h2>Project Overview</h2>
+                    <ul>
+                        <li>425+ files in project</li>
+                        <li>Over 10,000 lines of code</li>
+                        <li>1400+ SVN commits</li>
+                        <li>All-volunteer development team, most at 10% time</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>MeritCommons Fridays</h2>
+                    <ul>
+                        <li>~4 hour long co-working Friday afternoon</li>
+                        <li>Invitation extended to the entire division</li>
+                        <li>Attendance ranges from 3 to 16</li>
+                        <li>Open Forum &amp; Brainstorming</li>
+                        <li>Allow off-project questions and team discovery</li>
+                        <li>This Friday 2-5 in this room (150.2)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>The MeritCommons Action Team</h2>
+                    </section>
+                    <section>
+                        <h2>MeritCommons Core Developers</h2>
+                        <ul>
+                            <li>Michael Gregorowicz (project lead, system architecture)</li>
+                            <li>David Thompson (data integration, client side logic)</li>
+                            <li>Adam Lincoln (stream management utilities, other user tools)</li>
+                            <li>Mike Ward (user profile flair, documentation)</li>
+                            <li>Brad Dunn (UI/UX)</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>Other Contributors / AF Regulars</h2>
+                        <ul>
+                            <li>Jeff Dunn</li>
+                            <li>Minh Huy Ha</li>
+                            <li>Kwame Beard</li>
+                            <li>James Lee</li>
+                            <li>Genetha Smith</li>
+                            <li>Eric Bowman</li>
+                            <li>Syed Ali</li>
+                            <li>Rob Thompson</li>
+                            <li>... YOU! �</li>
+                        </ul>
+                    </section>
+                </section>
+
+                <section>
+                    <h2>Challenges Turned Triumphs</h2>
+                    <ul>
+                        <li>ZMQ + WebSocket, cluster-capable, scalable realtime from client to client via server</li>
+                        <li>MongoDB to PostgreSQL</li>
+                        <li>Balancing Server + Client side</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Further Triumphs</h2>
+                    <ul>
+                        <li>Adoption of Backbone.js</li>
+                        <li>Innovative use of client + server side capable templates</li>
+                        <li>SphinxDB full-text search w/ realtime filtering</li>
+                        <li>Banner Self Service SSO &amp; WayneAuth 2 Support</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Even More Triumphs</h2>
+                    <ul>
+                        <li>Use of Vagrant with VirtualBox for personal development environments</li>
+                        <li>"MeritCommons System" bundled support libraries and programs for RHEL 6</li>
+                        <li>Use of DBIx::Class, Database Agnostic ORM</li>
+                        <li>Separation of WSU-specific functionality and configuration</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Crypto City</h2>
+                    <ul>
+                        <li>We're using DJB's open source crypto library <a href="http://nacl.cr.yp.to/">NaCL</a> for</li>
+                        <ul>
+                            <li>Message Encryption</li>
+                            <li>Message Signing</li>
+                            <li>Identity Certification, which enables...</li>
+                            <ul>
+                                <li>Federation</li>
+                                <li>Enhanced transport cryptographic capabilities in light of SSL's recent compromises</li>
+                            </ul>
+                        </ul>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Where are we now?</h2>
+                    <ul>
+                        <li>Product development + project implementation</li>
+                        <li>Rollout</li>
+                        <li>Integration</li>
+                        <li>Production: Amazon EC2</li>
+                        <li>Perpetually 50% done</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>EC2 Challenges</h2>
+                    <ul>
+                        <li>Access Back to University Systems</li>
+                        <li>EC2 nodes expected to "go away"</li>
+                        <li>Using S3 for asset hosting</li>
+                        <ul>
+                            <li>FUSE / s3fs</li>
+                        </ul>
+                    </ul>
+                </section>
+                <section>
+                    <section>
+                        <h2>User Terminology</h2>
+                    </section>
+                    <section>
+                        <p><em>Streams</em>: these are message streams or lists of messages that users can create, and subsequently subscribe to, or be automatically subscribed to</p>
+                        <p>Each <em>stream</em> may have many ...</p>
+                    </section>
+                    <section>
+                        <p><em>Authors</em>: users with the ability to write messages to the streams</p>
+                    </section>
+                    <section>
+                        <p><em>Subscribers</em>: users with the ability to read messages written to the streams</p>
+                    </section>
+                    <section>
+                        <p><em>Moderators</em>: users with the ability to add and remove other moderators, authorize authors, and authorize subscribers where required</p>
+                    </section>
+                    <section>
+                        <p><em>The Merge</em>: a merged message list consisting of all of the logged in user's subscribed <em>streams</em></p>
+                    </section>
+                    <section>
+                        <p><em>Gizmo</em>: a micro application embedded in a message</p>
+                    </section>
+                    <section>
+                        <p><em>MeritCommonscoins</em>: a virtual currency designed to allow groups and organizations to send mass messages to large-audience capable streams such as All Students, All Staff, and All Faculty</p>
+                        <p>~</p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Technical Terminology</h2>
+                    </section>
+                    <section>
+                        <p><em>Hydrant</em>: a websocket-enabled hookup for realtime messages and events from the MeritCommons system</p>
+                    </section>
+                    <section>
+                        <p><em>Inbound</em>: a JSON-RPC capable web resource that receives messages heading into the system</p>
+                    </section>
+                    <section>
+                        <p><em>Supplier</em>: a program that retrieves content from an external system and delivers that content to inbound as an MeritCommons Message</p>
+                    </section>
+                    <section>
+                        <p><em>Consumer</em>: a cryptographically authenticated program which subscribes to one or more messages and "consumes" (processes) their replies and activity.
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Features Implemented</h2>
+                    </section>
+                    <section>
+                        <h3>Navigation</h3>
+                        <ul>
+                            <li>Single Sign On w/ Self Service Banner integration</li>
+                            <li>Automatic Link Creation from Messages</li>
+                            <li>Top Link Learning based on the behavior of the user and users like them</li>
+                            <li>Tracked links to external resources</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Communication</h3>
+                        <ul>
+                            <li>System assigned streams, CLI interfaces for stream management</li>
+                            <li>Custom merged streams by comma delimiting them in the URL</li>
+                            <li>Full text search w/ realtime filtering</li>
+                            <li>HashTag support</li>
+                            <li>Realtime prepending &amp; infinite scrolling</li>
+                            <li>User Aliasing, using @Mikey=ak1520 allows you to address me as @Mikey from there on out</li>
+                            <li>Direct Messaging, sending a message to no streams but adding the content @accessid sends a message just to that person, messages can have many recipients</li>
+                            <li>The Merge, a home page that aggregates your subscribed streams</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Administration/Misc</h3>
+                        <ul>
+                            <li>CLI interfaces for everything from session introspection to ACL management to index rebuilding</li>
+                            <li>Stream Management interface</li>
+                            <li>User Profiles w/ Attributes and Profile Pictures</li>
+                            <li>More than capabable of handling high-capacity flows such as Twitter's trending topics</li>
+                        </ul>
+                        <p>~</p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Under Construction</h2>
+                        <img src="img/under_construction.png"/>
+                    </section>
+                    <section>
+                        <h3>New Self Service Tools</h3>
+                        <ul>
+                            <li>Password + Challenge Question Change</li>
+                            <li>Email Settings</li>
+                            <li>Display Name</li>
+                            <li>Broadcast Messaging Settings</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Messaging Enhancements</h3>
+                        <ul>
+                            <li>Advanced server-side message filtering</li>
+                            <li>Promotional Messages &amp; Message Economy</li>
+                            <li>Many Proposed Message Formats <em>(slides ahead)</em></li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Advanced Helpdesk Tools</h3>
+                        <ul>
+                            <li>Dadmin ][ Tool which allows HDAs to send a logged in MeritCommons user to any link in the system</li>
+                            <li>Other brainstormed ideas that a realtime link allows us</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Link Enhancements</h3>
+                        <ul>
+                            <li>Links segmented and hidden by user role</li>
+                            <li>Edit-in-place link management for system administrators</li>
+                            <li>Context + NavBar for some links that leave MeritCommons</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>User &amp; Profile Enhancements</h3>
+                        <ul>
+                            <li>MeritCommons Accomplishment Badges</li>
+                            <li>Dynamically Suggest Profile Attributes (learn profiles)</li>
+                            <li>Flesh out User Roles and their relationship with other assets</li>
+                            <ul>
+                                <li>Student, Employee, Faculty, Alumni, WebTailor, Researcher, FP&amp;M, Development Office, System Administrator</li>
+                            </ul>
+                        </ul>
+                        <p>~</p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Proposed Message Type Support</h2>
+                    </section>
+                    <section>
+                        <h3>External Link Detection</h3>
+                        <ul>
+                            <li>YouTube</li>
+                            <li>Vimeo</li>
+                            <li>Flickr</li>
+                            <li>Instagram</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>News &amp; Blogs</h3>
+                        <ul>
+                            <li>Today @ Wayne</li>
+                            <li>Fox, MSNBC, CNN</li>
+                            <li>blogs.wayne.edu</li>
+                            <li>Generic RSS</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Raw Files</h3>
+                        <ul>
+                            <li>JPEG, and PNG</li>
+                            <li>VCard</li>
+                            <li>ICS</li>
+                            <li>MP3</li>
+                            <li>Podcasts</li>
+                            <li>Shoutcast Streams</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>WSU Resources</h3>
+                        <ul>
+                            <li>Blackboard Announcements</li>
+                            <li>Wayne State Emails</li>
+                            <li>Grade Announcements</li>
+                            <li>Class Detail / Class Schedule Links</li>
+                            <li>Session Canceled</li>
+                            <li>Password Is Expiring</li>
+                            <li>Payment Due</li>
+                            <li>events.wayne.edu links</li>
+                        </ul>
+                        <p>~</p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Some Diagrams</h2>
+                    </section>
+                    <section>
+                        <img src="img/meritcommons_page_load_vertical.png"/>
+                    </section>
+                    <section>
+                        <img src="img/meritcommons_production.png"/>
+                    </section>
+
+                </section>
+
+                <section>
+                    <h3>Without further ado, we're very proud to present: <a href="/">MeritCommons</a></h3>
+                </section>
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

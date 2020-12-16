@@ -1,0 +1,21 @@
+{
+    digest_method => 'http://www.w3.org/2001/04/xmlenc#sha256',
+    signature_method => 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
+    c14n_method => 'http://www.w3.org/2001/10/xml-exc-c14n#',
+    logout_destroys_meritcommons_session => 0,
+    enable_single_logout => 1,
+    logout_to_auth_url => 1,
+    assertion_validity_time => 3600 * 8,
+    name_id_format => 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified',
+
+    # System clocks being out of sync by even a second can cause authentication failures.  
+    # This parameter adjusts the NotBefore validity period to account for slight 
+    # differences.  The value represents the allowed skew in seconds.  With properly 
+    # synchronized clocks, only a couple seconds should be needed.
+    "not_before_skew" => 60,
+
+    # required for 'Sirtfi Compliance', see https://refeds.org/metadata/contactType/security for more info
+    assert_sirtfi_compliance => 1,
+    security_contact_given_name => 1,
+    security_contact_email_address => 'abuse@example.com',
+}

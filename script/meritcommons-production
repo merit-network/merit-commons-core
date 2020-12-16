@@ -1,0 +1,45 @@
+#!/usr/bin/env perl
+
+#
+# meritcommons-production
+# start meritcommons services in production
+#
+
+use MeritCommons::Server::Production;
+use Mojo::Util qw(extract_usage getopt);
+
+getopt(\@ARGV, ['pass_through'],
+    'f|foreground' => \$ENV{HYPNOTOAD_FOREGROUND},
+    'h|help'       => \my $help,
+    's|stop'       => \$ENV{HYPNOTOAD_STOP},
+    't|test'       => \$ENV{HYPNOTOAD_TEST},
+);
+
+my $app = shift || $ENV{HYPNOTOAD_APP};
+if ($help || !$app) {
+    die extract_usage;
+} else {
+    MeritCommons::Server::Production->new->run($app);
+}
+
+=encoding utf8
+
+=head1 NAME
+
+meritcommons-production - Production, pre-forking HTTP and WebSocket server for MeritCommons
+
+=head1 SYNOPSIS
+
+  Usage: meritcommons-production [OPTIONS] [APPLICATION]
+
+    meritcommons-production ./script/my_app
+    meritcommons-production ./myapp.pl
+    meritcommons-production -f ./myapp.pl
+
+  Options:
+    -f, --foreground   Keep manager process in foreground
+    -h, --help         Show this message
+    -s, --stop         Stop server gracefully
+    -t, --test         Test application and exit
+
+=cut

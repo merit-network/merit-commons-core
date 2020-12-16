@@ -1,0 +1,217 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+    <!-- Nav
+    ================================ -->
+    <div class="navbar navbar-fixed-top navbar-inverse" id="navbar">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>          
+          <span>
+          <% if (my $alt_title_link = $self->stash('alt_title_link')) { %>
+            % my $alt_title_link_title = $alt_title_link->{title};
+            % if (length($alt_title_link_title) > 40) {
+            %   $alt_title_link_title = substr($alt_title_link_title, 0, 40) . "…";
+            % }
+            <a href="/" id="navbar-logo-link"><img src="<%= $self->asset_url('img/meritcommons_navbar_wordmark.png') %>" id="navbar-logo" data-content="Click the MeritCommons logo to return to your home page." data-trigger="hover" data-placement="bottom"/></a>
+            <span class="navbar-brand-container"><span class="navbar-divider"><i class="fa fa-angle-double-right"></i></span> <a href="<%= $alt_title_link->{href} %>"><%= $alt_title_link_title %></a></span>
+          <% } else { %>
+            <a href="/" id="navbar-logo-link"><img src="<%= $self->asset_url('img/meritcommons_navbar_wordmark.png') %>" id="navbar-logo"/></a>
+            <span class="navbar-brand-container"></span>
+          <% } %>
+          </span>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
+        <% if (my $user = $self->active_user) { %>
+          
+          <script>
+            if (window.MeritCommons == undefined) {
+              window.MeritCommons = {};
+            }
+            window.MeritCommons.search_providers = <%== $self->json_encode($self->search_providers) %>;
+          </script>
+
+          <form id="navbar-search-form" action="/search" action="get" class="navbar-form navbar-left">
+            <div class="form-group">
+              <input type="text" name="query" class="search-query form-control" placeholder="Search <%= $self->config->{system_title} // 'MeritCommons' %>">
+              <span class="navbar-search-extra-placeholder"></span>
+              <div class="navbar-search-button btn-group">
+                <button id="navbar-submit-search" class="btn btn-default">
+                    <i class="fa fa-search"></i>
+                </button>
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  % my $sps = $self->search_providers;
+                  <% foreach my $sp (sort {$a cmp $b} keys %{$sps}) { %>
+                    <li><a class="navbar-search-selection" data-search="<%= $sp %>" href="#"><i class="fa fa-search"></i> <%= $sps->{$sp}->{placeholder} %></a></li>
+                  <% } %>
+                </ul>
+              </div>
+            </div>
+          </form>
+          <!-- Mobile Version of Links
+          ========================================== -->
+          <ul class="nav navbar-nav visible-xs">
+            <li>
+              <a href="/"><i class="fa fa-home"></i> Home</a>
+            </li>
+            <!-- For now, we will disable these links on mobile until a more robust solution is made in next release
+            <li>
+              <a href="#"><i class="icon-pencil"></i> Compose Message</a>
+            </li>
+            <li>
+              <a href="#"><i class="icon-envelope"></i> Notifications</a>
+            </li>
+            -->
+            <% foreach my $nlink (@{$self->config->{navbar_links}}) { %>
+              <li>
+                <a title="<%== $nlink->{title}%>" target="<%= $nlink->{target} || '_blank' %>" href="<%= $nlink->{href} %>"><%== $nlink->{title} %></a>
+              </li>
+            <% } %>
+            <li>
+              <a href="/u/<%= $user->userid %>/"><i class="fa fa-user"></i> Profile</a>
+            </li>
+            <li>
+              <a href="/user_settings/"><i class="fa fa-cog"></i> Preferences</a>
+            </li>
+            <li>
+              <a href="/u/<%= $user->userid %>/s"><i class="fa fa-list"></i> Streams</a>
+            </li>
+            <li>
+              <a href="/alias"><i class="fa fa-list"></i> Aliases</a>
+            </li>
+            <li>
+              <a href="/auth?logout=1"><i class="fa fa-power-off"></i> Logout</a>
+            </li>
+          </ul>
+
+          <!-- Icon Links (Compose Profile, etc.)
+          ========================================== -->
+          <ul class="nav navbar-nav pull-right hidden-xs">
+            <ul class="nav navbar-nav navbar-image-links">
+              <% foreach my $nlink (@{$self->config->{navbar_links}}) { %>
+                <style>
+                  .<%= $nlink->{name} %>-navlink {
+                    display: inline-block;
+                    line-height: 14px;
+                    vertical-align: text-top;
+                    background-image: url("<%= $self->asset_url($nlink->{image}) %>");
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    margin-right: -4px;
+                    margin-top: -4px;
+                    height: <%= $nlink->{height} %>;
+                    width: <%= $nlink->{width} %>;
+                  }
+                <% if ($nlink->{badge_url}) { %>
+                  .<%= $nlink->{name} %>-navlink-badge {
+                      background-color: red;
+                      padding: 1px 3px;
+                      font-style: normal;
+                      position: absolute;
+                      top: 16px;
+                      right: 10px;
+                  }
+                </style>
+                  <!-- close CSS, with badge -->
+                  <script>
+                    if (window.navbarBadges == undefined) {
+                      window.navbarBadges = [];
+                    }
+                    window.navbarBadges.push({
+                      navlink_class: '<%= $nlink->{name} %>-navlink',
+                      badge_class: '<%= $nlink->{name} %>-navlink-badge',
+                      badge_preflight_url: '<%= $nlink->{badge_preflight_url} %>',
+                      badge_url: '<%= $nlink->{badge_url} %>',
+                      badge_poll_interval: '<%= $nlink->{badge_poll_interval} || 300 %>'
+                    });
+                  </script>
+                <% } else { %>
+                  }
+                </style>
+                <!-- close CSS, no badge -->
+                <% } %>
+                <li title="<%= $nlink->{title} %>" data-toggle="tooltip" class="configured-navbar-link" data-placement="bottom"><a target="<%= $nlink->{target} || '_blank' %>" href="<%= $nlink->{href} %>"><span class="<%= $nlink->{name} %>-navlink configured-navbar-link "></span></a></li>
+              <% } %>
+            </ul>
+            %= include 'common/navbar-notifications'
+            <!-- Profile/Options Dropdown
+            ================================== -->
+            <li class="dropdown navbar-icon" data-placement="bottom" title="Settings/Logout" data-toggle="tooltip">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user icon-white"></i></a>
+              <div class="dropdown-menu dropdown-block">
+                <div class="dropdown-block-section">
+                  <div class="row navbar-profile-userinfo-row">
+                    <div class="col-md-12">
+                      <div class="col-md-3" style="padding: 0">
+                        <div class="navbar-profile-userpic">
+                          <a href="/u/<%= $user->userid %>/">
+                            <img class="media-object" src="<%= $self->util->profile_picture_url_for($self->active_user, 'thumbnail') %>"/>
+                          </a>
+                        </div>
+                      </div>
+                      <div class="col-md-9" style="padding-right: 0">
+                        <div class="navbar-profile-userinfo">
+                          <strong><%= $user->common_name %></strong><br/>
+                          <small><%= $user->title // "Affiliate" %></small><br/>
+                          @<a href="/u/<%= $user->userid %>/"><%= $user->userid %></a>
+                          <div class="pull-right navbar-profile-userinfo-logout">
+                            <a href="/auth?logout=1" class="btn btn-primary btn-xs">Logout</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="list-group navbar-profile-submenu-row navbar-profile-submenu">
+                        <a class="list-group-item" href="/u/<%= $user->userid %>/"><i class="fa fa-user"></i> My Profile</a>
+                        <a class="list-group-item" href="/user_settings"><i class="fa fa-cog"></i> Preferences</a>
+                        <a class="list-group-item" href="/u/<%= $user->userid %>/s"><i class="fa fa-bookmark"></i> Streams</a>
+                        <a class="list-group-item" href="/coins"><i class="fa fa-usd"></i> Coins</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li> <!-- /profile dropdown -->
+            <!-- Help Link
+            ============================== -->
+            <% if (my $help_url = $self->config->{help_url}) { %>
+            <li class="navbar-icon" data-toggle="tooltip" data-placement="bottom" title="Help">
+                <a target="_blank" href="<%= $help_url %>"><i class="fa fa-question-circle icon-white"></i></a>
+            </li>
+            <% } %>
+          </ul> <!-- /icon links -->
+        <% } else { %>
+          <form action="/auth" method="post" class="navbar-form pull-right" id="login-form">              
+              <div class="<% if ($self->param('invalid_login')) { %> error<% } %>">
+                  <input placeholder="Username" class="form-control"  style="width:200px;" type="text" name="username" autofocus=""/>
+                  <input placeholder="Password" class="form-control"  style="width:200px;" type="password" name="password"/>
+                  <button type="submit" class="btn btn-primary">Log In</button>
+                  <% if (my $password_url = $self->config->{forgot_password_link}) { %>
+                    <a href="<%= $password_url %>" class="btn btn-primary">Forgot your password?</a>
+                  <% } %>
+              </div>
+          </form>
+        <% } %>
+        </div>
+      </div>
+    </div>
+    % if ($self->config->{system_maintenance_notice_schedule}) {
+      % foreach my $banner (@{$self->config->{system_maintenance_notice_schedule}}) {
+        % if ($banner->{time} && $banner->{message}) {
+            <!-- Maintenance Alert -->
+            <div class="maintenance-alert alert alert-warning" role="alert" data-time="<%= $banner->{time} %>" data-timezone="<%= $banner->{timezone} %>">
+              <%== $banner->{message} %>
+            </div>
+        % }
+      % }
+    % }

@@ -1,0 +1,80 @@
+#!/usr/bin/env perl
+
+#
+# meritcommons-development
+# start meritcommons services in development
+# NOTE: requires PostgreSQL, Sphinx, and other services be started externally 
+#
+
+use MeritCommons::Server::Development;
+use Mojo::Util qw(extract_usage getopt);
+use File::Basename 'dirname';
+use File::Spec;
+use Cwd 'abs_path';
+
+getopt(
+    'h|help'        => \my $help,
+    'l|listen=s'    => \my @listen,
+    'm|mode=s'      => \$ENV{MOJO_MODE},
+    'v|verbose'     => \$ENV{MORBO_VERBOSE},
+    'w|watch=s'     => \my @watch,
+    'd|debug'       => \$ENV{MERITCOMMONS_DEBUG},
+    'p|no-plugins'  => \$ENV{MERITCOMMONS_NO_PLUGINS},
+    'c|config=s'    => \my $use_config,
+);
+
+# the default watch directories.
+foreach my $dir (qw|etc/meritcommons.conf etc/plugin lib templates public js script|) {
+    push(@watch, abs_path(join('/', File::Spec->splitdir(dirname(__FILE__)), "..", $dir)));
+}
+
+if ($use_config) {
+    use File::Basename 'dirname';
+    use File::Spec;
+    push @INC, join('/', File::Spec->splitdir(dirname(__FILE__)), '..', 'lib');
+    push @INC, join('/', File::Spec->splitdir(dirname(__FILE__)), '..', '..', 'plugins');
+    push @INC, join('/', File::Spec->splitdir(dirname(__FILE__)), '..', '..', 'plugins', 'lib');
+    require MeritCommons;
+
+    $MeritCommons::config_file = $use_config;
+}
+
+die extract_usage if $help;
+my $app = shift // '/usr/local/meritcommons/meritcommons/script/meritcommons';
+my $dev = MeritCommons::Server::Development->new;
+$dev->daemon->listen(\@listen) if @listen;
+$dev->backend->watch(\@watch)  if @watch;
+$dev->run($app);
+
+=encoding utf8
+
+=head1 NAME
+
+meritcommons-development - MeritCommons development server
+
+=head1 SYNOPSIS
+
+  Usage: meritcommons-development [OPTIONS] [APPLICATION]
+
+    meritcommons-development ./script/my_app
+    meritcommons-development ./myapp.pl
+    meritcommons-development -m production -l https://*:443 -l http://[::]:3000 ./myapp.pl
+    meritcommons-development -l 'https://*:443?cert=./server.crt&key=./server.key' ./myapp.pl
+    meritcommons-development -w /usr/local/lib -w public -w myapp.conf ./myapp.pl
+
+  Options:
+    -h, --help                     Show this message
+    -l, --listen <location>        One or more locations you want to listen on,
+                                   defaults to the value of MOJO_LISTEN or
+                                   "http://*:3000"
+    -m, --mode <name>              Operating mode for your application,
+                                   defaults to the value of
+                                   MOJO_MODE/PLACK_ENV or "development"
+    -v, --verbose                  Print details about what files changed to
+                                   STDOUT
+    -w, --watch <directory/file>   One or more directories and files to watch
+                                   for changes, defaults to the script, 
+                                   etc/plugin, templates, public, js directories, 
+                                   and the etc/meritcommons.conf file.
+
+=cut

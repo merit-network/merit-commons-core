@@ -1,0 +1,87 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--[if IE]>
+      <script src="/js/libs/ie-compat/html5shiv.js"></script>
+      <script src="/js/libs/ie-compat/respond.js"></script>
+    <![endif]-->
+<meta charset="utf-8">
+<title><%= title %></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+  <% if ($c->app->mode eq "development") { %>
+  <link rel="stylesheet/less" type="text/css" href="<%= $c->development_css_bundle %>">
+  <script>
+    console.log("MeritCommons is in 'development' mode");
+    less = {
+      env: "development",
+      async: false,
+      fileAsync: false,
+      dumpLineNumbers: "comments",
+      useFileCache: false,
+      errorReporting: "console"
+    };
+  </script>
+  <script type="text/javascript" src="<%= $c->asset_url('js/dev/less.js') %>"></script>
+  <% } else { %>
+  <link rel="stylesheet" href="<%= $c->production_css_bundle %>">
+  <% } %>
+
+<% if ($c->meritcommons_session && $c->meritcommons_session->enable_emoji_images->first) { %>
+    <link href="<%= $c->asset_url('css/emoji.css') %>" rel="stylesheet" type="text/css" />
+<% } %>
+ 
+  %= include 'common/js-globals'
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+%= include 'common/navbar'
+  <%= content %>
+
+<!--/.fluid-container-->
+<!-- Le javascript
+    ================================================== -->
+
+<% if ($c->app->mode eq "development") { %>
+    <script data-main="<%= $c->asset_url('js/main" src="/js/libs/require/require.min.js') %>"></script>
+<% } else { %>
+    <% if ($c->msie) { %>
+    <script src="/js/libs/require/require.min.js"></script>
+    <% } else { %>
+    <script src="<%= $c->asset_url('js/libs/require/require.min.js') %>"></script>
+    <% } %>
+    <script src="<%= $c->production_js_bundle %>"></script>
+<% } %>
+% no strict 'vars';
+<% if (my $backbone_view = $c->stash('backbone_view')) { %>
+    <script>
+    window.alsoLoad = [];
+    function loadJsView() {
+        require([
+            'backbone_components/<%= $backbone_view %>'
+        ], function(whateverThisIs) {
+            whateverThisIs = new whateverThisIs();
+            if (whateverThisIs.render != undefined) {
+                whateverThisIs.render();
+            }
+            return whateverThisIs;
+        });
+    }
+    </script>
+<% } else { %>
+    <script>
+    function loadJsView() {
+
+    }
+    </script>
+<% } %>
+</body></html>

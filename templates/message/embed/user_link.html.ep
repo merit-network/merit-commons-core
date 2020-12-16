@@ -1,0 +1,3 @@
+<a class="btn btn-xs primary" href="/u/<%= $user->userid %>/">
+    <i class="fa fa-user"></i> <% $user->common_name %>'s personal stream
+</a>

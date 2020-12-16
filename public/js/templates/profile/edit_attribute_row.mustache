@@ -1,0 +1,16 @@
+<td>
+  <input type="hidden" name="attribute-id" value="{{profileAttribute.id}}" />
+  <input type="hidden" name="attribute-type" value="{{profileAttribute.dataType}}" />
+  <input type="text" autocomplete="off" name="attribute-label" placeholder="Add New" class="attribute-label form-control" value="{{profileAttribute.label}}" />
+</td>
+<td>
+  {{#profileAttribute.isString}}
+  <input type="text" name="attribute-values" placeholder="" class="attribute-values form-control" value="{{profileAttribute.values}}" />
+  {{/profileAttribute.isString}}
+  {{#profileAttribute.isList}}
+  <input type="text" name="attribute-values" placeholder="" class="attribute-values attribute-values-list form-control" value="{{profileAttribute.values}}" />
+  {{/profileAttribute.isList}}
+</td>
+<td>
+  <input type="text" name="attribute-group" placeholder="Attribute Group" class="attribute-group form-control" value="{{profileAttribute.attr_group}}" />
+</td>

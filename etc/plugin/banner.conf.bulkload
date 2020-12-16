@@ -1,0 +1,287 @@
+{
+    # what order to check user roles in, priority goes left to right.
+    ssb_role_order => [qw/employee student other/],
+
+    # the TTL for SSB connectivity
+    ssb_inactivity_timeout => {
+        student => 3600 / 4, # 15 mins for students
+        employee => 3600 / 2, # 30 mins for faculty
+        other => 3600 / 2, # we don't know what they are, 30 mins.
+    },
+    
+    # Define Banner person events that will trigger a user sync.  The key represents the
+    # entity operation (defined in GURMESG, as the GURMESG_ENTITY_NAME field).  Entity 
+    # operations must be enabled (GURMESG_ENABLED_IND='Y') before they can be considered.
+    #
+    # The following values can be set for each entity operation:
+    #
+    #   message_pidm_field     The PIDM field name in the event message (optional)
+    #   message_rowid_fields   The ROWID field name in the event message (optional)
+    #   table                  The affected table name (required if using message_rowid_fields) 
+    #   table_pidm_field       The field in the affected table name (required if using message_rowid_fields) 
+    user_sync_events => {
+        'IDENTIFICATION'      => {
+            message_rowid_fields => ["\@ROWID"],           
+            message_pidm_field => 'SPRIDEN_PIDM',
+            table => 'SPRIDEN',
+            table_pidm_field => 'SPRIDEN_PIDM'
+        },
+        'COURSE_REGISTRATION' => {
+            message_pidm_field => 'SFRSTCR_PIDM'
+        },
+        'CURRICULUM'          => {    
+            message_pidm_field => ['SORLCUR_PIDM'],
+            message_rowid_fields => ['SORLCUR_STYP_CODE'],             
+            table => 'SORLCUR',
+            table_pidm_field => 'SORLCUR_PIDM'
+        },   
+        'FACASSIGNMENT'       => {
+            message_pidm_field => 'SIRASGN_PIDM'
+        },     
+        'FIELDOFSTUDY'        => {
+            message_rowid_fields => ["\@ROWID"], 
+            table => 'SORLFOS',
+            table_pidm_field => 'SORLFOS_PIDM'
+        },
+        'LEARNER'             => {
+            message_rowid_fields => ["\@ROWID"], 
+            table => 'SGBSTDN',
+            table_pidm_field => 'SGBSTDN_PIDM'
+        },
+        'LEARNEROUTCOME'      => {
+            message_pidm_field => 'SHRDGMR_PIDM'
+        },     
+        'GRADING'             => {
+            message_pidm_field => 'SFRSTCR_PIDM'
+        },     
+        'JOB_DETAIL'          => {
+            message_pidm_field => 'NBRJOBS_PIDM'
+        },     
+        'INSTITUTION_ROLE'    => {
+            message_rowid_fields => ["\@ROWID"],             
+            message_pidm_field => 'GORIROL_PIDM',
+            table => 'GORIROL',
+            table_pidm_field => 'GORIROL_PIDM'
+        }
+    },
+
+    user_mappings => {
+        # Query must return values email_address, last_name, first_name given :pidm
+        base_sql => "select email_address, last_name, first_name from wsugeneral.people where pidm=:pidm",
+
+        # This query is used to translate between MeritCommons userids, Banner PIDMs, and Banner PIDs.
+        # The query should return one row for each user, with three fields aliased as userid, pidm, 
+        # and pid.  
+        id_crosswalk_sql => "select accessid as userid, pidm, pid from wsugeneral.people",
+
+        # Define user attributes
+        attributes => [
+            # Example: Two attributes with a single value
+            {
+                multi => 0,
+                names => ['major','college_description'],
+                sql => "select student_fields_of_study.description fields_of_study_description, student_programs.college_description college_description from wsugeneral.student_programs join wsugeneral.students on students.pidm=student_programs.pidm join wsugeneral.student_fields_of_study on student_fields_of_study.pidm = student_programs.pidm where student_programs.is_primary = 'Y' and student_fields_of_study.is_primary = 'Y' and student_programs.pidm = :pidm"
+            },
+            # Example: One attribute with multiple values
+            {
+                multi => 1,
+                names => ['position_divisions'],
+                sql => "select div_orgn_title from wsuhrms.meritcommons_position_divisions where pidm=:pidm"
+            },
+            {
+                multi => 1,
+                names => ['student_courses'],
+                sql => "select course_section from wsustu.meritcommons_course_sections where pidm=:pidm"
+            },
+            {
+                multi => 1,
+                names => ['instructor_courses'],
+                sql => "select bb_course_id || '|' || course_title course_section from wsugeneral.instructor_course_sections join wsugeneral.course_sections on course_sections.term=instructor_course_sections.term and course_sections.crn=instructor_course_sections.crn where pidm = :pidm and is_canceled='N' and wsugeneral.instructor_course_sections.term >= (select min(stvterm.stvterm_code) from stvterm where rownum = 1 and stvterm.stvterm_code <> '999999' and stvterm.stvterm_code not like '%07' and stvterm_end_date >= sysdate)"
+            },        
+            # Examples: Multiple attributes, each with multiple values
+            #{
+            #    multi => 1,
+            #    names => ['instructor_courses_blackboard', 'instructor_courses_banner'],
+            #    sql => "select bb_course_id, banner_course_id from wsugeneral.instructor_course_sections join wsugeneral.course_sections on course_sections.term=instructor_course_sections.term and course_sections.crn=instructor_course_sections.crn where pidm = :pidm and is_canceled='N'"
+            #}                      
+        ],
+        # Define user roles
+        roles => [
+            # Any returned record(s) against these queries, given :pidm, establishes that the user
+            # has the associated role
+            {
+                names => ['applicant','prospect','faculty'],
+                sql => "select lower(gorirol_role) from gorirol where gorirol_role_group='INTCOMP' and gorirol_role in ('APPLICANT','PROSPECT','FACULTY') and gorirol_pidm=:pidm"
+            },
+            {
+                names => ['finaid'],
+                sql => qq/
+                            select 'finaid'
+                            from gorirol
+                            where gorirol_role_group='INTCOMP'
+                            and gorirol_role        = 'FINAID'
+                            and gorirol_pidm        =:pidm
+                            union
+                            select 'finaid'
+                            from wsugeneral.people
+                            where pidm in
+                              (select pidm
+                              from wsugeneral.employee_positions
+                              where timesheet_orgn_code in
+                                (select orgn_code
+                                from wsugeneral.orgs
+                                  start with orgn_code     in ('H9247','H7502','H83017')
+                                  connect by prior orgn_code=parent_orgn_code
+                                )
+                              and (is_active   ='Y'
+                              or is_leave_job  ='Y'
+                              or is_massend_9m ='Y')
+                              and is_retiree   ='N'
+                              and is_survivor  ='N'
+                              and is_attachment='N'
+                              and is_ltd       ='N'
+                              )
+                            and pidm = :pidm
+                            union
+                            select 'finaid'
+                            from wsugeneral.people
+                            where accessid in ('ff2695')
+                            and pidm        = :pidm
+                        /,
+            },
+            {
+                names => ['student'],
+                sql => qq/
+                            select 'student'
+                            from gorirol
+                            where gorirol_role_group='INTCOMP'
+                            and gorirol_role        = 'STUDENT'
+                            and gorirol_pidm        =:pidm
+                            union
+                            select 'student'
+                            from wsugeneral.people
+                            where pidm in
+                              (select pidm
+                              from wsugeneral.employee_positions
+                              where timesheet_orgn_code in
+                                (select orgn_code
+                                from wsugeneral.orgs
+                                  start with orgn_code     in ('H9247','H7502','H83017')
+                                  connect by prior orgn_code=parent_orgn_code
+                                )
+                              and (is_active   ='Y'
+                              or is_leave_job  ='Y'
+                              or is_massend_9m ='Y')
+                              and is_retiree   ='N'
+                              and is_survivor  ='N'
+                              and is_attachment='N'
+                              and is_ltd       ='N'
+                              )
+                            and pidm = :pidm
+                            union
+                            select 'student'
+                            from wsugeneral.people
+                            where accessid in ('ff2695')
+                            and pidm        = :pidm
+                        /,
+            },
+            {
+                names => ['research'],
+                sql => "select 'research' from wsuresearch.wsurpop where wsurpop_pidm=:pidm"
+            },
+            {
+                names => ['employee'],
+                sql => "select 'employee' from wsugeneral.employees where pidm=:pidm"
+            },
+            {
+                names => ["fabookvoucher"],
+                sql => qq/
+                            select 'fabn' from gtvsdax join wsugeneral.people on people.accessid=lower(gtvsdax_external_code)
+                            where gtvsdax_internal_code ='FABN'
+                            and gtvsdax_internal_code_group='FABN'
+                            and wsugeneral.people.pidm=:pidm
+                        /,
+            },
+            {
+                names => ["wtailoradmin"],
+                sql => qq/
+                            select 'wtailoradmin'
+                            from twgrrole\@pprd8.world
+                            join wsugeneral.employees
+                            on employees.pidm     =twgrrole_pidm
+                            where twgrrole_role   ='WTAILORADMIN'
+                            and is_standard_active='Y'
+                            and twgrrole_pidm=:pidm
+                        /,
+            },
+            {
+                names => ["ctaxadmin"],
+                sql => qq/
+                            select 'ctaxadmin'
+                            from gtvsdax
+                            join wsugeneral.people
+                            on people.accessid          =lower(gtvsdax_external_code)
+                            where gtvsdax_internal_code ='CTAX'
+                            and people.pidm=:pidm
+                        /,
+            },
+            {
+                names => ["empnadmin"],
+                sql => qq/
+                            select 'empnadmin'
+                            from gtvsdax
+                            join wsugeneral.people
+                            on people.accessid          =lower(gtvsdax_external_code)
+                            where gtvsdax_internal_code ='MPERK'
+                            and people.pidm             =:pidm
+                        /,
+            },
+            {
+                names => ["developmentofficer"],
+                sql => qq/
+                            select 'developmentofficer'
+                            from twgrrole
+                            join wsugeneral.employees
+                            on employees.pidm     =twgrrole_pidm
+                            where twgrrole_role   ='DEVELOPMENTOFFICER'
+                            and is_standard_active='Y'
+                            and employees.pidm=:pidm
+                        /,
+            },
+            {
+                names => ["doadmin"],
+                sql => qq/
+                            select 'developmentofficer'
+                            from twgrrole
+                            join wsugeneral.employees
+                            on employees.pidm     =twgrrole_pidm
+                            where twgrrole_role   ='DEVELOPMENTOFFICER'
+                            and is_standard_active='Y'
+                            and employees.pidm=:pidm
+                        /,
+            },
+            {
+                names => ["workforceadmin"],
+                sql => qq/
+                            select 'workforceadmin'
+                            from wsuhrms.workforce_administrators
+                            join wsugeneral.people
+                            on people.accessid=workforce_administrators.accessid
+                            and people.pidm   =:pidm
+                        /,
+            },
+        ]
+    },
+
+    banner_connect_info => {
+        dsn => "dbi:Oracle:sid=prod;host=database.meritcommons.edu;port=1521",
+        user => 'meritcommons',
+        password => 'abcd1234',
+    },
+
+    ssb => {
+        cookie_max_age => '10', # this just needs to be long enough to request the first page
+        cookie_domain => '.meritcommons.edu',
+        ssb_root_url => 'http://ssb.meritcommons.edu/pls/instance/',
+    },
+}

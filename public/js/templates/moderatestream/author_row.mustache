@@ -1,0 +1,27 @@
+<!-- Authorship row -->
+
+<tr {{^authorized}}class="warning"{{/authorized}} user="{{meritcommons_user.unique_id}}">
+  <td><a href="/u/{{meritcommons_user.unique_id}}">{{meritcommons_user.common_name}}</a></td>
+  <td>
+    <button class="btn btn-mini stream-moderate-remove" data-what="authorship" data-action="remove" data-stream-id="{{stream.unique_id}}" data-user-unique-id="{{meritcommons_user.unique_id}}">
+      {{#stream.requires_author_authorization}}
+        {{#authorized}}
+          Remove
+        {{/authorized}}
+        {{^authorized}}
+          Deny request
+        {{/authorized}}
+      {{/stream.requires_author_authorization}}
+      {{^stream.requires_author_authorization}}
+        Remove
+      {{/stream.requires_author_authorization}}
+    </button>
+      {{#stream.requires_author_authorization}}
+        {{^authorized}}
+        <button class="btn btn-mini stream-moderate-authorize" data-what="authorship" data-action="authorize" data-stream-id="{{stream.unique_id}}" data-user-unique-id="{{meritcommons_user.unique_id}}">
+          Authorize request
+        </button>
+        {{/authorized}}
+      {{/stream.requires_author_authorization}}
+  </td>
+</tr>

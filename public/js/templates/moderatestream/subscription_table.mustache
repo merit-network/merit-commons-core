@@ -1,0 +1,39 @@
+<!-- Subscription table -->
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#subs}}
+      <tr class="{{^authorized}}warning{{/authorized}}" user="{{meritcommons_user.unique_id}}">
+        <td><a href="/u/{{meritcommons_user.unique_id}}">{{meritcommons_user.common_name}}</a></td>
+        <td>
+          <button class="btn btn-mini stream-moderate-remove" data-what="subscription" data-action="remove" data-stream-id="{{stream.unique_id}}" data-user-unique-id="{{meritcommons_user.unique_id}}">
+            {{#stream.requires_subscriber_authorization}}
+              {{#authorized}}
+                Remove
+              {{/authorized}}
+              {{^authorized}}
+                Deny request
+              {{/authorized}}
+            {{/stream.requires_subscriber_authorization}}
+            {{^stream.requires_subscriber_authorization}}
+              Remove
+            {{/stream.requires_subscriber_authorization}}
+          </button>
+            {{#stream.requires_subscriber_authorization}}
+              {{^authorized}}
+              <button class="btn btn-mini stream-moderate-authorize" data-what="subscription" data-action="authorize" data-stream-id="{{stream.unique_id}}" data-user-unique-id="{{meritcommons_user.unique_id}}">
+                Authorize request
+              </button>
+              {{/authorized}}
+            {{/stream.requires_subscriber_authorization}}
+        </td>
+      </tr>
+    {{/subs}}
+  </tbody>
+</table>

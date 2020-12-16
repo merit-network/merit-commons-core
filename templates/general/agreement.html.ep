@@ -1,0 +1,24 @@
+%#    MeritCommons Portal
+%#    Copyright 2014 Wayne State University
+%#    All Rights Reserved
+
+% layout 'default';
+
+<script>
+    var DISABLE_WEBSOCKETS = true;
+</script>
+
+<div id="content-wrapper" class="container">
+    <div class="text-center">
+        <h3><%== $agreement_title %></h3>
+        <div class="well text-left"><%== $agreement_text %></div>
+        <form name="i-agree">
+            <input type="hidden" name="back" value="<%= $self->param('back') %>"/>
+            <p>
+                <input type="radio" name="agrees-to-agreement" value="accept"/> Accept
+                <input type="radio" name="agrees-to-agreement" value="decline"/> Decline
+            </p>
+            <input type="submit" name="agree-button" value="Continue"/>
+        </form>
+    </div>
+</div>

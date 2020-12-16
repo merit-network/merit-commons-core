@@ -1,0 +1,43 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% my $hc_sup;
+% if (my $session = $self->meritcommons_session) {
+%     $hc_sup = $self->meritcommons_session->hashchange_supported->first;
+% }
+
+<div class="span3">
+    <% my $collection; %>
+    <% if ($self->param('nav') && $self->param('nav') ne "_top") { %>
+        <% $collection = $self->app->m->resultset('Link::Collection')->find({ id => $self->param('nav') }); %>
+        <h4 style="margin-left: 15px"><%= $collection->common_name %></h4>
+    <% } else { %>
+        <h4 style="margin-left: 15px">Site Navigation</h4>
+    <% } %>
+    <ul id="nav-main" class="nav nav-list">
+    <!-- top level nav -->
+    <% if ($collection) { %>
+        <% foreach my $collection ($collection->collections->search({}, {order_by => { -asc => 'common_name' }})) { %>
+            <% if $self->active_user->should_see_link_collection($collection) { %>
+                <li><a class="navlist-link-collection" id="<%= $collection->id %>" <% if ($hc_sup) { %> href="#c<%= $collection->id %>" <% } else { %> href="?nav=<%= $collection->id %>"><% } %><i class="icon-chevron-right"></i> <%= $collection->common_name %></a></li>
+            <% } %>
+        <% } %>
+        <% foreach my $link ($collection->links->search({}, {order_by => { -asc => 'title' }})) { %>
+            <li><a class="navlist-link" target="<%= $link->target %>" id="<%= $link->id %>" href="/link/<%= $link->short_loc %>"></i> <%= $link->title %></a></li>
+        <% } %>
+    <% } else { %>
+        <% foreach my $collection ($self->app->m->resultset('Link::Collection')->search({ parent => undef }, {order_by => { -asc => 'common_name' }})) { %>
+            <% if $self->active_user->should_see_link_collection($collection) { %>
+                <li><a class="navlist-link-collection" id="<%= $collection->id %>" <% if ($hc_sup) { %> href="#c<%= $collection->id %>" <% } else { %> href="?nav=<%= $collection->id %>"><% } %><i class="icon-chevron-right"></i> <%= $collection->common_name %></a></li>
+            <% } %>
+        <% } %>
+    <% } %>
+    </ul>
+    <h4 id="top-links-title" style="margin-left: 15px">My Top Links</h4>
+    <ul id="top-links" class="nav nav-list">
+        <% foreach my $link ($self->active_user->most_clicked_links(10)) { %>
+            <li><a class="navlist-link" target="<%= $link->{target} %>" id="<%= $link->{id} %>" href="/link/<%= $link->{short_loc} %>"></i> <%= $link->{title} %></a></li>
+        <% } %>
+    </ul>
+</div>

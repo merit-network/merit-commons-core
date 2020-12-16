@@ -1,0 +1,98 @@
+Ways to earn MeritCommonscoins:
+ * Return from positive engagement relative to coverage.  Feedback percentages nearing 100% coverage earn much more return
+ * Based on the number of followers in streams you are a moderator of
+ * Trade with other people
+ * Plead with "The Fed" aka Wayne State C&IT
+
+Ways to spend MeritCommonscoins:
+ * Sending messages to streams where you do not have any authorship
+ 
+Messages must all have:
+ * A remove link/button that asks why they want it removed
+    * Spammy
+    * Uninterested
+    * Offensive
+
+Per-user server side message filtering:
+A user may send the message ID of a message to the hydrant's ignore_message command.  ignore_message <message_id> <message_id>
+The ignore list should be saved as a serialized structure in the $user->config('ignored_messages') configuration setting.  This
+should be viv'd into a hashref for checking exists() upon that users' connection to the hydrant, and the hydrant should check 
+for the presence of a message ID before querying / emitting a query for a message it receives a ZMQ message for.  This should 
+also include checking get_more calls for the message ID and filtering it out, or, even better adding a not in @ignored to the 
+query. 
+
+Attributes important to MeritCommonscoins:
+ * Buoyancy: The tendency for the message to move to the top.
+ * Reach: The number of people that will see this message.
+ * Cost Per Recipient (CPR): # of meritcommonscoins minted / (# of users in the system * 100)
+    * All meritcommonscoins in the system can send a promotional message to all users 100 times over.
+ * Cost: Reach * Cost Per Recipient
+ * Base Return Value: Cost / 10
+ * Return Value: Explained Below
+
+How Buoyancy Works:
+An meritcommonscoined message is by default given a Buoyancy of "25" which will offset its place 25 messages UP.  The merge algorithm 
+needs to be updated to support buoyancy.
+
+Buoyancy Repellency:
+A message that has Buoyancy repells other messages that have Buoyancy by 2 spaces, interleaving 
+
+******* Buoyancy should be a timestamp!  and should be a function somehow of impressions (how many times the user has seen it),
+        time passed, and how many people dismissed it.
+
+Buoyancy Client Side:
+The mergeMessage algorithm needs to interleave messages with non zero Buoyancy values based upon the rules specified above.
+
+Buoyancy Server Side:
+
+
+Selecting Populations:
+When preparing to send an MeritCommonscoined message, you can select from all public streams currently in the system.  You will not be
+able to send messages to streams that are not listed in the directory.  You may be able to select from a limited selection of 
+system streams.  (consider allow_promotional_messages bit on streams)
+
+Negative Reaction (dislikes, remove for "Uninterested"):
+Dislikes should remove one Buoyancy point each until the message rests in its position in natural order.  Every dislike should 
+also reduce the Return Value of a given message by (CPR * 10)
+
+Return Value:
+The default Return Value is 10% of the cost of the message.  If the message goes out and no one interacts with it, the sender will 
+always get 10% back.  For every 5% of the reach that interacted positively with the message (by clicking content within it, or 
+by clicking like on the message) 50% of the total cost will be added to that message's return value.  By default a message's 
+return will be "claimed" for the user by the system 7 days after the initial sending of the message.
+
+Auto Moderation:
+After three users in a given stream remove a message for the reasons Spammy or Offensive, the message will become "auto moderated"
+and generate an AutoModerationLog entry.  Please note that this action only takes place on the one stream.
+
+New Schema: MeritCommons::Model::Stream::Message::UserModerationLog
+ + meritcommons_user (MeritCommons::Model::User)
+ + message (MeritCommons::Model::Stream::Message)
+ + stream (MeritCommons::Model::Stream)
+ + reason (enum ("Spammy", "Offensive"))
+ + extra (text), Free form reason from the user
+ + create_time (int), timestamp of moderation action
+
+New Schema: MeritCommons::Model::Stream::Message::AutoModerationLog
+ + message (MeritCommons::Model::Stream::Message)
+ + stream (MeritCommons::Model::Stream)
+ + reasons (text), comma separated list of reasons
+ + user_moderations (text), comma separated list of moderations
+ + moderator_reviewed (int), (0 || 1) indicates if an admin or moderator has reviewed or not
+ + moderator_reversed (int), (0 || 1) indicates if an admin or moderator has reversed the auto moderation or not
+ + create_time (int), timestamp of moderation
+
+Stream Schema Changes:
+ + allow_promotional_messages (0 || 1)
+ + buoyancy (int)
+
+Message Schema Changes:
+ + return_value (real)
+
+Hydrant Functionality:
+ + ignore_message
+ # check for ignored in get_more
+ # check for ignored in ZMQ loop
+
+User Functionality:
+ + Remove link / button

@@ -1,0 +1,151 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% $c->stash(layout => 'default', backbone_view => 'views/mystreams/default');
+% title 'My Streams';
+% my $user = $self->stash('user');
+<div id="content-wrapper" class="container">
+    <div class="row">
+        <div class="col-lg-2">
+            <img src="<%= app->profile_picture_url_for($user, 'medium') %>" class="img-thumbnail" /><br />
+        </div>
+        <div class="col-lg-10">
+            %= include 'common/flashes'
+            <div class="row streams-header">
+                <h1 class="col-md-8"><%= $user->common_name %></h1>
+                <div class="col-md-4"><a href="/streams" class="btn btn-primary pull-right">Find more streams</a></div>
+            </div>
+            <div class="tabbable" style=" margin-top: 1em;">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#subscription-tab" data-toggle="tab">Subscriptions</a></li>
+                    <li><a href="#authorship-tab" data-toggle="tab">Authorships</a></li>
+                    <li><a href="#moderatorship-tab" data-toggle="tab">Moderations</a></li>
+                    <li><a href="#create-tab" data-toggle="tab">Create</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active box-vanilla" id="subscription-tab">
+                        <form id="subscription-removal-form" name="subscription-removal-form" method="POST" action="/s/r/sub">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th>Feed name</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% foreach my $name (sort {$a cmp $b} keys %{$subs}) { %>
+                                        % my $sub_hash = $subs->{$name};
+                                        % my $sub = $sub_hash->{'sub'};
+                                        <tr class="<%= !$sub->authorized ? 'warning' : '' %>">
+                                            <td><input id="subscription_<%= $sub->stream->unique_id %>" name="subscription_<%= $sub->stream->unique_id %>" type="checkbox" \></td>
+                                            <td><a class="navlist-link" href="<%= $self->url_for('get_stream', stream_identifier => $sub->stream->url_name) %>"> <%= $name %></a></td>
+                                            <td>
+                                                <% if ($sub_hash->{deletable}) { %>
+                                                    <button sub_aut_mod="subscription" stream_id="<%= $sub->stream->unique_id %>" class="btn btn-xs">
+                                                        <% if ($sub->authorized) { %>
+                                                            <% unless ($sub->stream->personal_outbox_user) { %>
+                                                                Unsubscribe
+                                                            <% } else { %>
+                                                                Stop Following
+                                                            <% }  %>
+                                                        <% } else { %>
+                                                            <% unless ($sub->stream->personal_outbox_user) { %>
+                                                                Cancel subscription request
+                                                            <% } else { %>
+                                                                Cancel follow request
+                                                            <% } %>
+                                                        <% } %>
+                                                    </button>
+                                                <% } %>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                            <input type="submit" class="btn btn-primary" value="Remove Selected" />
+                        </form>
+                    </div>
+                    <div class="tab-pane box-vanilla" id="authorship-tab">
+                        <form id="authorship-removal-form" name="authorship-removal-form" method="POST" action="/s/r/aut">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th>Feed name</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% foreach my $name (sort {$a cmp $b} keys %{$auts}) { %>
+                                        % my $aut_hash = $auts->{$name};
+                                        % my $aut = $aut_hash->{'aut'};
+                                        <tr class="<%= !$aut->authorized ? 'warning' : '' %>">
+                                            <td><input id="authorship_<%= $aut->stream->unique_id %>" name="authorship_<%= $aut->stream->unique_id %>" type="checkbox" \></td>
+                                            <td><a href="<%= $self->url_for('get_stream', stream_identifier => $aut->stream->url_name) %>"><%= $name %></a></td>
+                                            <td>
+                                                <% if ($aut_hash->{deletable}) { %>
+                                                    <button sub_aut_mod="authorship" stream_id="<%= $aut->stream->unique_id %>" class="btn btn-mini">
+                                                        <% if ($aut->authorized) { %>
+                                                            Remove authorship
+                                                        <% } else { %>
+                                                            Cancel authorship request
+                                                        <% } %>
+                                                    </button>
+                                                <% } %>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                            <input type="submit" class="btn btn-primary" value="Remove Selected" />
+                        </form>
+                    </div>
+                    <div class="tab-pane box-vanilla" id="moderatorship-tab">
+                        <form id="moderatorship-removal-form" name="moderatorship-removal-form" method="POST" action="/s/r/mod">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th>Feed name</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% foreach my $name (sort {$a cmp $b} keys %{$mods}) { %>
+                                        % my $mod_hash = $mods->{$name};
+                                        % my $mod = $mod_hash->{'mod'};
+                                        <tr>
+                                            <td><input id="moderatorship_<%= $mod->stream->unique_id %>" name="moderatorship_<%= $mod->stream->unique_id %>" type="checkbox" \></td>
+                                            <td><a href="<%= $self->url_for('get_stream', stream_identifier => $mod->stream->url_name) %>"><%= $name %></a></td>
+                                            <td>
+                                                <% if ($mod_hash->{deletable}) { %>
+                                                    <button sub_aut_mod="moderatorship" stream_id="<%= $mod->stream->unique_id %>" class="btn btn-mini">
+                                                        Remove moderatorship
+                                                    </button>
+                                                <% } %>
+                                                <% if ($mod_hash->{message}) { %>
+                                                    <%= $mod_hash->{message} %>
+                                                <% } %>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                            <input type="submit" class="btn btn-primary" value="Remove Selected" />
+                        </form>
+                    </div>
+                    <div class="tab-pane box-vanilla" id="create-tab">
+                        <div id="create-div" name="create-div">
+                            <label for="create-input-stream-name">What do you want to name your new stream?</label>
+                            <input id="create-input-stream-name" name="create-input-stream-name" type="text"
+style="margin-bottom: 0"/>
+                            <button id="create-button" name="create-button" class="btn">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

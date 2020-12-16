@@ -1,0 +1,65 @@
+%#    MeritCommons Portal
+%#    Copyright 2014 Wayne State University
+%#    All Rights Reserved
+
+<% my $ld_list = begin %>
+        % my ($verb, $icon_class, @people) = (@_);
+        <% if (scalar(@people) > 3) { %>
+            % my $person = shift @people;
+            <a href="<%= $person->{who}->{url} %>" title="Visit <%= $person->{who}->{common_name} %>'s profile"><%= $person->{who}->{common_name} %></a>, 
+            % $person = shift @people;
+            <a href="<%= $person->{who}->{url} %>" title="Visit <%= $person->{who}->{common_name} %>'s profile"><%= $person->{who}->{common_name} %></a> and
+            <div style="display: inline-block" class="dropdown">
+              <a data-toggle="dropdown" href="#" class="dropdown-toggle others-list dropdown"><%= scalar(@people) %> others</a> <%= $verb %> <i class="<%= $icon_class %>"></i>
+              <ul class="dropdown-menu" role="menu">
+                <% foreach my $person (@people) { %>
+                  <li><a href='<%= $person->{who}->{url} %>' title='<%= $person->{who}->{common_name} %>'><img src="<%= $person->{who}->{profile_picture} %>"/> <%= $person->{who}->{common_name} %></a></li>
+                <% } %>
+              </ul>
+            </div>
+        <% } elsif (scalar(@people) == 3) { %>
+            % my $person = shift @people;
+            <a href="<%= $person->{who}->{url} %>" title="Visit <%= $person->{who}->{common_name} %>'s profile"><%= $person->{who}->{common_name} %></a>, 
+            % $person = shift @people;
+            <a href="<%= $person->{who}->{url} %>" title="Visit <%= $person->{who}->{common_name} %>'s profile"><%= $person->{who}->{common_name} %></a> and
+            % $person = shift @people;
+            <a href="<%= $person->{who}->{url} %>" title="Visit <%= $person->{who}->{common_name} %>'s profile"><%= $person->{who}->{common_name} %></a>
+            <%= $verb %> <i class="<%= $icon_class %>"></i>
+        <% } elsif (scalar(@people) == 2) { %>
+            % my $person = shift @people;
+            <a href="<%= $person->{who}->{url} %>" title="Visit <%= $person->{who}->{common_name} %>'s profile"><%= $person->{who}->{common_name} %></a> and
+            % $person = shift @people;
+            <a href="<%= $person->{who}->{url} %>" title="Visit <%= $person->{who}->{common_name} %>'s profile"><%= $person->{who}->{common_name} %></a>
+            <%= $verb %> <i class="<%= $icon_class %>"></i>         
+        <% } else { %>
+            % my $person = shift @people;
+            <a href="<%= $person->{who}->{url} %>" title="Visit <%= $person->{who}->{common_name} %>'s profile"><%= $person->{who}->{common_name} %></a>
+            <%= $verb %> <i class="<%= $icon_class %>"></i>
+        <% } %>
+<% end %>
+
+<div class="message-info">
+    <% if (ref($for) && scalar(@$for)) { %>
+        <%= $ld_list->("liked", "fa fa-thumbs-up", @$for) %>
+    <% } %>
+
+    <% if (ref($against) && scalar(@$against)) { %>
+        <% if (ref($for) && scalar(@$for)) { %>
+            and
+        <% } %>
+        <%= $ld_list->("disliked", "fa fa-thumbs-down", @$against) %>
+    <% } %>
+
+    <% unless (scalar(@$against) || scalar(@$for)) { %>
+      Nobody likes or dislikes
+    <% } %>
+    this message, which was sent to 
+    <div style="display: inline-block" class="dropdown">
+      <a data-toggle="dropdown" href="#" class="dropdown-toggle streams-list dropdown"><%= $stream_count %> <%= $stream_word %></a>. 
+      <ul class="dropdown-menu" role="menu">
+        <% foreach my $s (sort {$stream_info->{$a}->{common_name} cmp $stream_info->{$b}->{common_name}} keys %$stream_info) { %>
+            <li><a href="<%= $stream_info->{$s}->{href} %>"><%== $stream_info->{$s}->{common_name} %></a></li>
+        <% } %>
+      </ul>
+    </div>
+</div>

@@ -1,0 +1,308 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% $c->stash(layout => 'default', backbone_view => 'views/profile/show');
+% my $stream = $profile_user->personal_outbox;
+% my $user = $self->active_user;
+% title $profile_user->common_name;
+
+<script>
+    var subscriptions = {'<%= $stream->unique_id %>' : '<%= $stream->id %>'};
+    var messages = <%== $self->stash('payload_messages_json') %>;
+    var user_is_stream_moderator, user_is_admin, stream;
+    
+    <% if ($stream) { %>
+        user_is_stream_moderator = <%== $user->can_moderate($stream) ? "true" : "false" %>;
+        stream = '<%== $stream->unique_id %>';
+    <% } %>
+    user_is_admin = <%== $user->is_admin ? "true" : "false" %>;
+    var stream_context = true;
+    var show_deletes = false;
+    if (user_is_stream_moderator || user_is_admin) {
+        show_deletes = true;
+    }
+</script>
+<style type="text/css">
+    img.flickr_thumb {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        background-color: black;
+    }
+
+    div.flickr_thumb {
+        width: 150px;
+        padding: 0;
+        margin: 0;
+        position: relative;
+        display: inline-block;
+        background-color: black;
+    }
+
+    .flickr_cap {
+        background-color: black;
+        color: white;
+        width: 100%;
+        z-index: 100;
+        position: absolute; 
+        opacity: 0.7;
+        bottom: 0;
+        left:0;
+    }
+
+    /** Books **/
+    div.book {
+        border: 1px solid #ccc;
+        padding: 2px;
+        margin: 2px;
+    }
+
+
+    ul.book-list li a {
+        font-size: 75%;
+        border: 1px solid #999;
+        border-right: none;
+        padding: 0 2px;
+        text-decoration: none;
+    }
+
+    ul.book-list li a:first-child {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    ul.book-list li a:last-child {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-right: 1px solid #999;
+    }
+
+    ul.book-list li a:hover {
+        background-color: #066;
+        color: #fff;
+    }
+
+
+</style>
+<div id="content-wrapper" class="container">
+    <div class="row">
+        <!-- Sidebar (Right)
+            ======================= -->
+        <div id="sidebar" class="col-lg-3">
+            <div class="sidebar-section">
+                <div class="thumbnail profile-thumbnail">
+                    <img src="<%= $self->profile_picture_url_for($profile_user, 'medium') %>" />
+                    <% if ($profile_user->id == $self->active_user->id) { %>
+                    <a href="/u/<%= $self->active_user->userid %>/edit" class="btn btn-default btn-block no-top-radius">Edit Profile</a>
+                    <% } else { %>
+                        <% if ($user) { %>
+                            <% if (my $sub = $user->is_subscriber($stream)) { %>
+                                <form id="follow-button-form" name="follow-button-form" method="POST" action="/s/r/sub" >
+                                    <input type="hidden" id="subscription_<%= $stream->unique_id %>"
+                                        name="subscription_<%= $stream->unique_id %>" />
+                                    <button class="btn btn-medium btn-block" 
+                                        title="You're currently following <%= $profile_user->common_name %>. Click to stop following their posts.">
+                                        <i class="fa fa-star"></i> Unfollow
+                                    </button>
+                                </form>
+
+                            <% } else { %>
+                                %# Yeah, this could be ajaxified
+                                <form id="follow-button-form" name="follow-button-form" method="POST" action="/s/a/sub" >
+                                    <input type="hidden" id="subscription_<%= $stream->unique_id %>"
+                                        name="subscription_<%= $stream->unique_id %>" />
+                                    <button class="btn btn-medium btn-block" title="Click to follow posts from <%= $profile_user->common_name %>">
+                                    <i class="fa fa-star-o"></i>
+                                    <% unless ($stream->requires_subscriber_authorization) { %>
+                                        Follow
+                                    <% } else { %>
+                                        Request to follow
+                                    <% } %>
+                                    </button>
+                                </form>
+                            <% } %>
+                        <% }   # if ($user) %>
+                    <% } %>
+                </div>
+            </div>
+            <% if ($profile_user->config('show-followers') || ($user && $user->id == $profile_user->id)) { %>
+                <% my $followers_count = $profile_user->personal_outbox->subscribers->count - 1; %>
+                <% if ($followers_count) { %>       
+                    <div class="sidebar-section">
+                        <div class="sidebar-section-header">
+                            Followers (<%= $followers_count %>)
+                        </div>
+                        <div class="followers-list clearfix">
+                            <% foreach my $sub ($profile_user->personal_outbox->subscribers) { %>
+                                <% next if $sub->meritcommons_user->id == $profile_user->id; %>
+                                <% my $pp_url; %>
+                                <% if (my $pp = $sub->meritcommons_user->profile_picture) { %>
+                                    <% $pp_url = $pp->url('tiny'); %>
+                                <% } elsif (my $gravatar_url = $sub->meritcommons_user->gravatar_tiny_url) { %>
+                                    <% $pp_url = $gravatar_url; %>
+                                <% } else { %>
+                                    <% $pp_url = $self->asset_url('img/no_profile_small.png'); %>
+                                <% } %>
+                                <div class="follower-mini-pic pull-left">
+                                    <a href="/u/<%= $sub->meritcommons_user->userid %>/" title="<%= $sub->meritcommons_user->common_name %>">
+                                        <img src="<%= $pp_url %>"/>
+                                    </a>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                <% } %>
+            <% } %>
+        </div>
+        <!-- /Sidebar -->
+        <!-- Main Content
+            ======================= -->
+        <div class="col-lg-9">
+            <div class="tabbable">
+                <div class="row">
+                    <h1 class="feed-title col-7"><%= $profile_user->common_name %></h1>
+                    <ul class="nav nav-tabs feed-tabs pull-right">
+                        <li class="active"><a href="#tab1" data-toggle="tab">Stream</a></li>
+                        <li class="nav-tab-no-right-margin"><a href="#tab2" data-toggle="tab">About</a></li>
+                        % if ($profile_user->id == $self->active_user->id) {
+                            <li class="nav-tab-no-right-margin"><a href="#invites" data-toggle="tab">Invites</a></li>
+                        % }
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">
+                            <div id="messages-go-here" class="">
+                            <% unless(scalar (@{$self->stash('payload_messages')}) == 0) { %>
+                                <% foreach my $payload (@{$self->stash('payload_messages')}) { %>
+                                <div class="thread" id="<%= $payload->{message_id} %>"><div class="thread-parent"><div date="<%= $payload->{post_time} %>" class="feed message">
+                                    <%== $self->render_mustache("message/$payload->{render_as}", { message => $payload }) %>
+                                </div></div></div>
+                                <% } %>
+                            <% } else { %>
+                                <div class="thread"><div class="thread-parent"><div class="feed message">
+                                    <div class="feed-message">
+
+                                    <% if ($profile_user->id == $self->active_user->id) { %>
+                                        You haven't shared anything yet. Why don't you write a message?
+                                    <% } else { %>
+                                        <%= $profile_user->common_name %> hasn't shared anything yet!
+                                    <% } %>
+
+                                    </div>
+                                </div></div></div>
+                            <% } %>
+                            </div>
+
+                            <div id="to-top">
+                                <a href="#">
+                                    <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                                    Back To Top
+                                </a>
+                            </div> <!-- /#to-top -->
+                                    
+                        </div>
+                        <!-- /.tab-pane #tab1 -->
+                        <!-- About section -->
+                        <div class="tab-pane" id="tab2">
+                            <div class="box-vanilla">
+                                <% my @profile_attributes_array = $profile_attributes->all; %>
+                                <% unless(scalar (@profile_attributes_array) == 0) { %>
+                                    <% my $cur_group = ''; %>
+                                    <% for my $i (0 .. (@profile_attributes_array-1)) { %>
+                                        <% if ($cur_group ne $profile_attributes_array[$i]->attr_group) { %>
+                                            <% $cur_group = $profile_attributes_array[$i]->attr_group; %>
+                                            <h2><%= $cur_group %></h2>
+                                         <% } %>
+                                    <div class="profile-field clearfix">
+                                        <div class="profile-field-key col-lg-2">
+                                            <%= $profile_attributes_array[$i]->label %>
+                                        </div>
+                                        <p class="profile-field-value col-lg-6">
+                                            % my $vals = Mojo::Util::xml_escape($profile_attributes_array[$i]->delimited_values);
+                                            % $vals =~ s|(https?://([A-Za-z0-9_\-\#\?\&\.\/]+))|<a class="ext-link" href="$1">$2</a>|g;
+                                            <%== $vals %>
+                                        </p>
+                                    </div>
+                                    <% if ($i != (@profile_attributes_array-1)) { %>
+                                    <hr>
+                                    <% } %>
+                                    <% } %>
+                                <% } else { %>
+                                <p>This user has not filled anything out about themselves.</p>
+                                <% } %>
+                                <% if ($c->active_user->is_admin) { %>
+                                    <style>
+                                        .admin-info-panel {
+                                            height: 500;
+                                            max-height: 600;
+                                            width: 800;
+                                            max-width: 850;
+                                            overflow: scroll;
+                                        }
+                                        .admin-text-block {
+                                            padding-top: 0px;
+                                            font-family: "Roboto Mono", "Source Code Pro", "Droid Sans Mono", "New Courier", monospace;
+                                            white-space: pre;
+                                        }
+                                    </style>
+                                    <div class="panel admin_info_panel panel-danger">
+                                      <div class="panel-heading">
+                                        <h3 class="panel-title">[admin] Extended Profile Information for <%= $profile_user->userid %></h3>
+                                      </div>
+                                      <div class="panel-body admin-text-block">
+                                        <%= $c->render_user_info_string($profile_user) =%>
+                                      </div>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                        <!-- /.tab-pane #tab2 -->
+                        <!-- Invites section -->
+                        % if ($profile_user->id == $self->active_user->id) {
+                            <div class="tab-pane" id="invites">
+                                <div class="box-vanilla">
+                                    % my $invites = $active_user->invites;
+                                        % if ($invites->count) {
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Invited to</th>
+                                                        <th>Invited by</th>
+                                                        <th>Invited on</th>
+                                                        <th>Response</th>
+                                                    </tr>
+                                                    <tbody>
+                                                        % while (my $invite = $invites->next) {
+                                                            % my $stream = $invite->stream;
+                                                            % my $inviter = $invite->inviter;
+                                                            % my @time = localtime($invite->create_time);
+                                                            <tr id="<%= $stream->unique_id %>">
+                                                                <td><a href="/s/<%= $stream->url_name %>"><%= $stream->common_name %></a></td>
+                                                                <td><a href="/u/<%= $inviter->userid %>"><%= $inviter->common_name %></a></td>
+                                                                <td><%= ($time[4] + 1) . "/" . $time[3] . "/" . ($time[5] + 1900) %></td>
+                                                                <td class="response">
+                                                                    <button class="btn btn-success respond-to-invite" data-action="respond" data-response="accept" data-stream-id="<%= $stream->unique_id %>">Accept</button> 
+                                                                    <button class="btn btn-danger respond-to-invite" data-action="respond" data-response="decline" data-stream-id="<%= $stream->unique_id %>">Decline</button>
+                                                                </td>
+                                                            </tr>
+                                                        % }
+                                                    </tbody>
+                                                </thead>
+                                            </table>
+                                        % } else {
+                                            <p>You have no pending invites.</p> 
+                                        % }
+                                </div>
+                            </div>
+                        % }
+                        <!-- /.tab-pane #invites -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /#content-wrapper -->

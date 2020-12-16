@@ -1,0 +1,74 @@
+<table class="table table-compact table-hover">
+<tr>
+  <th>
+    Message ID
+  </th>
+  <td>
+    {{message_id}}
+  </td>
+</tr>
+<tr>
+  <th>
+    Post Timestamp
+  </th>
+  <td>
+    {{post_time}}
+  </td>
+</tr>
+<tr>
+  <th>
+    Submitter
+  </th>
+  <td>
+    <table class="table table-compact table-hover table-bordered">
+      <tr>
+        <td>
+          <a href="{{submitter_profile_url}}">{{submitter_userid}}</a>
+        </td>
+        <td>
+          {{submitter}}
+        </td>
+      </tr>
+    </table>
+  </td>
+<tr>
+  <th>
+    Streams
+  </th>
+  <td>
+  <table class="table table-compact table-hover table-bordered">
+  {{#streams}}
+    <tr>
+      <td>
+        <a href="{{link}}">{{stream_name_abbr}}</a>
+      </td>
+      <td>
+        {{stream_id}}
+      </td>
+    </tr>
+  {{/streams}}
+  </table>
+  </td>
+</tr>
+{{#number_of_replies}}
+<tr>
+  <th>
+    {{number_of_replies}} {{reply_word}}
+  </th>
+  <td>
+    <table class="table table-compact table-hover table-bordered">
+    {{#thread_replies}}
+      <tr>
+        <td>
+          <a href="{{submitter_profile_url}}">{{submitter_userid}}</a>
+        </td>
+        <td>
+          {{message_id}}
+        </td>
+      </tr>
+    {{/thread_replies}}
+    </table>
+  </td>
+</tr>
+{{/number_of_replies}}
+</table>

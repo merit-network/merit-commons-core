@@ -1,0 +1,106 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" style="height: 100%;"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" style="height: 100%;"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" style="height: 100%;"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" style="height: 100%;"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title><%= title %></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <% if ($c->app->mode eq "development") { %>
+    <link rel="stylesheet/less" type="text/css" href="<%= $c->development_css_bundle %>">
+    <script>
+      console.log("MeritCommons is in 'development' mode");
+      less = {
+        env: "development",
+        async: false,
+        fileAsync: false,
+        dumpLineNumbers: "comments",
+        useFileCache: false,
+        errorReporting: "console"
+      };
+    </script>
+    <script type="text/javascript" src="<%= $c->asset_url('js/dev/less.js') %>"></script>
+    <% } else { %>
+    <link rel="stylesheet" href="<%= $c->production_css_bundle %>">
+    <% } %>
+
+    <!--[if IE]>
+      <script src="/js/libs/ie-compat/html5shiv.js"></script>
+      <script src="/js/libs/ie-compat/respond.js"></script>
+    <![endif]-->
+
+  %= include 'common/js-globals'
+
+  </head>
+  <body style="height: 100%;" <% if (my $body_id = $c->stash('body_id')) { %> id="<%= $body_id %>"<%} %>>
+
+  % no strict 'vars';
+  <% unless ($no_navbar) { %>
+    %= include 'common/navbar'
+  <% } %>
+
+  <%= content %>
+
+<!--[if lt IE 8]>
+    <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+<![endif]-->
+
+  <% if ($c->app->mode eq "development") { %>
+      <script data-main="/js/main" src="<%= $c->asset_url('js/libs/require/require.min.js') %>"></script>
+  <% } else { %>
+      <% if ($c->msie) { %>
+        <script src="/js/libs/require/require.min.js"></script>
+      <% } else { %>
+        <script src="<%= $c->asset_url('js/libs/require/require.min.js') %>"></script>
+      <% } %>
+      <script src="<%= $c->production_js_bundle %>"></script>
+  <% } %>
+
+  <% if (my $backbone_view = $c->stash('backbone_view')) { %>
+      <script>
+      window.alsoLoad = [];
+      function loadJsView() {
+          require([
+              'backbone_components/<%= $backbone_view %>'
+          ], function(whateverThisIs) {
+              whateverThisIs = new whateverThisIs();
+              if (whateverThisIs.render != undefined) {
+                  whateverThisIs.render();
+              }
+              return whateverThisIs;
+          });
+      }
+      </script>
+  <% } else { %>
+      <script>
+      function loadJsView() {
+
+      }
+      </script>
+  <% } %>
+    <div class="modal fade" style="display:none" id="session-timeout-modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Session Expiring</h4>
+          </div>
+          <div class="modal-body">
+            Your MeritCommons session is expiring.  For security purposes, you will be automatically logged out in <span id="session-expire-seconds">120</span> <span id="session-expire-seconds-word">seconds</span>.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" id="session-expire-logout">Logout Now</button>
+            <button type="button" class="btn btn-primary" id="session-expire-extend">Keep Me Logged In</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

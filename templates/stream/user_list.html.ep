@@ -1,0 +1,76 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% layout 'default';
+% title $self->stash('stream_common_name')." ".ucfirst($self->stash('list_type'));
+% my $user = $self->active_user;
+% my $page = $self->stash('page');
+% my $page_count = $self->stash('page_count');
+% my $first_page = $self->stash('first_page');
+% my $stream = $self->stash('stream');
+
+<div id="content-wrapper" class="container merge-container">
+  <div class="row">
+    %= include "common/sidebar"
+    <% if ($user->config('narrow-message-column')) { %>
+      <% if ($user->config('links-on-right')) { %>
+        <div class="col-lg-4 col-lg-pull-8 col-md-4 col-md-pull-8">
+      <% } else { %>
+        <div class="col-lg-4 col-md-4">
+      <% } %>
+    <% } elsif ($user->config('links-on-right')) { %>
+      <div class="col-lg-8 col-lg-pull-4 col-md-8 col-md-pull-4">
+    <% } else { %>
+      <div class="col-lg-8 col-md-8">
+    <% } %>      
+            <div>
+                <h1>Here's a list of <%= $self->stash('list_type') %> for <a href="/s/<%= $self->stash('stream_identifier') %>"><%= $self->stash('stream_common_name') %></a>.</h1>
+
+                <% foreach my $u (@{$self->stash('users')}) { %>
+                    <div class="subscriber-listing">
+                            <a href="/u/<%= $u->meritcommons_user->userid %>">
+                                <img class="media-object" src="<%= $self->profile_picture_url_for($u->meritcommons_user, 'small') %>" />
+                            </a>
+                            <span class="subscriber-name">
+                            <a href="/u/<%= $u->meritcommons_user->userid %>"><%= $u->meritcommons_user->common_name %></a>
+                                % if ($u->meritcommons_user->is_moderator($stream)) {
+                                    <span class="glyphicon glyphicon-star-empty" title="Moderator"></span>
+                                % }
+                            </span>
+                    </div>
+                <% } %>
+
+                % if ($page_count > 1) {
+                <div class="btn-toolbar page-list" role="toolbar">
+                    <div class="btn-group">
+                        <a href="/s/<%= $self->stash('stream_identifier') %>/subscribers/1" class="btn btn-default"
+                            <%=  ($page <= 1)?'disabled="disabled"':'' %>
+                            title="First Page"><span class="glyphicon glyphicon-chevron-left"></span><span class="glyphicon glyphicon-chevron-left"></span></a>
+
+                        <a href="/s/<%= $self->stash('stream_identifier') %>/subscribers/<%= ($page <= 1)?'1':($page - 1) %>" 
+                            <%=  ($page <= 1)?'disabled="disabled"':'' %>
+                            class="btn btn-default" title="Previous Page"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                    </div>
+                    <div class="btn-group">
+                        % for ($first_page .. $last_page) {
+                            % my $btn_class = ($page == $_)?'btn-primary':'btn-default';
+                            <a href="/s/<%= $self->stash('stream_identifier') %>/subscribers/<%= $_ %>" class="btn <%= $btn_class %>" title="Go To Page <%= $_ %>"><%= $_ %></a>
+                        % }
+                    </div>
+                    <div class="btn-group">
+                        <a href="/s/<%= $self->stash('stream_identifier') %>/subscribers/<%= $page+1 %>" class="btn btn-default" title="Next Page"
+                            <%=  ($page == $page_count)?'disabled="disabled"':'' %>
+                            ></span><span class="glyphicon glyphicon-chevron-right"></span></a>
+
+                        <a href="/s/<%= $self->stash('stream_identifier') %>/subscribers/<%= $page_count %>" class="btn btn-default" title="Last Page"
+                            <%=  ($page == $page_count)?'disabled="disabled"':'' %>
+                            ><span class="glyphicon glyphicon-chevron-right"></span><span class="glyphicon glyphicon-chevron-right"></span></a>
+                    </div>
+                </div>
+                % }
+
+            </div>
+        </div>
+    </div>
+</div>

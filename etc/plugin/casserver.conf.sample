@@ -1,0 +1,51 @@
+{
+    # Enable debug logging
+    "debug" => 0,
+
+    # what order to check user roles in, priority goes left to right.
+    cas_role_order => [qw/employee student other/],
+
+    # the TTL for CAS connectivity
+    cas_inactivity_timeout => {
+        student => 3600 / 4, # 15 mins for students
+        employee => 3600 / 2, # 30 mins for faculty
+        other => 3600 / 2, # we don't know what they are, 30 mins.
+    },
+
+    # Time (in seconds) that CAS tickets are valid for.  Official specs recommend that this time should be no longer than 5 mins.
+    "ticket_expiration" => 60,
+
+    # Time (in seconds) that SAML assertions should be valid for
+    "saml_assertion_expiration" => 30,
+
+    # Requires that any service providers use HTTPS.  This is strongly recommended per
+    # the CAS specification
+    "require_https" => 1,
+
+    # Require that service providers be identified in a whitelist. Service providers
+    # can be maintained via a set of MeritCommons commands.  This is strongly recommended
+    # per the CAS specification.
+    "enable_whitelist" => 1,
+
+    # System clocks being out of sync by even a second can cause authentication failures.  
+    # This parameter adjusts the NotBefore validity period to account for slight 
+    # differences.  The value represents the allowed skew in seconds.  With properly 
+    # synchronized clocks, only a couple seconds should be needed.
+    "saml_not_before_skew" => 2,
+
+    # Time (in seconds) that CAS tickets will be stored for.  Tickets need to be periodically deleted to 
+    # purge stale data.  The suggested value is a day (86,400 seconds).  The value should at least be
+    # greater than the value for ticket_expiration.
+    "ticket_storage_expiration" => 86400,
+    
+    # Certificate authority CRT file
+    "ca_file" => "/etc/pki/tls/certs/ca-bundle.crt",
+
+    # if this MeritCommons instance has a different 'auth_url' configured, pass there instead.
+    "logout_to_auth_url" => 1,
+
+    # parameters to set in auth_url to indicate that this system logged out of cas
+    "logout_parameters" => {
+        logged_out => 1,
+    },
+}

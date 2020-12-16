@@ -1,0 +1,17 @@
+%#    MeritCommons Portal
+%#    Copyright 2015 Wayne State University
+%#    All Rights Reserved
+
+% $c->stash(layout => 'simple_nonav', backbone_view => 'views/general/scratch');
+
+<div id="content-wrapper" class="container">
+    <h3>This is a scratch space</h3>
+
+    <div class="row">
+        <div class="col-md-4">
+            % stash es_config => { name => 'recipient', multiple => 1, placeholder => 'Select a thingie', label => 'Thingies', class => 'form-control', 
+            % search_contexts => ['subscribed_with_me', 'global' ] };
+            %= include 'widgets/entity_select';
+        </div>
+    </div>
+</div>

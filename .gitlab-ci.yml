@@ -1,0 +1,12 @@
+before_script:
+  - ln -s `pwd` $HOME/MeritCommonsDocker/meritcommons
+  - cp $HOME/MeritCommonsDocker/meritcommons/etc/meritcommons.conf.sample $HOME/MeritCommonsDocker/meritcommons/etc/meritcommons.conf
+  - cp $HOME/MeritCommonsDocker/meritcommons/etc/sphinx.conf.sample $HOME/MeritCommonsDocker/meritcommons/etc/sphinx.conf
+  - cp $HOME/MeritCommonsDocker/meritcommons/etc/bloomd.conf.sample $HOME/MeritCommonsDocker/meritcommons/etc/bloomd.conf
+  
+test:
+  script:
+    - MERITCOMMONS_NO_PLUGINS=1 $HOME/MeritCommonsDocker/bin/meritcommons test
+
+after_script:
+  - rm $HOME/MeritCommonsDocker/meritcommons  

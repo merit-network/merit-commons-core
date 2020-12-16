@@ -1,0 +1,13 @@
+%#    MeritCommons Portal
+%#    Copyright 2014 Wayne State University
+%#    All Rights Reserved
+
+% layout 'default';
+
+<script>
+    var DISABLE_WEBSOCKETS = true;
+</script>
+
+<div id="content-wrapper" class="container">
+    <div class="well text-left"><%== $document %></div>
+</div>

@@ -1,0 +1,35 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+<div class="row">
+    <div class="span11">
+        <% if ($self->param('nav') && $self->param('nav') ne "_top") { %>
+            <% 
+            my $this_collection = $self->app->m->resultset('Link::Collection')->find({ id => $self->param('nav') }); 
+            my @ancestry = ($this_collection); 
+            my $collection = $this_collection;
+            until (!$collection->parent) {
+                push(@ancestry, $collection->parent);
+                $collection = $collection->parent;
+            }
+            %>
+            <ul id="navlist-breadcrumbs" class="breadcrumb">
+            <% if (scalar(@ancestry) == 0) { %>
+                <li class="active">Home</li>
+            <% } else { %>
+                <li><a class="navlist-link-collection" id="_top" href="?nav=_top">Home</a> </li>
+                <% foreach my $ancestor (reverse(@ancestry)) { %>
+                    <% next if $ancestor->id == $this_collection->id; %>
+                    <li> / <a class="navlist-link-collection" id="<%= $ancestor->id %>" href="?nav=<%= $ancestor->id %>"><%= $ancestor->common_name %></a></li>
+                <% } %>
+                / <li class="active"><%= $this_collection->common_name %></li>
+            <% } %>
+            </ul>
+        <% } else { %>
+            <ul id="navlist-breadcrumbs" class="breadcrumb">
+                <li class="active">Home</li>
+            </ul>
+        <% } %>
+    </div>
+</div>

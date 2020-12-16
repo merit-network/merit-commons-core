@@ -1,0 +1,24 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% layout 'idp';
+% title 'Login • MeritCommons Identity Provider';
+
+<div id="content-wrapper" class="container">
+
+  <form class="form-signin">
+    <h1 class="page-header form-signin-heading">Log In</h1>
+    <div class="form-signin-message lead muted">
+    <% if ($self->stash('message')) { %> 
+    <div class="form-signin-message lead muted">
+        <%= $self->stash('message') %>
+    </div>
+    <% } %>
+    </div>
+    <input name="username" type="text" class="input-block-level" placeholder="Username">
+    <input name="password" type="password" class="input-block-level" placeholder="Password">
+    <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+  </form>
+
+</div> <!-- /container -->

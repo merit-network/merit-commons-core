@@ -1,0 +1,82 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% $c->stash(layout => 'simple', backbone_view => 'views/stream/default');
+% my $permissions = $self->stash('permissions');
+% my @streams = do { my %seen; grep { !$seen{$_}++ } (@{$permissions->{render_post}}, @{$permissions->{render_feed}}) };
+% my $user = $self->active_user;
+% my @stream_names = map {$user && $_->common_name eq $user->common_name ? 'My Feed' : ($user && $_->common_name eq '_' . $user->userid ? 'You' : $_->common_name)} @streams;
+% my $stream_names_for_title = join('-', @stream_names);
+% title "$stream_names_for_title";
+<script>
+    var subscriptions = {<%== join(',', (map { "'" . $_->unique_id . "':'" . $_->id . "'" } @streams)) %>};
+    var messages = <%== $self->stash('payload_messages_json') %>;
+    var user_is_stream_moderator, user_is_admin, stream;
+
+    <% if ($stream) { %>
+        user_is_stream_moderator = <%== $user->can_moderate($stream) ? "true" : "false" %>;
+        stream = '<%== $stream->unique_id %>';
+    <% } %>
+    user_is_admin = <%== $user->is_admin ? "true" : "false" %>;
+    var stream_context = true;
+    var show_deletes = false;
+    if (user_is_stream_moderator || user_is_admin) {
+        show_deletes = true;
+    }
+</script>
+
+<div class="container">
+    <h1>MeritCommons:Streams:<%= $stream_names_for_title %></h1>
+    <div class="row">
+        % include 'common/sidebar';
+        <div class="span9">
+            <div class="span7 well" style="padding-bottom: 0px;">
+                <% if (scalar(@{$permissions->{render_post}})) { %>
+                    <form name="submit-post" id="submit-post">
+                        <textarea class="span7" rows="3" name="body" id="body-textarea" placeholder="Urge the merge..."></textarea>
+                        <div class="row">
+                            <div class="span7">
+                                <label><strong>To</strong></label>
+                                <select multiple name="stream" style="width: 100%" id="post-to">
+                                    <% foreach my $stream (@{$permissions->{render_post}}) { %>
+                                        <% my $stream_display_name = $user && $stream->common_name eq $user->common_name ? 'My Feed' : ($user && $stream->common_name eq '_' .  $user->userid ? 'You' : $stream->common_name); %>
+                                        <option value="<%= $stream->unique_id %>" selected>
+                                            <%= $stream_display_name %>
+                                        </option>
+                                    <% } %>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="span3 offset4" style="text-align: right; margin-top:10px">
+                                <button id="public-private" data-toggle="button" style="width: 90px" class="btn"><i class="icon-globe"></i> Public&nbsp;</button>
+                                <button id="post-it" class="btn">Post</button>
+                            </div>
+                        </div>
+                    </form>
+                <% } %>
+            </div>
+            <div class="span9">
+                <% foreach my $stream (@{$permissions->{failed_render_post}}) { %>
+                    <p><span>You do not have permission to post to the stream named <a href="<%= $self->url_for('get_stream', {stream_identifier => $stream->unique_id}) %>"><%= $stream->common_name %></a>.</span></p>
+                <% } %>
+            </div>
+            <div class="span9">
+                <% foreach my $stream_identifier (@{$permissions->{not_found}}) { %>
+                    <p><span>We cannot find a stream named <%= $stream_identifier %>. Want to <a href="<%= $self->url_for('get_stream', {stream_identifier => $stream_identifier}) %>">create it</a>?</span></p>
+                <% } %>
+            </div>
+            <div class="span9">
+                <% foreach my $stream (@{$permissions->{failed_render_feed}}) { %>
+                    <p><span>You do not have permission to read the stream named <a href="<%= $self->url_for('get_stream', {stream_identifier => $stream->unique_id}) %>"><%= $stream->common_name %></a>.</span></p>
+                <% } %>
+            </div>
+            <div id="messages-go-here" class="span9">
+                <% foreach my $payload ($self->app->multiple_stream_messages($user, \@streams, 25)) { %>
+                    <%== $self->render_mustache("message/$payload->{render_as}", $payload) %>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>

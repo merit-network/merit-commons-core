@@ -1,0 +1,24 @@
+%#    MeritCommons Portal
+%#    Copyright 2016 Wayne State University
+%#    All Rights Reserved
+
+% $c->stash(layout => 'simple_nonav', backbone_view => 'views/common/loading');
+% title 'Loading External Application';
+<style>
+.loading-app {
+  position: absolute;
+  left:0;right:0;top:45%;
+  text-align: center;
+}
+</style>
+<% if (defined $attempt_id && $attempt_id) { %>
+    <script>
+        var attempt_id = "<%= $attempt_id %>";
+    </script>
+<% } %>
+<div class="loading-app">
+  <img src="<%= $self->asset_url('img/meritcommons-tiny.png') %>" alt="Please wait... establishing session"/>
+  <div>MeritCommons is establishing a session with <%= $app_name %></div>
+  <img src="<%= $self->asset_url('img/meritcommons_horizontal_busy.gif') %>" alt="Busy indicator"/>
+  <div id="tries"></div>
+</div>

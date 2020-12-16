@@ -1,0 +1,15 @@
+{
+    signature_method => 'RS256',
+    default_scopes => [
+        {
+            common_name => 'meritcommons:login',
+            description => 'Create new MeritCommons sessions',
+        },
+    ],
+
+    # default to 24 hours
+    access_token_validity_duration => 3600 * 24,
+
+    # default to 5 years
+    refresh_token_validity_duration => 86400 * 365 * 5,
+}

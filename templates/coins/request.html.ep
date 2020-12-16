@@ -1,0 +1,63 @@
+%#    MeritCommons Portal
+%#    Copyright 2015 Wayne State University
+%#    All Rights Reserved
+
+% extends 'coins/layout', backbone_view => 'views/coins/request', page => 'request';
+% title 'MeritCommonscoin Request';
+
+% content_for coin_body => begin
+
+<div class="col-md-12 panel panel-default coin-request">
+    <div class="panel-body">
+        <h2>Request MeritCommonscoins</h2>
+        <p>Fill out the form to request MeritCommonscoins.  Filling out both fields is <span style="color: red; font-weight: bold">required</span>.</p>
+        <div class="form-group">
+            <label class="control-label">Amount Requested</label>
+            <input type="text" class="form-control" name="amount-requested" id="amount-requested" placeholder="0">
+            <p class="help-block">Please enter an amount between 1 and 2500000 (2.5 million) coins</p>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Reason</label>
+            <textarea class="form-control" name="reason" id="reason"></textarea>
+            <p class="help-block">Please enter a short description of what you plan to do with the coins.  
+                e.g. what specific event(s) you're promoting who your target audience is
+            </p>
+        </div>
+        <button id="request" class="btn btn-success">Request</button>
+        <hr />
+        <h3>Latest Requests</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Amount Requested</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody> 
+                % my $requests = $self->m->resultset('User::MeritCommonscoinRequest')->search(
+                %    { 
+                %        requested_by => $self->active_user->id
+                %    }, 
+                %    {  
+                %        order_by => {
+                %            "-desc" => ["me.create_time"]
+                %        },
+                %    }
+                % );
+                % if ($requests) {
+                    % while (my $request = $requests->next) {
+                        <tr>
+                            % my @time = localtime($request->create_time);
+                            <td><%= ($time[4] + 1) . "/" . $time[3] . "/" . ($time[5] + 1900) %></td>
+                            <td><%= int($request->amount_requested) %></td>
+                            <td><%= $request->approved ? ( $request->approved > 0 ? "Approved" : "Denied" ) : "Pending" %></td>
+                        </tr>
+                    % }
+                % }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+% end

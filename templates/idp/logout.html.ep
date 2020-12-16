@@ -1,0 +1,15 @@
+% layout 'idp';
+% title 'Login • MeritCommons Identity Provider';
+
+<div id="content-wrapper" class="container">
+
+  <div class="form-signin">
+    <h1 class="page-header form-signin-heading">Logged out</h1>
+    <% if ($self->stash('message')) { %> 
+    <div class="form-signin-message lead muted">
+        <%= $self->stash('message') %>
+    </div>
+    <% } %>
+  </div>
+
+</div> <!-- /container -->

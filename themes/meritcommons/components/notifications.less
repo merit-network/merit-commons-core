@@ -1,0 +1,47 @@
+.notification-section {
+  a.dropdown-toggle {
+    position: relative;
+  }
+  .notification-badge {
+    background-color: red;
+    padding: 1px 3px;
+    font-style: normal;
+    position: absolute;
+    top: 16px;
+    right: 10px;
+  }
+}
+
+.notification-dropdown {
+  padding-top: 0px;
+  > .dropdown-block-heading {
+    text-transform: uppercase;
+    background: @meritcommons-sidebar-header;
+    font-family: @font-family-sans-serif;
+    font-weight: bold;
+    border-bottom: 1px solid darken(@meritcommons-sidebar-header, 10%);
+    color: @meritcommons-sidebar-header-foreground;
+  }
+  
+  .media { margin-top: 0px;  }
+  .notification {
+    font-size: 11px;
+    color: @text-color;
+    &:hover {
+      text-decoration: none;
+      background: @gray-lighter;
+      cursor: pointer;
+    }
+    p {
+      margin-bottom: 5px;
+      line-height: 16px;
+    }
+    border-bottom: 1px solid #ccc;
+  }
+
+  .dropdown-block-footer {
+    a {
+      font-size: 12px;
+    }
+  }
+}

@@ -1,0 +1,55 @@
+.navbar-form .input-prepend {
+  margin-bottom: 0;
+}
+
+div.sources-group {
+    font-size: 75%;
+}
+
+div.sources-group .source {
+    color: #000;
+    border: #999;
+}
+
+div.sources-group .source a {
+    background-color: #e4e4e4;
+    padding: 2px;
+    color: #000;
+    border: 1px solid #999;
+    border-radius: 5px;
+}
+
+div.sources-group .source a:hover {
+    text-decoration: none;
+    color: #08c;
+    border: 1px solid #08c;
+}
+
+div.message-voting {
+    float: right;
+    font-size: 90%;
+}
+
+div.message {
+    margin-bottom: 1em;
+}
+
+div.message:last-child {
+    margin-bottom: 0;
+}
+
+div.message-time {
+    text-align: right;
+    color: #333;
+}
+
+a.ext-link:after {
+    content: '\2B08';
+    font-size: 90%;
+    vertical-align: top;
+}
+
+.select2-choices {
+    border: 1px solid #ccc !important;   
+    background-image: none !important; 
+}

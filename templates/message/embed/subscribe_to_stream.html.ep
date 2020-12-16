@@ -1,0 +1,3 @@
+<button class="btn btn-xs primary subscribe-embed" data-stream-id="<%= $stream->unique_id %>">
+    <i class="fa fa-streams"></i> Subscribe to <% $stream->common_name %>
+</button>

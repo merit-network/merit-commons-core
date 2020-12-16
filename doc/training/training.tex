@@ -1,0 +1,159 @@
+\documentclass[titlepage]{article}
+\usepackage[pdftex]{hyperref}
+\usepackage{glossaries}
+\usepackage{graphicx}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{pgfgantt}
+%\usepackage{draftwatermark}
+\usepackage{todonotes}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{amsmath}
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{mflogo}
+\usetikzlibrary{shapes,arrows}
+
+
+\usepackage{svn-multi}
+\svnidlong
+{$LastChangedBy$}
+{$LastChangedRevision$}
+{$LastChangedDate$}
+{$HeadURL$}
+
+
+\makeglossaries
+
+% Default margins are too wide all the way around. I reset them here
+\setlength{\topmargin}{-.5in}
+\setlength{\textheight}{9in}
+\setlength{\oddsidemargin}{-0.25in}
+\setlength{\textwidth}{6.75in}
+\setcounter{secnumdepth}{1}
+\setcounter{tocdepth}{2}
+
+
+\newlength{\wideitemsep}
+\setlength{\wideitemsep}{.5\itemsep}
+\addtolength{\wideitemsep}{-5pt}
+\let\olditem\item
+\renewcommand{\item}{\setlength{\itemsep}{\wideitemsep}\olditem}
+
+\definecolor{wsugreen}{HTML}{0C5449}
+\definecolor{wsulightgreen}{HTML}{08877A}
+\definecolor{wsudarkgreen}{HTML}{0A4239}
+\definecolor{wsuyellow}{HTML}{CCA500}
+\definecolor{wsulightbeige}{HTML}{DAD6BD}
+\definecolor{wsubeige}{HTML}{8B835F}
+\definecolor{wsuteal}{HTML}{006666}
+\definecolor{wsulightteal}{HTML}{CEDDDB}
+\definecolor{wsuburgundy}{HTML}{8B2145}
+\definecolor{wsudarkgray}{HTML}{999999}
+\definecolor{wsulightgray}{HTML}{DFDDD1}
+
+% Glossary terms. Probably should be its own file later.
+\newglossaryentry{subscriber}
+{
+    name=subscriber,
+    description={A user who receives posts from a stream, and can read them}
+}
+\newglossaryentry{author}
+{
+    name=author,
+    description={A user who is able to post to a stream. In many cases all stream subscribers are also authors, but this is not a requirement. An author can also just be the person who made a given post}
+}
+
+
+
+% set some stuff for use by PDF readers.
+\makeatletter
+\AtBeginDocument{
+    \hypersetup{
+        pdftitle = {\@title},
+        pdfauthor = {\@author}
+    }
+}
+\makeatother
+\title{MeritCommons Training}
+\author{MeritCommons Action Team <meritcommons@wayne.edu>}
+
+\begin{document}
+
+% Title page.
+\input{./title_page.tex}
+\tableofcontents
+\newpage
+
+
+% Main Content
+\section{Introduction}
+\subsection{What is MeritCommons?}
+MeritCommons is a next generation academic portal developed by a team here at Wayne State University.  It has all of the things we want out of a portal: organized links, single sign on, and places for announcements and integration with other applications. It provides for real-time collaboration with colleagues and classmates in a way that that citizens of the web are familiar with.
+
+
+\section{Functionality Overview}
+\subsection{Links}
+The main function served by Pipeline was to allow students, faculty, and employees to easily sign into one central website and then easily go on to the various other websites and applications that they use. MeritCommons does this while adding a second small list of websites that you use most, so the sites you don't have to hunt for the sites you use most.
+
+The first list, in the upper right, is called titled ``WSU Resources" and is a static list of links to various web resources at WSU. It's organizaed into categories and users only see categories that apply to them (students see Student Resources, Employees see Employee Resources, etc). 
+
+Under that list, there's ``My Frequent Links", which contains a list of the most often clicked links for that user. If they haven't used enough links yet to fill it, the remainder comes from links most often used by people like them (for example, other students in their department). These get pushed down the list as the user uses links themselves. The length of this list can be set on the Settings Page.
+
+\subsection{Collaboration}
+MeritCommons allows for collaboration among users by making posts on streams. Streams are are essentially groups - user join them (or automatically are added to them, such as when they register for a class), make posts on them, and see posts others have made on them. They also can comment on other people's posts. Posts can be as simple as a quick status update (e.g. ``Anyone get the notes from class yesterday?") or be as complex as a mathematical expression written in the \LaTeX markup language. It can be an embedded YouTube video, or an image. Posts are delivered in real time, so you can converse with each other natually. 
+
+
+\section{Collaboration}
+\subsection{Reading Posts}
+\subsubsection{Streams}
+A stream is a collection of posts, created automatically for a class, or created by anyone for nearly any purpose. For example, each class a student is registered in has its own stream, student organizations could have streams, or even just ad-hoc study groups or nearly anything else. A user who is permitted to read posts from the stream is called a ``\gls{subscriber}", and a user permitted to post to the stream is called an ``\gls{author}".
+
+Creators of streams can choose to limit subscribers to those who moderators approve, and they can limit authors in the same way. This lets users do things like create private streams, or streams that anyone can read by only they (or certain people) can post in.
+
+When the user first logs in, or goes to the home page, they see a combination of all posts from all their streams. This is called ``The Merge" (as it's a list of posts all {\emph merged} together). Users can view a specific stream one at a time by clicking the stream name under ``Subscribed Streams" on the right side of the site.
+
+\subsubsection{Posts}
+Streams contain posts, which are like posts on most sites a user might be familiar with. They have an \gls{author} and the main body of the post. They can belong to one or more streams, and users can give posts a ``thumbs up" or a ``thumbs down" to posts, similar to most other site's feedback mechanisms (``likes" on Facebook, up and down voting on Reddit, etc.). 
+
+Posts can be commented on by other users, and comments are really full-fledged posts in their own right, except that they have a ``parent" - they behave pretty much the same - you can thumbs up and thumbs down them, you can link directly to them, and so on.
+
+\subsection{Posting}
+\subsubsection{Posting Options}
+The simplest post is one that's just plain text, like the message ``Good morining, everyone". Posting is done with the compose area at the top of the page. It stays out of the way when not being used, appearing as just a text box. When clicked, it drops down to a larger text area with further posting options. The text of the post goes in the main text area at the top, and below, the poster can choose what streams the message should be posted in.
+
+We should also say something about MeritCommons Opaque Messaging here. Or should we?
+
+\subsubsection{Post Contents}
+Posting plain text is easy, but users aren't limited to plain text in their posts. Simple markup like bolding text, using headers, quotes, and so on is supported through \href{http://daringfireball.net/projects/markdown/syntax}{Markdown}. Markdown also allows for embedding images, creating links, and other things. 
+
+In addition to that, there is an entire list of various other special embedding and formatting that can be done, including:
+\begin{itemize}
+\item Flickr: Links to a Flickr image will automatically be converted to the embedded viewer
+\item Iternal Links: things like ``/u/au1313" will automatically become a link to that user page, and ``/s/example" will do the same.
+\item \LaTeX: Especially useful for typesetting math, any text between [math][/math] tags will be run through the \LaTeX processor and rendered as an image. For example, [math]x\^2[/math] would be displayed as $x^2$.
+\item Vimeo: Vimeo.com videos automatically embed when linked to
+\item YouTube: YouTube.com videos automatically embed when linked to
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\listoffigures
+
+\glsaddall
+\printglossaries
+\end{document}
+

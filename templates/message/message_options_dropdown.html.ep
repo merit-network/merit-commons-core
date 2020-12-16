@@ -1,0 +1,69 @@
+%#    MeritCommons Portal
+%#    Copyright 2014 Wayne State University
+%#    All Rights Reserved
+
+<ul class="dropdown-menu" role="menu">
+    <!--
+    <li><a href="#"><small><i class="icon-star"></i></small> Favorite</a></li>
+    <li><a href="#"><small><i class="icon-magnet"></i></small> Notify Me</a></li>
+    -->
+    <li><a href="#" class="get-message-info"><small><i class="fa fa-info"></i></small> More Info</a></li>
+    <!--
+    <li class="divider"></li>
+    <li><a href="#"><small><i class="icon-pencil"></i></small> Edit</a></li>
+    -->
+
+    <% if ($user->is_admin) { %>
+        <li class="divider"></li>
+        <li><a href="#" class="message-advanced-info"><i class="fa fa-info"></i> Advanced Info</a></li>
+    <% } %>
+
+    <% if ($user->watched_messages->find({ target => $message->unique_id })) { %>
+        <li class="divider"></li>
+        <li><a href="#" class="unwatch-message"><i class="fa fa-ban"></i> Stop Notifications</a></li>
+    <% } %>
+
+    <% if ($message->submitter->id == $user->id || scalar(grep(!$_->personal_inbox_user, @$m_streams)) || $user->is_admin) { %>
+        <li class="divider"></li>
+        <li><a href="#" class="edit-message"><i class="fa fa-pencil"></i> Edit Message</a></li>
+    <% } %>
+
+    <% if ($message->unique_id eq $message->thread_id && (scalar(@$m_streams) || $message->submitter->id == $user->id)) { %>
+        <li class="divider"></li>
+        <li class="dropdown-submenu pull-left">
+            <a tabindex="-1" href="#"><i class="fa fa-remove"></i> Delete from...</a>
+            <ul class="dropdown-menu">
+                <% foreach my $stream (@$m_streams) { %>
+                    <% if ($stream->personal_outbox_user && $stream->personal_outbox_user->id == $user->id) { %>
+                        <li><a href="#" class="unlink-message" stream="<%= $stream->unique_id %>"> My Followers</a></li>
+                    <% } elsif ($stream->personal_inbox_user && $stream->personal_inbox_user->id == $user->id) { %>
+                        <li><a href="#" class="unlink-message" stream="<%= $stream->unique_id %>"> My Inbox</a></li>
+                    <% } else { %>
+                        <li><a href="#" class="unlink-message" stream="<%= $stream->unique_id %>"> <%= $stream->common_name %></a></li>
+                    <% } %>
+                <% } %>
+
+                <% if ($message->submitter->id == $user->id || $user->is_admin) { %>
+                    <li class="divider"></li>
+                    <li><a href="#" class="unlink-message" stream="all"> All Streams</a></li>
+                <% } elsif (scalar(@$m_streams) > 1) { %>
+                    <li class="divider"></li>
+                    <li><a href="#" class="unlink-message" stream="<%= join(',', map { $_->unique_id } @$m_streams) %>"> All Above</a></li>
+                <% } %>
+            </ul>
+        </li>
+    <% } elsif ($message->unique_id ne $message->thread_id) { %>
+        <% if (scalar(@$m_streams) || $message->submitter->id == $user->id) { %>
+            <li class="divider"></li>
+            %# this is a thread reply
+            <li><a href="#" class="unlink-reply"><i class="fa fa-remove"></i> Remove Comment</a></li>
+        <% } %>
+    <% } %>
+
+    <!--
+    <li class="divider"></li>
+    <li><a href="#"><small><i class="icon-thumbs-down"></i></small> Spam</a></li>
+    <li><a href="#"><small><i class="icon-error"></i></small> Offensive</a></li>
+    <li><a href="#"><small><i class="icon-ban-circle"></i></small> Block Sender</a></li>
+    -->
+</ul>

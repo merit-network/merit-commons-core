@@ -1,0 +1,126 @@
+Summary of config options:
+
+words_file                            # /usr/share/dict/words usually; an english dictionary of words
+max_message_size                      # web server config, the size of the largest HTTP request (limits file uploads)
+administrator_email                   # the email address of the system administrator of this installation
+administrator_common_name             # the common name (first and last) of the administrator of this installation
+hostname                              # the hostname of this installation (base host)
+port                                  # the listening port of this installation
+https_enabled                         # set this to indicate that MeritCommons is configured to use https
+identity_server                       # the URL of the server to use for IDENTIFY lookups; must be publically accessible
+front_door_url                        # the URL that users will use to get to the "front door" of the application
+front_door_host                       # the Host: of the front door url, used to redirect connections that come in from alternate names
+truncate_messages_at                  # the length (in characters) a message has to be before it is truncated
+websocket_inactivity_timeout          # how long before inactive websockets are timed out (in seconds)
+advertised_websocket                  # the websocket this node instructs users to connect to
+authentication_provider               # the helper module that's installed for handling user authentication
+session_length                        # the number of seconds idle MeritCommons sessions last
+help_url                              # a URL pointing to user documentation and help
+access_log                            # path to a standard log format web access log
+auth_log                              # path to a WayneAuth style authentication log file
+cookie_domain                         # the domain we issue MeritCommons Session cookies for
+cookie_top_domain                     # the domain we issue third party federated session cookies for
+local_asset_path                      # directory in which to store local assets uploaded to MeritCommons
+external_asset_path                   # directory in which to store external assets (Amazon S3/s3fs-fuse) upload to MeritCommons
+external_asset_base                   # base URL where external assets can be reached.  e.g. https://s3.aws.com/example.com/
+memcached_servers                     # arrayref of one or more Memcached servers to connect to, toggles on Mojo::Cache 
+                                      # if not set, if set toggles on Cache::Memcached::Fast
+publish_to                            # arrayref of ZeroMQ URLs the publisher should publish to.  using a value of 
+                                      # flock://find_publisher asks FlockVPN to configure the multicast address for you.  You
+                                      # should always include 'ipc:///var/tmp/1313', so local subscribers get events too as 
+                                      # there is no loopback multicast
+publishers                            # same rules and format as <publish_to>, this is the list of publishers local subscribers
+                                      # should subscribe to
+user                                  # the user MeritCommons should run as
+ldap_provision_not_found              # LDAPAuth responds to user_not_found events and autoprovisions them if it can
+ldap_connect_info                     # a hashref containing LDAP configuration, details follow
+  ->ldap_priv_bind_dn                 # the "privileged bind DN", a user with elevated access to the directory to bind as
+  ->ldap_priv_bind_pass               # the password for the privileged bind DN
+  ->ldap_host                         # the hostname of the LDAP server
+  ->ldap_scheme                       # the scheme e.g. ldap/ldaps to use to connect to the LDAP server
+  ->ldap_port                         # the port number of the LDAP server
+  ->base_dn                           # LDAP search base DN
+  ->search_filter                     # the filter to use to find "users"
+  ->unique_id_field                   # The LDAP attribute you wish to use to name new user accounts with
+database_connect_info                 # a hashref containing information on how to connect to your RDBMS
+  ->primary                           # an array ref of the format [$dsn, $user, $password, \%options]
+  ->replicas                          # an arrayref of [$dsn, $user, $pass, \%opts] containing config for each replica database
+plugins                               # an arrayref of namespaces pointing to MeritCommons Plugins to load
+sphinx                                # a hashref containing Sphinx configuration data
+  ->dsn                               # MySQL DSN used to connect to Sphinx server (emulated MySQL)
+  ->host                              # hostname of sphinx server
+  ->port                              # port Sphinx is listening on (for searches)
+theme                                 # the MeritCommons theme to use for the UI
+status_prompts                        # an arrayref of various status prompts displayed in the inbound.  e.g. "What's on your mind?"
+latex                                 # a hashref containing LaTeX configuration information
+  ->tmpdir                            # a scratch directory for creating LaTeX PNG files
+  ->imgoutdir                         # the directory to write finished images out to
+  ->imgurlpath                        # the base URL used to retrieve generated PNG images from the web
+registration_subnets                  # an arrayref of CIDR notation subnets that can use the registration page
+stream_reserved_names                 # an arrayref of strings or regular expressions used to prohibit the creation of user streams
+                                      # should be used for offensive language or system oriented streams
+log_to_publisher                      # boolean, enables logging to the STATS ZMQ address
+system_log_level                      # log level for the application logs
+external_auth_secrets                 # arrayref of regular expressions matching referrers and their HMAC "secret keys"
+login_token_expire_time               # how many seconds before a login token cannot be used to log a user in
+minion_mp_workers                     # the number of concurrent async jobs we can run on this node
+flock_vpn                             # toggle on / off FlockVPN as a whole
+flock_coordinator                     # toggle on / off Flock Coordinator role for this node (can be only one per Flock)
+flock_netif_name                      # the name of the flock network interface [aca0]
+flock_subnet                          # the subnet to issue FlockVPN IPs on [10.0.0.0/24]
+flock_password                        # the password required to join the FlockVPN
+flock_aws_ami                         # the AMI to use to create flock nodes
+flock_aws_region                      # the region this Flock is in
+flock_network_name                    # the name of the FlockVPN network on the supernode [meritcommons-flock]
+flock_supernode_ip                    # the address of the FlockVPN supernode
+flock_port                            # the base FlockVPN port, used by 'edge' process.  supernode_port = flock_port + 1
+flock_coordinator_socket_path         # path to the flock coordinator's UNIX socket.
+flock_scale_on                        # what resource measure triggers scale up/down?  currently NODE_LOAD (load avg) or NODE_CPU (CPU% used)
+flock_aws_scale_pattern               # an array of scale states the flock should conform to, going from least to most performant
+  ->nodes                             # the number of nodes to start for this scale state
+  ->instance_type                     # the VM instance type to use at this scale state
+  ->hypnotoad_workers                 # how many web server worker threads to start on each of the nodes started in this scale state
+  ->minion_workers                    # how many async job processor worker threads can run concurrently on each node in this scale state
+  ->description                       # a text description of this instance_type e.g. "2 CPUs, 2048Mb Ram"
+  ->max_load                          # a 3 value arrayref indicating the upper load threshold for [1m_Load, 5m_Load, 15m_Load] (for scale UP)
+  ->min_load                          # a 3 value arrayref indicating the lower load threshold for [1m_Load, 5m_Load, 15m_Load] (for scale DOWN)
+  ->max_cpu                           # a 2 value arrayref indicating the upper CPU% threshold for [1m_CPU, 5m_CPU] (for scale UP)
+  ->min_cpu                           # a 2 value arrayref indicating the lower CPU% threshold for [1m_CPU, 5m_CPU] (for scale DOWN)
+flock_aws_scaleup_cooldown            # the number of seconds to wait after a scale up event has finished before scaling up again
+flock_aws_scaledown_cooldown          # the number of seconds to wait after a scale down event has finished before scaling down again
+flock_aws_scale_overlap               # when scaling vertically, the number of seconds lower performing nodes being replaced remain up along 
+                                      # side their faster replacements
+flock_aws_node_tag                    # what nodes created in this flock are tagged with
+flock_aws_security_groups             # a hashref containing the names of security groups to assign to flock nodes.
+flock_aws_vpc_subnet                  # the CIDR address of the VPC subnet to launch instances into
+flock_aws_dns_hosted_zone             # the ID of the Route 53 DNS hosted zone we're going to configure the hostnames in.
+flock_aws_key_name                    # the name of the ssh key pair
+flock_aws_load_balancer               # the name of the AWS load balancer for this flock.
+flock_autostart                       # start the flock automatically when the coordinator starts
+flock_server_base_domain              # the (sub) domain to create flock nodes as.  defaults to "hostname"
+image_transforms                      # hashref of named image transforms, mimics the configuration used in DBIx::Attachment
+default_transform                     # the name of the image transform to be used in situations where a specific transform wasn't named
+brutal_morbo                          # enables brutal mode for devdaemon, SIGKILL is on the menu.  use if your devdaemon won't stop reliably. 
+                                      # NOTE: this option does not work with morbo-meritcommons, only with 'meritcommons devdaemon'
+postgres_async_url                    # url for async db (See Mojo::Pg)
+anonymous_stream_rss_feeds            # set to a true value if you wish to allow anonymous access to stream RSS feeds for streams where 
+                                      # requires_subscriber_authorization = 0
+enable_ssl_asset_proxy                # enable ssl asset proxying functionality (keep the lock icon in the address bar)
+ssl_asset_proxy_secret                # secret used to hmac sign proxy URLs (keeps the proxy from being used by anyone for anything)
+ssl_asset_proxy_types                 # file extension => mime/type hashref map, what content types / file extensions will we proxy?
+auth_url                              # url to use for external authentication
+auth_back_param                       # the back parameter to use to tell the auth_url how to get back to MeritCommons (defaults: destination_url)
+syslog                                # config for meritcommons logger that routes log type to arrays of syslog targets.  see example conf for example
+environment_ribbon                    # a string that displays in a ribbon in the bottom left corner of an MeritCommons environment
+search_providers                      # configuration for different search providers used by the navbar search
+  ->action                            # the search provider's form action
+  ->placeholder                       # used in the search provider selector dropdown, and in the input field as a placeholder
+  ->query_param                       # parameter the provider uses to specify search string
+  ->extra                             # hashref of param names and values, embedded as hidden form elements
+smtp_host                             # the hostname of the mail server to use for sending emails
+smtp_from                             # the email address messages from this MeritCommons instance come from
+smtp_port                             # optional, defaults to port 25
+smtp_username                         # optional, the username to authenticate as
+smtp_password                         # optional, the corresponding password
+smtp_auth                             # optional, must be set to authentication method to enable SMTP auth.  suggested: LOGIN
+smtp_tls_required                     # optional, defaults to true if smtp_auth is set, otherwise requires STARTTLS or smtps

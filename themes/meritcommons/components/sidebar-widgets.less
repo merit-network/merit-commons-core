@@ -1,0 +1,209 @@
+.sidebar-section {
+  div,p {
+    cursor: default;
+  }
+  li > div, li, a {
+    cursor: pointer;
+  }
+  input {
+    cursor: text;
+  }
+  .box-general(#FFF, @border-radius-base);
+
+  .sidebar-section-body,
+  .sidebar-section-header {
+    padding: 10px 12px;
+  }
+
+  .stream-description {
+    word-wrap: break-word;
+  }
+
+  a {
+    padding: 0 12px;
+    font-family: @font-family-sans-serif;
+    font-weight: bold;
+  }
+
+  .sidebar-section-header > i {
+    &:hover {
+      background: @meritcommons-sidebar-header;
+      color: @meritcommons-sidebar-header-foreground;
+    }
+  }
+
+  .sidebar-section-header, .sidebar-section-header a {
+    background: @meritcommons-sidebar-header;
+    color: @meritcommons-sidebar-header-foreground;
+    font-family: @font-family-sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 1px solid darken(@meritcommons-sidebar-header, 10%);
+    font-size: 14px;
+  }
+
+  > .nav {
+    margin-bottom: 0px;
+  }
+  > .nav li > a:hover, .nav li > div.navlist-link:hover, .nav li > div.navlist-link > a:hover,
+    .nav li > a:focus, > .nav li > div.navlist-link:focus, .nav li > div.navlist-link > a:focus {
+    background: lighten(#d7e7e5, 1%);
+    color: @meritcommons-link;
+    text-decoration: none;
+    border-radius: 0;
+  }
+
+  ul.nav-tabs.nav-stacked {
+    padding: 0px 0px 20px 0px;
+  }
+
+  ul.nav-stacked li {
+    &:hover, &:focus {
+      .unsuperclick {
+        display: block;
+        text-align: center;
+        padding-right: 5px;
+      }
+    }
+    a {
+      &.unsuperclick {
+        display: none;
+      }
+    }
+  }
+
+  div.navlist-link {
+    color: rgb(0, 104, 88);
+    cursor: pointer;
+    display: block;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    height: 42px;
+    margin-right: 2px;
+    padding: 6px 0px 6px 10px;
+    position: relative;
+    text-align: left;
+    &:hover, &:focus {
+      .superclick {
+        display: inline;
+        text-align: center;
+        padding-right: 5px;
+      }
+    }
+    a {
+      font-size: 12px;
+      font-weight: 400;
+      &.superclick {
+        display: none;
+      }
+      &:hover, &:focus {
+        font-size: 12px;
+        font-weight: 400;
+      }
+    }
+    text-decoration: none;
+  }
+
+  > .nav ul li.navlist-child-collection > a {
+    padding: 7px 12px;
+    display: block;
+    width: 100%;
+  }
+
+  > .nav-tabs.nav-stacked > li a {
+    border-left: none;
+    border-right: none;
+    margin-right: 0;
+  }
+
+  .followers-list {
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    .follower-mini-pic {
+      height: 30px;
+      width: 30px;  
+      img {
+        height: 30px;
+        width: 30px;
+      }
+    }
+    a:hover {
+      text-decoration: none;
+    }
+  }
+  .sidebar-section-breadcrumb {
+    // background: lighten(@wsuGold, 40%);
+    background: @meritcommons-sidebar-subheader;
+    margin-bottom: 0;
+    .divider {
+      color: darken(@meritcommons-sidebar-header, 50%);
+    }
+    li.active { color: darken(@meritcommons-sidebar-header, 35%); }
+  }
+
+  ul.nav {
+    > li.navlist-child-leaf > div.navlist-link {
+      margin: 0px;
+      padding: 12px 0px 0px 15px;
+      a {
+        font-size: 14px;
+        font-weight: bold;
+        padding: 0 12px 0 0;
+      }
+    }
+  }
+
+  #nav-main {
+    ul {
+      border-left: 1px solid lighten(@meritcommons-sidebar-header-foreground, 35%);
+      position: relative;
+      left: 20px;
+      padding: 0px 0px 0px 20px;
+      div.navlist-link {
+        max-width: 90%;
+        height: auto;
+        padding: 0 15px 0 15px;
+      }
+      ul {
+        left: 17px;
+      }
+      li.navlist-child-collection {
+        padding: 0;
+        max-width: 95%;
+      }
+    }
+
+    li.navlist-child-collection::after, li.navlist-child-leaf::after {
+      border-top: 1px solid lighten(@meritcommons-sidebar-header-foreground, 35%);
+      height: 20px;
+      top: 15px;
+      width: 10px;
+    }
+    li {
+      list-style: none;
+    }
+    li.navlist-child-collection {
+      ::before {
+        font-family: 'FontAwesome';
+        font-weight: 400;
+        font-size: 10px;
+        color: lighten(@meritcommons-sidebar-header-foreground, 35%);
+        top: -1px;
+        position: relative;
+        content: @fa-var-chevron-right;
+      }
+      &.expanded {
+        ::before {
+          font-family: 'FontAwesome';
+          font-weight: 400;
+          font-size: 10px;
+          position: relative;
+          padding: 0px 8px 0px 0px;
+          top: -2px;
+          color: lighten(@meritcommons-sidebar-header-foreground, 35%);
+          content: @fa-var-chevron-down;
+        }
+      }
+    }
+  }
+}

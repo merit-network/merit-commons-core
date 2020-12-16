@@ -1,0 +1,65 @@
+%#    MeritCommons Portal
+%#    Copyright 2015 Wayne State University
+%#    All Rights Reserved
+
+    <script>
+        var identityServer = "<%== $self->global_config->{identity_server} %>";
+        var userId = <%== ($self->active_user) ? "'" . $self->active_user->unique_id . "'" : 'undefined' %>;
+        var PAGE_LOAD_ID = '<%= $self->new_uuid %>';
+        var REPLACE_EMOJI = false;
+        var MOBILE_PLATFORM = false;
+        var DISABLE_WEBSOCKETS = false;
+        var NOTIFICATION_SOUNDS = false;
+        var ENTER_TO_POST = false;
+        var EXTERNAL_BADGES = false;
+        var LINKS_IN_SAME_WINDOW = false;
+        var INBOUND_DEBUG = false;
+        var MERITCOMMONS_DEBUG = false;
+
+    % my $meritcommons_session = $self->meritcommons_session;
+    <% if ($meritcommons_session) { %>
+      <% if ($meritcommons_session->enable_emoji_images->first) { %>
+        REPLACE_EMOJI = true;
+      <% } %>
+      <% if ($meritcommons_session->orientation_supported->first && $meritcommons_session->touch_supported->first) { %>
+        MOBILE_PLATFORM = true;
+      <% } %>
+      <% unless ($meritcommons_session->websockets_supported->first) { %>
+        DISABLE_WEBSOCKETS = true;
+      <% } %>
+    <% } %>
+    <% if (my $user = $self->active_user) { %>
+      <% if (scalar($user->config('enter-to-post'))) { %>
+        ENTER_TO_POST = true;
+      <% } %>
+      <% if (scalar($user->config('notification-sounds'))) { %>
+        NOTIFICATION_SOUNDS = true;
+      <% } %>
+      <% if (scalar($user->config('external-badges'))) { %>
+        EXTERNAL_BADGES = true;
+      <% } %>
+      <% if (scalar($user->config('links-in-same-window'))) { %>
+        LINKS_IN_SAME_WINDOW = true;
+      <% } %>
+    <% } %>
+    <% if ($c->global_config->{inbound_debug}) { %>
+        INBOUND_DEBUG = true;
+    <% } %>
+    <% if ($ENV{MERITCOMMONS_DEBUG}) { %>
+        MERITCOMMONS_DEBUG = true;
+    <% } %>
+
+        var VALIDATION_ERRORS = {
+          "^[A-F0-9-]{36}$": "a valid UUID.",
+          "^[\\w\\.\\-]+$": "a valid user ID.",
+          "^[\\d\\.]+$": "a valid timestamp.",
+          "^\\d+$": "a valid integer.",
+          "^\\w+$": "a single word. (Can contain: a-z, A-Z, 0-9, and _)",
+          "^[\\w ]+$": "a valid phrase.",
+          "https?:\\/\\/[A-Za-z0-9_\\-\\#\\?\\&\\.\\/\\@\\:]+": "a valid URI (eg. http://meritcommons.io/path/to/resource).",
+          "^[\\w\\s\\.\\-\\&\\'\\@]+$": "a valid search string. (Can contain: a-z, A-Z, 0-9, _, ., -, &, ', @, and spaces)",
+          "^\\@[\\w\\.\\- ]+\\=*\\w*$": "a valid mention (eg. @First Last=userid).",
+          "^$": "a valid stream expression.",
+          "^[\\w\\s&]+$": "a valid stream name. (Can contain: a-z, A-Z, 0-9, _, and spaces)",
+        }
+    </script>

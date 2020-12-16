@@ -1,0 +1,51 @@
+<!-- LaTeX message -->
+<div class="feed-message" data-message-id="{{message.message_id}}">
+  <div class="pull-right btn-group">
+    <button class="feed-message-options-link btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" title="Message Options"><i class="fa fa-ellipsis-h"></i></button>
+  </div>
+
+  <a class="feed-message-avatar pull-left" href="{{{message.submitter_profile_url}}}" title="{{message.submitter_common_name}}">
+    <img class="media-object img-rounded" src="{{{message.submitter_profile_thumb_url}}}"/>
+  </a>
+
+  <div class="feed-message-header">
+    {{#message.subject}}
+      <h4 class="feed-message-subject">{{message.subject}}</h4>
+    {{/message.subject}}
+    <h4 class="media-heading">
+      <a class="meritcommons-user-link" href="{{{message.submitter_profile_url}}}">{{#message.masked}}<i class="fa fa-streams"></i> {{/message.masked}}{{message.submitter_common_name}}</a>
+      {{#message.stream_summary}}
+      <div class="btn-group stream-summary"> in <a href="#" class="stream-summary-link dropdown-toggle" data-toggle="dropdown" data-for-message="{{message.message_id}}">{{message.stream_summary}}</a></div>
+      {{/message.stream_summary}}
+      <span class="feed-time"> <span class="feed-time-bullet">&bull;</span> <a href="/m/{{#message.in_reply_to}}{{message.thread_id}}#m{{/message.in_reply_to}}{{message.message_id}}" title="Permalink" class="feed-time-stamp">{{message.abbr_ago}}</a></span>
+    </h4>
+  </div>
+
+  <div class="feed-message-body latex-body">
+    <div class="body message-read">{{{message.body}}}</div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <!-- /.media -->
+  <div class="feed-message-footer clearfix">
+    {{^message.read_only}}
+    <div class="upvote">
+      <span class="upvote-animation">+1</span>
+      <a href="#" class="feed-message-upvote-link btn btn-mini btn-link">Like <span class="count-text">{{message.upvotes}}</span></a>
+    </div>
+    <div class="downvote">
+      <span class="downvote-animation">-1</span>
+      <a href="#" class="feed-message-downvote-link btn btn-mini btn-link">Dislike <span class="count-text">{{message.downvotes}}</span></a>
+    </div>
+    <a href="#" class="feed-message-comments-link btn btn-mini btn-link">Comment <span class="count-text">{{message.number_of_replies}}</span></a>
+    {{/message.read_only}}  
+  </div>
+  <div class="feed-message-info">
+    &nbsp;
+  </div>
+</div>
+<div class="shadow-sandwich-bottom"></div>
+<!-- /.feed-message -->
+<!-- thread replies here -->
+<!-- /.feed (LaTeX Message) -->

@@ -1,0 +1,28 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% layout 'simple';
+% title 'Watchin a Stream!';
+
+<%== $self->mustags %>
+
+<script type="text/javascript">
+var conn;
+$(function() {
+   conn = new WebSocket('ws://127.0.0.1:3000/hydrant');
+
+   conn.onmessage = function (event) {
+        if (event.data != undefined) {
+          var data = jQuery.parseJSON(event.data);
+          $('#msgs').append(Mustache.render($('#mustache-' + data.template).html(), data));
+        }
+   };
+
+   conn.onclose = function () {
+      conn = new WebSocket('ws://127.0.0.1:3000/hydrant');
+   };
+});
+</script>
+
+<div id="msgs"><p>use <code>conn.send("")</code> to send subscriptions to the hydrant.</p></div>

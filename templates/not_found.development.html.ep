@@ -1,0 +1,21 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+% layout 'default';
+% title 'MeritCommons // Page Not Found';
+
+  <div class="container">
+    <div class="jumbotron">
+      <h1 class="page-header">404 in the 313</h1>
+      <p>
+        You managed to find a page that doesn't exist. Did someone send you
+        a link? Maybe they mistyped it. Did you type the URL yourself? Maybe
+        <i>you</i> mistyped it. In any case, it doesn't seem to be here.
+      </p>
+
+      <p>
+        If you're pretty confident that something should be here and it isn't, 
+        <a href="mailto:meritcommons@wayne.edu">let us know</a>.
+      </p>
+    </div>
+  </div>

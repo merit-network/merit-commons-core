@@ -1,0 +1,22 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% layout 'simple_nonav';
+
+<script>
+    var DISABLE_WEBSOCKETS = true;
+</script>
+
+<div id="content-wrapper" class="container">
+    <div class="well text-left">
+        <img style="float: left" src="<%= $self->asset_url('img/meritcommons_logo_48x48.png') %>"/>
+        <h2 style="padding-top: 0; margin-top: 0;"><%= $title %></h2>
+        <p><%= $message %></p>
+        <% if ($status_message) { %>
+            <div style="width: 100%; text-align: right">
+                <p>Note: <i><%= $status_message %></i></p>
+            </div>
+        <% } %>
+    </div>
+</div>

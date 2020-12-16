@@ -1,0 +1,3 @@
+<button class="btn btn-xs primary subscribe-embed" data-user-id="<%= $user->unique_id %>">
+    <i class="fa fa-user"></i> Follow <% $user->common_name %>
+</button>

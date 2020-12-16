@@ -1,0 +1,70 @@
+// MeritCommonsikey Format:
+// Each "Key" block consists of both signing and encryption keys.  Keys are stored in base64-encoded JSON.
+
+// public keys are stored in the public namespace, while possible to store both public and private keys in the same
+// keyblock, it's frowned upon, though it'd be perfectly acceptable on, say, a device that the user has 100% control
+// over.
+
+// Private keys should be stored AES encrypted if possible
+
+// locations /u/<user>/k direct access to this user's master "Public Key" block, users should be able to check their own signatures this way.  to check
+// for a revoked 
+
+// key signatures are hex encoded signing and encryption keys concatted together (sign + enc), and then sha512 hashed twice
+// the hash is then signed with the signer's private signing key.
+
+// all keys are hex encoded in all their forms as far as this document is concerned.
+{
+    "public": {
+        "sign": "facefacefacefaceface", // hex-encoded signing key
+        "enc": "facefacefacefaceface", // hex-encoded encryption key
+        "timestamp": 01234567, // epoch timestamp of when key was generated
+        "trusters": {
+            "<trusting_pubkey>": {
+                "authorities": ["https://meritcommons.wayne.edu/u/ak1520", "https://snu.gs/u/ak1520"],
+                "trust_level": 5,
+
+                // signed 2x sha512 of sign + enc + "TRUST"
+                "signed_hash": "deadbeefdeadbeefdeadbeef",
+                "validity": {
+                    "not_before": 01234567,
+                    "not_after": 01234567
+                }
+            }
+        },
+
+        "endorsements": {
+            "<endorsing_pubkey>": {
+                "authorities": ["https://meritcommons.wayne.edu/u/ak1520"],
+                "endorsed_for": "Excellent Employee",
+
+                // signs are 2x sha512 of sign + enc + "ENDORSE" + endorsed_for (where endorsed_for is something like 'Excellent Employee' or 'PhD in Physics')
+                "signed_hash": "deadbeefdeadbeefdeadbeef",
+                "validity": {
+                    "not_before": 01234567,
+                    "not_after": 01234567
+                }
+            }
+        },
+
+        // these are keys that this key can act as in most capacities (excepting creating and removing proxies, of course)
+        "proxyships": {
+            "<proxying_agent_pubkey>": {
+                "authorities": ["https://meritcommons.wayne.edu/u/ak1520"],
+
+                // same format as truster,  signed 2x sha512 of sign + enc + "PROXY"
+                "signed_hash": "deadbeefdeadbeefdeadbeef",
+                "validity": {
+                    "not_before": 01234567,
+                    "not_after": 01234567
+                }
+            }
+        }
+    }
+
+    "secret": {
+        "sign": "facefacefacefaceface", // hex-encoded signing key
+        "enc": "facefacefacefaceface", // hex-encoded encryption key
+        "timestamp": 01234567, // epoch timestamp of when key was generated
+    }
+}

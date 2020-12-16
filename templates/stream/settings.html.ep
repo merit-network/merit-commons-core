@@ -1,0 +1,238 @@
+%#	MeritCommons Portal
+%#	Copyright 2015 Wayne State University
+%#	All Rights Reserved
+
+% $c->stash(layout => 'default', backbone_view => 'views/stream/edit');
+% title 'Edit Stream';
+% my $stream = $self->stash('stream');
+% my $user = $self->active_user;
+% my $settings = $self->stash('settings');
+
+<script>
+	MeritCommons.stream_original_settings = <%== $settings %>;
+</script>
+
+<div id="content-wrapper" class="container stream-editor">
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1 well">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="streamSummaryHeading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#streamSummary" aria-expanded="true"  aria-controls="streamSummary">
+                                Summary of Stream Settings
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="streamSummary" class="panel-collapse collapse in" role="tabpanel" aria-labeledby="streamSummaryHeading">
+                        <div class="panel-body">
+                            <p>If you wish to change an option, clicking it in the table below will take you to the option.</p>
+                            <h4>Stream Information</h4>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Option</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><a data-toggle="collapse" data-parent="#accordion" href="#streamInfo"  aria-controls="streamInfo">Stream Name</a></td>
+                                        <td id="table-name"><%= $stream->common_name %></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a data-toggle="collapse" data-parent="#accordion" href="#streamInfo"  aria-controls="streamInfo">Stream URL</a></td>
+                                        <td id="table-url"><%= $stream->url_name %></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a data-toggle="collapse" data-parent="#accordion" href="#streamInfo"  aria-controls="streamInfo">Stream Description</a></td>
+                                        <td id="table-description"><%= $stream->description %></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a data-toggle="collapse" data-parent="#accordion" href="#streamInfo"  aria-controls="streamInfo">Stream Keywords</a></td>
+                                        <td id="table-keywords"><%= $stream->keywords %></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>Stream Permissions</h4>
+                             <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Option</th>
+                                        <th>Settings</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><a data-toggle="collapse" data-parent="#accordion" href="#streamPerms"  aria-controls="streamPerms">Stream is Private</a></td>
+                                        <td id="table-is-private"><%= $stream->private ? "Yes" : "No" %></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a data-toggle="collapse" data-parent="#accordion" href="#streamPerms"  aria-controls="streamPerms">List in Public Stream List</a></td>
+                                        <td id="table-is-listed"><%= $stream->show_publicly ? "Yes" : "No" %></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a data-toggle="collapse" data-parent="#accordion" href="#streamPerms"  aria-controls="streamPerms">Anyone can become a Member</a></td>
+                                        <td id="table-is-membership-open"><%= $stream->requires_subscriber_authorization ? "No" : "Yes" %></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a data-toggle="collapse" data-parent="#accordion" href="#streamPerms"  aria-controls="streamPerms">Members can Post</a></td>
+                                        <td id="table-membership-includes-authorship"><%= $stream->requires_author_authorization ? "No" : "Yes" %></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a data-toggle="collapse" data-parent="#accordion" href="#streamPerms"  aria-controls="streamPerms">Members can Invite</a></td>
+                                        <td id="table-members-can-invite"><%= $stream->members_can_invite ? "Yes" : "No" %></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a data-toggle="collapse" data-parent="#accordion" href="#streamPerms"  aria-controls="streamPerms">Moderate Invites</a></td>
+                                        <td id="table-invites-require-approval"><%= $stream->membership_requires_moderator_approval ? "Yes" : "No" %></td>
+                                    </tr>
+                                    <!-- ROLE RESTRICTIONS (coming soon)
+                                    <tr>
+                                        <td><a data-toggle="collapse" data-parent="#accordion" href="#streamPerms"  aria-controls="streamPerms">Role Restricted</a></td>
+                                        <td id="table-role-restricted"></td>
+                                    </tr>
+                                    -->
+                                </tbody>
+                            </table>
+                            <button class="save btn btn-success pull-right">Save Changes</button>
+                            <a class="cancel btn btn-danger pull-right" href="<%= url_for("/s/" . $stream->url_name)->to_abs %>">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="streamInfoHeading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#streamInfo" aria-expanded="false"  aria-controls="streamInfo">
+                                Modify Stream Information
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="streamInfo" class="panel-collapse collapse" role="tabpanel" aria-labeledby="streamInfoHeading">
+                        <div class="panel-body">
+                            <div class="form-group has-feedback">
+                                <label for="input-name">Stream Name</label>
+                                <input type="text" class="form-control" id="input-name" value="<%= $stream->common_name %>" aria-describedby="status-name" data-update="name" />
+                                <span class="form-control-feedback" style="display: none;" aria-hidden="true"><i class="fa fa-check"></i></span>
+                                <span id="status-name" class="sr-only">(success)</span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label for="input-url">Stream URL</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <%= url_for("/")->to_abs %>s/
+                                    </div>    
+                                    <input type="text" class="form-control" id="input-url" value="<%= $stream->url_name %>" aria-describedby="status-url" data-update="url" />
+                                </div>
+                                <span class="form-control-feedback" style="display: none;" aria-hidden="true"><i class="fa fa-check"></i></span>
+                                <span id="status-url" class="sr-only">(success)</span>
+                                <p>Tip: Shorter URLs are easier to remember and share.</p>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label for="input-description">Stream Description</label>
+                                <textarea class="form-control" rows="3" id="input-description" placeholder="Describe your stream here." aria-describedby="status-description" data-update="description"><%= $stream->description %></textarea>
+                                <span class="form-control-feedback" style="display: none;" aria-hidden="true"><i class="fa fa-check"></i></span>
+                                <span id="status-description" class="sr-only">(success)</span>
+                            </div>
+                             <div class="form-group has-feedback">
+                                <label for="input-keywords">Stream Keywords</label>
+                                <input type="text" class="form-control" id="input-keywords" placeholder="chemistry, explosions, awesome" value="<%= $stream->keywords %>" aria-describedby="status-keywords" data-update="keywords">
+                                <span class="form-control-feedback" style="display: none;" aria-hidden="true"><i class="fa fa-check"></i></span>
+                                <span id="status-keywords" class="sr-only">(success)</span>
+                                <p>Tip: This stream will show up when someone searches for one of the keywords above.</p>
+                            </div>
+                            <button class="save btn btn-success pull-right">Save Changes</button>
+                            <a class="cancel btn btn-danger pull-right" href="<%= url_for("/s/" . $stream->url_name)->to_abs %>">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="streamPermsHeading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#streamPerms" aria-expanded="false"  aria-controls="streamPerms">
+                                Modify Stream Permissions
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="streamPerms" class="panel-collapse collapse" role="tabpanel" aria-labeledby="streamPermsHeading">
+                        <div class="panel-body">
+                            <p>As you change some of the settings below, other settings may change and/or become disabled.</p>
+                            <div class="row">
+                                <div class="form-block col-xs-12 col-md-6">
+                                    <div class="well">
+                                        <div class="form-group">
+                                            <label for="streamPrivate">Should this stream be public or private?</label>
+                                            <p><input class="form-control" type="checkbox" value="<%= $stream->private %>" id="streamPrivate" data-update="is_private"></p>
+                                            <p class="help-block permInfo" >Public streams can viewed by anyone.</p>
+                                        </div>
+                                        <div class="child-option panel">
+                                            <div class="form-group">
+                                                <label for="streamList">Should this stream be listed on the <a href="<%= url_for("/")->to_abs %>streams" target="_blank">public stream list</a>?</label>
+                                                <p><input class="form-control" type="checkbox" value="<%= $stream->show_publicly %>" id="streamList" data-update="is_listed"></p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="streamMember">Should anyone be able to become a member of this stream?</label>
+                                                <p><input class="form-control" type="checkbox" value="<%= !$stream->requires_subscriber_authorization %>" id="streamMember" data-update="is_membership_open"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-block col-xs-12 col-md-6 pull-right">
+                                    <div class="well">
+                                        <div class="form-group">
+                                            <label for="streamPost">Should members of this stream be able post to it?</label>
+                                            <p><input class="form-control" type="checkbox" value="<%= !$stream->requires_author_authorization %>" id="streamPost" data-update="membership_includes_authorship"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-block col-xs-12 col-md-6 pull-right">
+                                    <div class="well">
+                                        <div class="form-group">
+                                            <label for="streamInvite">Should members of this stream be able to invite others?</label>
+                                            <p><input class="form-control" type="checkbox" value="<%= $stream->members_can_invite %>" id="streamInvite" data-update="members_can_invite"></p>
+                                        </div>
+                                        <div class="child-option panel">
+                                            <div class="form-group">
+                                                <label for="streamInviteModerate">Should invites to this stream have to be approved by a moderator?</label>
+                                                <p><input class="form-control" type="checkbox" value="<%= $stream->membership_requires_moderator_approval %>" id="streamInviteModerate" data-update="invites_require_approval"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-block col-xs-12 col-md-6">
+                                    <div class="well">
+                                        <div class="form-group">
+                                            <label for="streamListMembers">Should there be a list of members displayed in the sidebar of this stream?</label>
+                                            <p><input class="form-control" type="checkbox" value="<%= $stream->display_subscribers %>" id="streamListMembers" data-update="list_members"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ROLE RESTRICTIONS (coming soon)
+                            <div class="well">
+                                <div class="form-group">
+                                    <label for="streamRole">Restrict access to the stream based on role?</label>
+                                    <p class="help-block" >People who do not have the roles you specify will not be able to see the stream.</p>
+                                    <p><input class="form-control" type="checkbox" value="1" id="streamRole" data-update="role_restricted"></p>
+                                    <div class="child-option">
+                                         <label for="streamPermittedRoles">Permitted Roles:</label>
+                                        <p>
+                                            <select id="streamPermittedRoles" style="width: 50%;" class="streamRole" multiple="multiple" disabled>
+                                                % my $roles = $self->app->m->resultset('User::Role');
+                                                % while (my $role = $roles->next) {
+                                                    <option value="<%= $role->id %>"><%= $role->common_name %></option>
+                                                % }
+                                            </select>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        -->
+                        <button class="save btn btn-success pull-right">Save Changes</button>
+                        <a class="cancel btn btn-danger pull-right" href="<%= url_for("/s/" . $stream->url_name)->to_abs %>">Cancel</a>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>

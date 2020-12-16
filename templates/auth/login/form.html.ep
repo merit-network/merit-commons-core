@@ -1,0 +1,16 @@
+  <form class="form-signin" action="/auth" method="post">
+    <h1 class="form-signin-heading"><%= $heading_title %></h1>
+    <% if ($invalid_login) { %>
+      <div class="form-signin-message lead muted">
+        Invalid Login
+      </div>  
+    <% } elsif ($message) { %> 
+      <div class="form-signin-message lead muted">
+        <%= $message %>
+      </div>
+    <% } %>
+    <input name="username" type="text" class="form-control" placeholder="Username" autofocus="">
+    <input name="password" type="password" class="form-control" placeholder="Password">
+    <input type="hidden" name="back" value="<%= $back %>">
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+  </form>

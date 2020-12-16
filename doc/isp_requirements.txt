@@ -1,0 +1,10 @@
+1). We don't care what's used on the back-end (VMWare, Xen, OpenVZ), so long as we get all the resources allocated to us
+2). Ideally, we'd like to be billed for CPU time used, but being billed for "time a machine is powered on" is acceptable
+3). We need a web API for provisioning our own instances and providing our application with access to these nodes (SSH keys, or even passwords)
+4). Everything we do, we will do in software (HAproxy, nginx, Mojolicious, Postgres), we will not need any special-purpose hardware
+5). We need 10 gig bandwidth (at the minimum) between our nodes, and please do expect that we will use that bandwidth (and do not penalize us)
+6). We want to have an Amazon Glacier type service to back up to, with similar pricing
+7). We plan to have either a mountable storage or an Amazon S3 type storage for file storage
+8). We want to build DR into the deployment (Amazon's costal datacenters make a lot of sense)
+9). We want to be able to have a web interface to initiate a "new installation" of MeritCommons for a third party
+10). Plan to allow us to scale to 128 nodes w/ 2 cores and 2GB of ram each, per installation

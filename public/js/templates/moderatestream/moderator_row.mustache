@@ -1,0 +1,14 @@
+<!-- Moderator row -->
+
+<tr user="{{meritcommons_user.unique_id}}">
+  <td><a href="/u/{{meritcommons_user.unique_id}}">{{meritcommons_user.common_name}}</a></td>
+  <td><input class="{{#my_own_mod}}stream-moderate-super-moderator-myself{{/my_own_mod}}{{^my_own_mod}}stream-moderate-super-moderator{{/my_own_mod}}" type="checkbox" data-what="moderatorship" data-action="powerup" data-stream-id="{{stream.unique_id}}" data-user-unique-id="{{meritcommons_user.unique_id}}" {{#allow_add_moderator}}checked{{/allow_add_moderator}} {{#last_moderator}}disabled{{/last_moderator}} /></td>
+  <td>
+    {{#last_moderator}}
+      Can&#39;t remove the last moderator with &quot;Can manage moderators&quot;&#33;
+    {{/last_moderator}}
+    {{^last_moderator}}
+      {{>remove_button}}
+    {{/last_moderator}}
+  </td>
+</tr>

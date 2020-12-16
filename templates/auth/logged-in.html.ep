@@ -1,0 +1,10 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% layout 'simple';
+% title 'You logged in!';
+
+<div class="row">
+  Hey.
+</div>

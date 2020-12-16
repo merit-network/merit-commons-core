@@ -1,0 +1,95 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% layout 'default';
+% title 'System Information';
+<div id="content-wrapper" class="container-fluid">
+<div class="row">
+    <div class="col-lg-offset-2 col-lg-8">
+    <h4>System Information <small>MeritCommons Version <%= $self->app->VERSION %> (<%= $MeritCommons::CODENAME %>) <%= $MeritCommons::RELEASE ? "\"$MeritCommons::RELEASE\"" : ""%> on <%= $self->app->config('hostname') %></small></h4>
+
+    <table class="table table-bordered table-hover table-striped">
+        <tr><td>Backend Database</td><td><%= $self->m->storage->dbh->{Driver}->{Name} %></td></tr>
+        <tr><td>Configured Data Stream</td><td><%= $self->config->{database_connect_info}->{primary}->[0] %></td></tr>
+        <tr><td>Schema Version</td><td><%= $self->m->version %></td></tr>
+        <tr><td>Internal System Version Number</td><td><%= $self->app->VERSION %> (<%= $MeritCommons::CODENAME %>)</td></tr>
+        <% if ($MeritCommons::RELEASE) { %><tr><td>Release</td><td><%= $MeritCommons::RELEASE %></td></tr><% } %>
+        <tr><td>Configured Authentication Provider</td><td><%= $self->app->config->{authentication_provider} %></td></tr>
+        <tr><td>System Message Stream Name</td><td><%= $self->app->stream(1)->common_name %></td></tr>
+        <tr><td>System Message Stream UUID</td><td><%= $self->app->stream(1)->unique_id %></td></tr>
+        <tr><td>Publisher FIFO</td><td><%= $self->app->publisher_fifo_path %></td></tr>
+        <tr><td>Publisher PID</td><td><%= $self->app->publisher_pid %></td></tr>
+        <tr><td>Notifier FIFO</td><td><%= $self->app->notifier_fifo_path %></td></tr>
+        <tr><td>Notifier PID</td><td><%= $self->app->notifier_pid %></td></tr>
+        <tr><td>Mojolicious Version</td><td><%= $Mojolicious::VERSION %> (<%= $Mojolicious::CODENAME %>)</td></tr>
+        <tr><td>DBIx::Class Version</td><td><%= $DBIx::Class::VERSION %></td></tr>
+        <% my @uids = $self->app->running_as_user; %>
+        <tr><td>System Running As User</td><td><%= $uids[0] %> (<%= $uids[1] %>)</td></tr>
+        <tr><td># of users provisioned</td><td><%= $self->app->m->resultset('User')->count %></td></tr>
+        <tr><td># of message streams</td><td><%= $self->app->m->resultset('Stream')->count %></td></tr>
+        <tr><td>Build ID</td><td><%= $self->app->build_id %></td></tr>
+        <tr><td># of messages</td><td><%= $self->app->m->resultset('Stream::Message')->count %></td></tr>
+        <% if ($self->app->m->resultset('Stream::Message')->search({},{rows => 1})->first) { %>
+            <% my $earliest_post_time = $self->app->m->resultset('Stream::Message')->search({},{order_by => 'post_time asc', rows => 1})->first->post_time; %>            
+            <% my $latest_post_time = $self->app->m->resultset('Stream::Message')->search({}, {order_by => 'post_time desc', rows => 1, order_by => {-desc => ['post_time']}})->first->post_time; %>
+            <tr><td>Messages Per Second</td><td><%= sprintf("%.4f", $self->app->m->resultset('Stream::Message')->count / (time - $earliest_post_time)) %></td></tr>
+        <% } %>
+        <% if ($self->app->m->resultset('Session')->first) { %> 
+            <% my $earliest_login = $self->app->m->resultset('Session')->search({}, {rows => 1})->first->create_time; %> 
+            <% my $latest_login = $self->app->m->resultset('Session')->search({}, {rows => 1, order_by => {-desc => ['create_time']}})->first->create_time; %> 
+            <tr><td>last login time</td><td><%= localtime($latest_login) %></td></tr> 
+            <tr><td>number of logins per second or something</td><td><%= ($latest_login - $earliest_login) > 0 ? $self->app->m->resultset('Session')->count / ($latest_login - $earliest_login) : "Can't calculate!" %></td></tr> 
+            <% } %> 
+        <tr><td>other fun metrics</td><td>2 + 2 = 4</td></tr> 
+    </table>
+    <% if (my $meritcommons_sys = stash 'meritcommons_sys') { %>
+        <h4>MeritCommons System Environment ("sys") <small>Version <%= $meritcommons_sys->{version} %></small></h4>
+        <table class = "table table-bordered table-hover table-striped">
+            <tr>
+                <th>Component</th>
+                <th>Version</th>
+            </tr>
+            <% foreach my $key (keys %{$meritcommons_sys->{components}}) { %>
+                <tr>
+                    <td><%= $key %></td>
+                    <td><%= $meritcommons_sys->{components}->{$key} %></td>
+                </tr>
+            <% } %>
+        </table>
+    <% } %>
+    <% if ($ENV{MERITCOMMONS_DEBUG}) { %>
+        <h4>Query Information</h4>
+        <table class = "table table-bordered table-hover table-striped">
+            <% my $ana = DBIx::Class::QueryLog::Analyzer->new({ querylog => $self->app->ql }); %>
+            <tr>
+                <th>Elapsed</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+            </tr>
+            <% foreach my $query (@{$ana->get_sorted_queries}) { %>
+                <tr>
+                    <td>
+                        <%= $query->time_elapsed %>
+                    </td>
+                    <td>
+                        <%= $query->start_time %>
+                    </td>
+                    <td>
+                        <%= $query->end_time %>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <%= $query->sql %>
+                    </td>
+                </tr>
+            <% } %>
+        </table>
+    <% } %>
+    <% if ($self->app->mode eq "development") { %>
+        <a href="/schema/">View Current Schema</a>
+    <% } %>
+    </div>
+</div>
+</div>

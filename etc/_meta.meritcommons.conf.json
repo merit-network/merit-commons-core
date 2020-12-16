@@ -1,0 +1,381 @@
+// metadata file for meritcommons.conf
+// carefully created by hand by mikey g, april 2016
+{
+    "attributes": {
+        "words_file": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": "/usr/share/dict/words",
+            "categories": ["misc"],
+            "label": "System Dictionary Path",
+            "description": "an english dictionary of words"
+        },
+        "max_message_size": {
+            "type": "integer",
+            "multi_value": false,
+            "default_value": 102400000,
+            "categories": ["server-tuneables"],
+            "label": "HTTP Request Size (bytes)",
+            "description": "web server config, the size of the largest HTTP request (limits file uploads)"
+        },
+        "websocket_inactivity_timeout": {
+            "type": "integer",
+            "multi_value": false,
+            "default_value": 3600,
+            "categories": ["server-tuneables"],
+            "label": "WebSocket Inactivity Timeout (Seconds)",
+            "description": "the number of seconds a websocket can be idle before it is automatically closed by the server"
+        },
+        "advertised_websocket": {
+            "type": "url",
+            "multi_value": false,
+            "default_value": "ws://localhost:3000",
+            "default_value_template": "{{#https_enabled}}wss://{{/https_enabled}}{{^https_enabled}}ws://{{/https_enabled}{{hostname}}{{#port}}:{{port}}{{/port}}/hydrant",
+            "categories": ["service-config"],
+            "label": "Advertised WebSocket",
+            "description": "the URL this server will direct users to for MeritCommons realtime WebSocket connections"
+        },
+        "administrator_email": {
+            "type": "email",
+            "multi_value": false,
+            "default_value": "mike@detcw.com",
+            "categories": ["system-info", "administrator"],
+            "label": "Administrator's Email Address",
+            "description": "the email address of the system administrator of this installation"
+        },
+        "administrator_common_name": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": "Michael Gregorowicz",
+            "categories": ["system-info", "administrator"],
+            "label": "Administrator's Name",
+            "description": "the common name (first and last) of the administrator of this installation"
+        },
+        "service_country": {
+            "type": "string",
+            "multi_value": false,
+            "placeholder": "US",
+            "categories": ["system-info", "organization"],
+            "label": "Country",
+            "description": "the country the organization that provides this service operates from"        
+        },
+        "service_locality": {
+            "type": "string",
+            "multi_value": false,
+            "placeholder": "Detroit",
+            "categories": ["system-info", "organization"],
+            "label": "Locality",
+            "description": "the city the organization that provides this service operates from" 
+        },
+        "service_state": {
+            "type": "string",
+            "multi_value": false,
+            "placeholder": "Michigan",
+            "categories": ["system-info", "organization"],
+            "label": "State/Provence",
+            "description": "the state or provence the organization that provides this service operates from"        
+        },
+        "service_organization": {
+            "type": "string",
+            "multi_value": false,
+            "placeholder": "Wayne State University",
+            "categories": ["system-info", "organization"],
+            "label": "Organization",
+            "description": "the organization hosting this service"     
+        },
+        "service_organizational_unit": {
+            "type": "string",
+            "multi_value": false,
+            "placeholder": "Computing & Information Technology",
+            "categories": ["system-info", "organization"],
+            "label": "Organizational Unit",
+            "description": "the department or organizational unit within the organization that is responsible for this service" 
+        },
+        "hostname": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": "localhost",
+            "categories": ["service-config"],
+            "label": "Hostname",
+            "description": "the fully qualified hostname of this server"
+        },
+        "port": {
+            "type": "integer",
+            "multi_value": false,
+            "default_value": 3000,
+            "categories": ["service-config"],
+            "label": "Port",
+            "description": "the port number the MeritCommons web server should bind to, leave blank if 80 or 443"
+        },
+        "system_title": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": "MeritCommons",
+            "categories": ["system-info"],
+            "label": "System Title",
+            "description": "the title of this installation e.g. SocialNet, Collaborate, WeJibe"
+        },
+        "https_enabled": {
+            "type": "boolean",
+            "multi_value": false,
+            "default_value": false,
+            "categories": ["service-config", "ssl"],
+            "label": "Enable HTTPS",
+            "description": "set this to indicate that MeritCommons is configured to use https"
+        },
+        "identity_server": {
+            "type": "url",
+            "multi_value": false,
+            "default_value": "http://localhost:3000",
+            "default_value_template": "{{#https_enabled}}https://{{/https_enabled}}{{^https_enabled}}http://{{/https_enabled}{{hostname}}:{{#port}}:{{port}}{{/port}}",
+            "categories": ["service-config"],
+            "label": "Identity Server",
+            "description": "the URL of the server to use for IDENTIFY lookups; must be publically accessible"
+        },
+        "front_door_url": {
+            "type": "url",
+            "multi_value": false,
+            "default_value": "http://localhost:3000",
+            "default_value_template": "{{#https_enabled}}https://{{/https_enabled}}{{^https_enabled}}http://{{/https_enabled}{{hostname}}:{{#port}}:{{port}}{{/port}}",
+            "categories": ["service-config"],
+            "label": "Front Door URL",
+            "description": "the URL that users will use to get to the 'front door' of the application, e.g. the URL to the load balancer"
+        },
+        "front_door_host": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": "localhost",
+            "default_value_template": "{{hostname}}",
+            "categories": ["service-config"],
+            "label": "Front Door Host",
+            "description": "the Host: of the front door url, used to redirect connections that come in from alternate names"
+        },
+        "forgot_password_link": {
+            "type": "url",
+            "multi_value": false,
+            "default_value": "",
+            "categories": ["service-config"],
+            "label": "Forgot Password Tool",
+            "description": "the URL to an enterprise-wide 'forgot my password' tool"
+        },
+        "help_link": {
+            "type": "url",
+            "multi_value": false,
+            "default_value": "",
+            "categories": ["service-config"],
+            "label": "Help URL",
+            "description": "the URL linking to a knowledge base or help for the MeritCommons service at your organization"
+        },
+        "force_ssl": {
+            "type": "boolean",
+            "multi_value": false,
+            "default_value": false,
+            "categories": ["service-config"],
+            "label": "Redirect HTTP to HTTPS",
+            "description": "set this to enable automatic HTTP -> HTTPS redirection"
+        },
+        "authentication_provider": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": "MeritCommons::Helper::LocalAuth",
+            "categories": ["service-config", "authentication"],
+            "label": "Authentication Provider",
+            "description": "the class to use to provide authentication of users (may be a plugin)"
+        },
+        "flock_syslog": {
+            "type": "string",
+            "multi_value": true,
+            "default_value": null,
+            "categories": ["logging", "syslog"],
+            "label": "Access Syslog Hosts",
+            "description": "syslog targets for HTTP access logs"
+        },
+        "auth_log_syslog": {
+            "type": "string",
+            "multi_value": true,
+            "default_value": null,
+            "categories": ["logging", "syslog"],
+            "label": "Authentication Syslog Hosts",
+            "description": "syslog targets for authentication logs"
+        },
+        "error_log_syslog": {
+            "type": "string",
+            "multi_value": true,
+            "default_value": null,
+            "categories": ["logging", "syslog"],
+            "label": "Error Syslog Hosts",
+            "description": "syslog targets for error logs"
+        },
+        "audit_log_syslog": {
+            "type": "string",
+            "multi_value": true,
+            "default_value": null,
+            "categories": ["logging", "syslog"],
+            "label": "Audit Syslog Hosts",
+            "description": "syslog targets for audit/event logs"
+        },
+        "session_length": {
+            "type": "integer",
+            "multi_value": false,
+            "default_value": 28800,
+            "categories": ["service-config"],
+            "label": "Session Length (Seconds)",
+            "description": "the number of seconds a session can be idle before it is marked expired"
+        },
+        "access_log": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": "/var/log/meritcommons_access.log",
+            "default_value_template": "{{$MERITCOMMONS_HOME}}/logs/meritcommons_access.log",
+            "categories": ["logging", "logfile"],
+            "label": "Access Log File",
+            "description": "full path to access log file"  
+        },
+        "error_log": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": "/var/log/meritcommons_error.log",
+            "default_value_template": "{{$MERITCOMMONS_HOME}}/logs/meritcommons_error.log",
+            "categories": ["logging", "logfile"],
+            "label": "Error Log File",
+            "description": "full path to error log file"  
+        },
+        "auth_log": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": "/var/log/meritcommons_auth.log",
+            "default_value_template": "{{$MERITCOMMONS_HOME}}/logs/meritcommons_auth.log",
+            "categories": ["logging", "logfile"],
+            "label": "Authentication Log File",
+            "description": "full path to authentication log file"  
+        },
+        "audit_log": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": "/var/log/meritcommons_audit.log",
+            "default_value_template": "{{$MERITCOMMONS_HOME}}/logs/meritcommons_audit.log",
+            "categories": ["logging", "logfile"],
+            "label": "Audit Log File",
+            "description": "full path to audit/event log file"  
+        },
+        "cookie_domain": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": "example.meritcommons.io",
+            "default_value_template": "{{front_door_host}}",
+            "categories": ["service-config"],
+            "label": "Cookie Domain",
+            "description": "the domain we issue MeritCommons Session cookies for"  
+        },
+        "cookie_top_domain": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": ".meritcommons.io",
+            "default_value_template": "",
+            "categories": ["service-config"],
+            "label": "Cookie Top Domain",
+            "description": "domain we issue federated cookies for, usually begins with a ."  
+        },
+        "deployment_profile": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": "standard.idp",
+            "categories": ["service-config"],
+            "label": "Instance Deployment Profile",
+            "description": "this is a special string of the format deployment_type.service_role, where the deployment type is one of many values, canonical values would be 'development', 'standard', or 'mini', or 'flock', but meaningfully they allow a second configuration named with the same name as the value to be loaded on top of meritcommons.conf.  in a way it's a way to override a base config with a type of deployment derived from that config.  the SSO role is used by the various single sign on plugins and controllers to determine how the instance will respond to a given request"          
+        },
+        "local_asset_path": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": "/usr/local/meritcommons/var/public",
+            "default_value_template": "{{$MERITCOMMONS_HOME}}/../var/public",
+            "categories": ["service-config"],
+            "label": "Local Asset Path",
+            "description": "when assets are being saved and served locally, this is the base directory where they're stored; no trailing slash"  
+        },
+        "external_asset_path": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": "/usr/local/meritcommons/var/s3",
+            "default_value_template": "{{$MERITCOMMONS_HOME}}/../var/s3",
+            "categories": ["service-config"],
+            "label": "External Storage Path",
+            "description": "path to mounted external asset storage (overrides local_asset_path); no trailing slash"  
+        },
+        "external_asset_base": {
+            "type": "url",
+            "multi_value": false,
+            "default_value": "https://s3.amazonaws.com/test.meritcommons.io/", // note trailing slash
+            "default_value_template": null,
+            "categories": ["service-config"],
+            "label": "External Storage Base URL",
+            "description": "base URL of external asset storage service; this should map to the base of external_asset_path; requires trailing slash"  
+        },
+        "memcached_servers": {
+            "type": "string",
+            "multi_value": true,
+            "default_value": [ "127.0.0.1:11211" ],
+            "default_value_template": null,
+            "categories": ["service-config"],
+            "label": "addresses or host names of memcached servers to use for caching",
+            "description": "arrayref of one or more Memcached servers to connect to, toggles on Mojo::Cache if not set, if set toggles on Cache::Memcached::Fast"  
+        },
+        "publish_to": {
+            "type": "string",
+            "multi_value": true,
+            "default_value": ["ipc:///var/tmp/1313"],
+            "default_value_template": null,
+            "categories": ["service-config", "messaging"],
+            "label": "Publishers (Publish To)",
+            "description": "arrayref of ZeroMQ URLs the publisher should publish to.  using a value of flock://find_publisher asks FlockVPN to configure the multicast address for you.  You should always include 'ipc:///var/tmp/1313', so local subscribers get events too as there is no loopback multicast"  
+        },
+        "publishers": {
+            "type": "string",
+            "multi_value": true,
+            "default_value": ["ipc:///var/tmp/1313"],
+            "default_value_template": null,
+            "categories": ["service-config", "messaging"],
+            "label": "Publishers (Subscribe To)",
+            "description": "same rules and format as <publish_to>, this is the list of publishers local subscribers should subscribe to"  
+        },
+        "user": {
+            "type": "string",
+            "multi_value": false,
+            "default_value": "meritcommons",
+            "default_value_template": null,
+            "categories": ["service-config"],
+            "label": "Service User",
+            "description": "user MeritCommons and related services should run as"  
+        },
+        "ldap_priv_bind_dn": {
+
+        },
+        "ldap_priv_bind_pass": {
+
+        },
+        "ldap_host": {
+
+        },
+        "ldap_scheme": {
+
+        },
+        "ldap_port": {
+
+        },
+        "ldap_base_dn": {
+
+        },
+        "ldap_user_search_filter": {
+
+        },
+        "ldap_unique_id_field": {
+
+        },
+        "system_maintenance_notice_schedule": {
+            "type": "complex",
+            "multi_value": false,
+            "label": "System Maintenance Notice Schedule",
+            "description": "The content of the system maintenenance notice schedule and when it appears/disappears."
+        }
+    }
+}

@@ -1,0 +1,58 @@
+%#    MeritCommons Portal
+%#    Copyright 2015 Wayne State University
+%#    All Rights Reserved
+
+% extends 'coins/layout', backbone_view => 'views/coins/transfer', page => 'transfer';
+% title 'MeritCommonscoin Transfer';
+
+% content_for coin_body => begin
+
+<div class="col-md-12 panel panel-default coin-transfer">
+    <div class="panel-body">
+        <h2>Transfer MeritCommonscoins</h2>
+        <p>Send MeritCommonscoins to other users. Please fill in all of the required* fields.</p>
+        % stash es_config => { name => 'recipient', label => 'Recipient*', class => 'form-control', search_contexts => ['subscribed_with_me', 'global'] };
+        <%= include 'widgets/entity_select'; %>
+        <div class="form-group">
+            <label class="control-label">Amount*</label>
+            <input type="text" class="form-control" name="amount" id="amount" placeholder="0">
+        </div>
+        <button type="submit" name="transfer" id="transfer" class="btn btn-success">Transfer</button>
+        <hr />
+        <h3>Latest Transfers</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Recipient</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                % my $transactions = $self->m->resultset('User::MeritCommonscoinTransaction')->search(
+                %    { 
+                %        meritcommons_user => $self->active_user->id,
+                %        role => "sender",
+                %    }, 
+                %    {
+                %        order_by => {
+                %            "-desc" => ["me.create_time"]
+                %        },
+                %    },
+                % );
+                % if ($transactions) {
+                    % while (my $transaction = $transactions->next) {
+                        <tr>
+                            % my @time = localtime($transaction->create_time);
+                            <td><%= ($time[4] + 1) . "/" . $time[3] . "/" . ($time[5] + 1900) %></td>
+                            <td><%= $transaction->second_party->common_name %></td>
+                            <td><%= int($transaction->amount) %></td>
+                        </tr>
+                    % }
+                % }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+% end

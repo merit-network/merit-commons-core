@@ -1,0 +1,49 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% $c->stash(layout => 'default', backbone_view => 'views/message/default');
+%
+% my $payloads = $self->stash('payloads');
+%
+% title "$payloads->[0]->{submitter_common_name}'s Thread";
+%
+% my $js_sup;
+% if (my $session = $self->meritcommons_session) {
+%     $js_sup = $self->meritcommons_session->first_attribute_value('javascript_supported');
+% }
+%
+
+<script>
+    var subscriptions = [];
+    var messages = <%== $self->json_encode($payloads) %>;
+
+    // this toggles off the delete 'x' in the upper right, as the delete functionality
+    // can't work without a stream/subscription context.
+    var show_deletes = false;
+
+    // this toggles off the functionality that deletes messages that don't belong in a
+    // stream context.
+    var stream_context = false;
+</script>
+
+<div id="content-wrapper" class="container merge-container"<% if ($js_sup) { %> style="display: none"<% } %>>
+  <div class="row">
+    <div class="col-lg-12">
+      <!-- Main Content (MESSAGES GO HERE!)
+      ======================= -->
+      <div id="messages-go-here">
+      <% foreach my $payload (@$payloads) { %>
+        <div class="thread" id="<%= $payload->{message_id} %>">
+          <div class="thread-parent">
+            <div date="<%= $payload->{post_time} %>" class="feed message">
+              <%== $self->render_mustache("message/$payload->{render_as}", { message => $payload }) %>
+            </div>
+          </div>
+        </div>
+      <% } %>
+      </div>
+    </div>
+  </div>
+  %= include 'common/inbound'
+</div>

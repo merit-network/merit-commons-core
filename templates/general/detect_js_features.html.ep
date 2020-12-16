@@ -1,0 +1,29 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% $c->stash(layout => 'simple_nonav', backbone_view => 'views/common/detect_features');
+% title 'MeritCommons is Detecting Features!';
+% my $back = b(stash('back'));
+<script>
+    var DISABLE_WEBSOCKETS = true;
+    window.backTo = '<%= $back %>';
+    window.hixie76 = '<%= $self->hixie76 %>';
+</script>
+<style>
+.detecting {
+  position: absolute;
+  left:0;right:0;top:45%;
+  text-align: center;
+}
+</style>
+
+<noscript>
+    <meta id="detect-features-meta-refresh" http-equiv="refresh" content="2;URL='/session_variable?_cb=<%= time %>&features_detected=1&back=<%= $back %>'">
+</noscript>
+
+<div class="detecting">
+  <img src="<%= $self->asset_url('img/meritcommons-tiny.png') %>" alt="Please wait... detecting features"/>
+  <div id="detect-features-notice">MeritCommons is Detecting Features...</div>
+  <img src="<%= $self->asset_url('img/meritcommons_horizontal_busy.gif') %>" alt="Busy indicator"/>
+</div>

@@ -1,0 +1,59 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>MeritCommons // Internal Server Error</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Le fonts -->
+    <link href="/css/fonts.css" rel="stylesheet">
+    <!-- Le styles -->
+    <% if ($self->app->mode eq "development") { %>
+    <link rel="stylesheet/less" type="text/css" href="<%= $self->development_css_bundle %>">
+    <script type="text/javascript" src="/js/dev/less.js"></script>
+    <% } else { %>
+    <link rel="stylesheet" href="<%= $self->production_css_bundle %>">
+    <% } %>
+    <link href="/css/stylesheet.css" rel="stylesheet">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>We Broke It</h1>
+            % my $error_id;
+            % if (my $msg = $exception->message) {
+            %     ($error_id) = $msg =~ /Error ID: ([A-F0-9-]{36})/i;
+            % }
+            % my $mail_subject = "MeritCommons Error Report";
+            % my $mail_body = ($error_id ? "Error ID: $error_id%0A" : "") . "Error Time: @{[scalar gmtime]} UTC%0A%0A%0A";
+            <p>
+                Something's gone wrong, and things didn't happen like they should
+                have, and the site broke. Try loading the page again, and if it
+                still won't work, <a href="mailto:meritcommons@wayne.edu?subject=<%== $mail_subject %>&body=<%== $mail_body %>"><strong>let us know</strong></a>.
+            </p>
+            <% if (my $msg = $exception->message) { %>
+                <div class="well">
+                    <h2>Error Details</h2>
+                    <p>
+                    <%== $msg %>
+                    </p>
+                <div>
+            <% } else { %>
+                <p>
+                    If you got this message after clicking a link, it probably wouldn't hurt to check the
+                    <a href="https://computing.wayne.edu/status/"><strong>system status page</strong></a>
+                    to see if the downstream system is currently down or undergoing maintenance.
+                </p>
+            <% } %>
+        </div>
+    </div>
+</body>

@@ -1,0 +1,86 @@
+% my $user = $self->active_user;
+% my $stream = $self->stash('stream');
+% my $is_sub = $user->is_subscriber($stream);
+% my $is_aut = $user->is_author($stream);
+% my $has_inv = $user->invites->find({ stream => $stream });
+% my $can_inv = $is_sub && $stream->members_can_invite == 1;
+% my $is_mod = $user->can_moderate($stream);
+% my $is_btn_group = $can_inv || $is_mod;
+
+<% if (($stream->type && $stream->type ne "role") || !$stream->type) { %>
+  <div class="stream-context-buttons">
+    <%== $is_btn_group ? '<div class="btn-group" role="group">' : '' %>
+      <% if ($has_inv) { %>
+        <% my $inviter = $has_inv->inviter; %>
+        <div class="btn-group stream-context-group" role="group">
+          <button type="button" class="btn dropdown-toggle meritcommons-button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+            Respond to Invite
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="respond-to-invite" data-action="respond" data-response="accept" data-stream-id="<%= $stream->unique_id %>">
+                Accept Invite
+              </a>
+            </li>
+            <li>
+              <a class="respond-to-invite" data-action="respond" data-response="decline" data-stream-id="<%= $stream->unique_id %>">
+                Decline Invite
+              </a>
+            </li>
+            <li class="divider"></li>
+            <li><a href="/u/<%= $inviter->userid %>">Invited by <%= $inviter->common_name %></a></li>
+          </ul>
+        </div>
+      <% } else { %>
+        <div class="btn-group stream-context-group" role="group">
+          <button type="button" class="btn dropdown-toggle meritcommons-button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+            Membership
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <!-- Subscription -->
+            <li>
+              <a class="request-membership" data-action="<%= $is_sub?'remove':'add' %>" data-permission="membership" data-stream-id="<%= $stream->unique_id %>">
+                <% if ($is_sub) { %>
+                  Remove Membership
+                <% } else { %>
+                  <%= $stream->requires_subscriber_authorization ? 'Request Membership' : 'Become a Member' %>
+                <% } %>
+              </a>
+            </li>
+            <!-- Authorship -->
+            <% if ($is_sub && !$is_aut) { %>
+              <li>
+                <a class="request-authorship" data-action="add" data-permission="authorship" data-stream-id="<%= $stream->unique_id %>">
+                  Request Authorship
+                </a>
+              </li>
+            <% } %>
+          </ul>
+        </div>
+      <% } %>
+      <% if ($can_inv || $is_mod) { %>
+        <div class="btn-group stream-context-group" role="group">
+          <button type="button" class="btn dropdown-toggle meritcommons-button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+            Invite
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu invite-dropdown">
+            <% stash es_config => { search_contexts => ['subscribed_with_me', 'im_following', 'global'], multiple => 1, label => "Invite User(s) to " . $stream->common_name, name => "invitee-search", class => ""}; %>
+            <%= include 'widgets/entity_select'; %>
+            <button class="invite-to-stream btn meritcommons-button" data-action="invite" data-stream-id="<%= $stream->unique_id %>">
+              Invite
+            </button><br />
+            <% if ($stream->membership_requires_moderator_approval) { %>
+              <small>Invites require moderator approval.</small>
+            <% } %>
+          </ul>
+        </div>
+        <% if ($is_mod) { %>
+          <a href="<%= $self->url_for('get_stream') . '/m' %>" class="btn meritcommons-button stream-context-btn">Moderation</a>
+        <% } %>
+      <% } %>
+    <%== $is_btn_group ? '</div>' : '' %>
+  </div>
+<% } %>

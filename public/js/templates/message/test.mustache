@@ -1,0 +1,15 @@
+<ul>
+  <li>Body: {{#message}}{{body}}{{/message}}</li>
+  {{#submitter_common_name}}
+  <li>Submitter: {{#message}}{{submitter_common_name}}{{/message}}</li>
+  {{/submitter_common_name}}
+  {{#message_id}}
+  <li>MessageId: {{#message}}{{message_id}}{{/message}}</li>
+  {{/message_id}}
+  {{#stream_id}}
+  <li>StreamId: {{#message}}{{stream_id}}{{/message}}</li>
+  {{/stream_id}}
+  {{#server_rendered_mustache}}
+  <li>Server Rendered Mustache: {{#message}}{{server_rendered_mustache}}{{/message}}</li>
+  {{/server_rendered_mustache}}
+</ul>

@@ -1,0 +1,80 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% layout 'default';
+% my $user = $self->active_user;
+% title 'Aliases';
+% my $aliases = stash 'aliases';
+
+<script>
+    // we're loading the hydrant for notifications, so make sure to tell the hydrant that we're
+    // not in stream context, and that we have no subscriptions.
+    var subscriptions = [];
+    var stream_context = false;
+</script>
+
+<div id="content-wrapper" class="container">
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8 col-xs-12 general-panel">
+            <h1>Current Aliases</h1>
+            %= include 'common/flashes'
+
+            <p>
+                Create aliases for users you want to mention frequently by
+                typing @ then the nickname of the person and then type
+                an = (equal) sign followed by the user's user name.
+                In the future, you can just type @ then the
+                nickname. Your nicknames are unique to your account.
+            </p>
+            <p>
+                For example, imagine Jane Smith has the username zz9999.
+                Type "Hi @Jane=zz9999 I can't wait to see you."
+                to tag Jane and assign "Jane" as an alias on your
+                account. This will display as "Hi @Jane I can't wait
+                to see you." and notify zz9999. In the future, you can
+                just type "Hi @Jane".
+            </p>
+
+            <!-- Main Content
+                ======================= -->
+            <div class="col-lg-9">
+                <form action="/alias/add" method="POST">
+                    <table class="table table-condensed table-hover">
+                        <thead>
+                        <tr>
+                            <th>Alias</th>
+                            <th>Alias for</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% foreach my $a (@{$aliases}) { %>
+                        <tr>
+                            <td><%= $a->{common_name} %></td>
+                            <td><a href="/u/<%= $a->{meritcommons_user}->userid %>"><%= $a->{meritcommons_user}->userid %></a> (<%= $a->{meritcommons_user}->common_name %>)</td>
+                            <td>
+                                <a href="/alias/edit/<%= $a->{id}%>" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <span style="width: 3em;">&nbsp;</span>
+                                <a href="/alias/delete/<%= $a->{id}%>" title="Delete"><span class="glyphicon glyphicon-remove"></a>
+                                <span style="width: 3em;">&nbsp;</span>
+                                <a href="/search?query=%40<%= $a->{common_name} %>" title="View Uses"><span class="glyphicon glyphicon-search"></a>
+                            </td>
+                        </tr>
+                        <% } %>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td><input type="text" name="common_name" placeholder="Nickname"/></td>
+                            <td><input type="text" name="meritcommons_user" placeholder="User Name" /></td>
+                            <td><input type="submit" class="btn btn-primary btn-sm" value="Save New Alias" /></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /#content-wrapper -->

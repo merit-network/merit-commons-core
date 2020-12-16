@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <% if (scalar(@$payload_messages)) { =%>
+    % my $start_url;
+    % if ($self->active_user) {
+    %     $start_url = config->{front_door_url};
+    % } else {
+    %     $start_url = url_for(config->{front_door_url} . "/login?message=Please%20Log%20In&back=$config->{front_door_url}");
+    % }
+    <channel>
+        <title><%= $rss_title %></title>
+        <link><%= $rss_link %></link>
+        <description>Recent posts on <%= $rss_title %></description>
+        <pubDate><%= $rss_pub_date %></pubDate>
+        <% foreach my $msg (@$payload_messages) { =%>
+        <item>
+            % my $post_title = truncate_htmlstrip($msg->{body}, 64, 1);
+            <title><%= $post_title || "A post by $msg->{submitter_common_name}" %></title>
+            <description><%= b($msg->{body})->trim->xml_escape %></description>
+            <author><%= "$msg->{submitter_common_name}"%></author>
+            <guid><%= $msg->{message_id} %></guid>
+            <% if ($msg->{in_reply_to}) { =%>
+            <link><%= "$start_url/m/$msg->{thread_id}#m$msg->{message_id}" %></link>
+            <% } else { =%>
+            <link><%= "$start_url/m/$msg->{thread_id}" %></link>
+            <% } =%>
+            <ttl>300</ttl>
+        </item>
+        <% } =%>
+    </channel>
+    <% } =%>
+</rss>

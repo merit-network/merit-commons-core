@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Alike';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Alike'), local('Alike-Regular'), url(alike-serif-400.woff) format('woff');
+}
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Open Sans'), local('OpenSans'), url(open-sans-400.woff) format('woff');
+}

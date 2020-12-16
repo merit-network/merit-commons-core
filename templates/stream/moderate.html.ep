@@ -1,0 +1,182 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% $c->stash(layout => 'default', backbone_view => 'views/moderatestream/default');
+% my $user = $self->stash('user');
+% my $stream = $self->stash('stream');
+% my $stream_display_name = ($user && $stream->common_name eq $user->common_name) ? 'My Feed' : ($user && $stream->common_name eq '_' . $user->userid) ? 'You' : $stream->common_name;
+% title "Moderate $stream_display_name";
+<div id="content-wrapper" class="container" data-stream-id="<%= $stream->unique_id %>">
+    <div class="row">
+        <div class="span2">
+        </div>
+        <div class="span10">
+            <h1><a href="<%= $self->url_for('get_stream') %>"><%= $stream->common_name %></a></h1>
+            <div class="tabbable">
+                <ul class="nav nav-pills">
+                    <li class="active"><a href="#subscriber-tab" data-toggle="tab">Subscribers</a></li>
+                    <li><a href="#author-tab" data-toggle="tab">Authors</a></li>
+                    <% if ($self->stash('this_user_mod')->allow_add_moderator || $user->is_admin) { %>
+                      <li><a href="#moderator-tab" data-toggle="tab">Moderators</a></li>
+                    <% } %>
+                    <li><a href="#invite-tab" data-toggle="tab">Invites</a></li>
+                    <li><a href="#profile-picture-tab" data-toggle="tab">Profile Picture</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active box-vanilla" id="subscriber-tab">
+                      <%== $self->stash('subscriber_table_data') %>
+                      <div class="btn-group moderation-page-button-group">
+                        <button type="button" class="btn btn-default moderation-first-page" data-what="subscription">
+                          <span class="glyphicon glyphicon-chevron-left"></span>
+                          <span class="glyphicon glyphicon-chevron-left"></span>
+                        </button>
+                        <button type="button" class="btn btn-default moderation-previous-page" data-what="subscription">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </button>
+                      </div>
+                      Page <span id="subscriber-page"><%= $self->stash('subscriber_page') %></span> of <%= $self->stash('num_subscriber_pages') %></span>
+                      <div class="btn-group moderation-page-button-group">
+                        <button type="button" class="btn btn-default moderation-next-page" data-what="subscription">
+                          <span class="glyphicon glyphicon-chevron-right"></span>
+                        </button>
+                        <button type="button" class="btn btn-default moderation-last-page" data-what="subscription" data-last-page="<%= $self->stash('num_subscriber_pages') %>">
+                          <span class="glyphicon glyphicon-chevron-right"></span>
+                          <span class="glyphicon glyphicon-chevron-right"></span>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="tab-pane box-vanilla" id="author-tab">
+                      <%== $self->stash('author_table_data') %>
+                      <div class="btn-group moderation-page-button-group">
+                        <button type="button" class="btn btn-default moderation-first-page" data-what="authorship">
+                          <span class="glyphicon glyphicon-chevron-left"></span>
+                          <span class="glyphicon glyphicon-chevron-left"></span>
+                        </button>
+                        <button type="button" class="btn btn-default moderation-previous-page" data-what="authorship">
+                          <span class="glyphicon glyphicon-chevron-left"></span>
+                        </button>
+                      </div>
+                      Page <span id="author-page"><%= $self->stash('author_page') %></span> of <%= $self->stash('num_author_pages') %></span>
+                      <div class="btn-group moderation-page-button-group">
+                        <button type="button" class="btn btn-default moderation-next-page" data-what="authorship">
+                          <span class="glyphicon glyphicon-chevron-right"></span>
+                        </button>
+                        <button type="button" class="btn btn-default moderation-last-page" data-what="authorship" data-last-page="<%= $self->stash('num_author_pages') %>">
+                          <span class="glyphicon glyphicon-chevron-right"></span>
+                          <span class="glyphicon glyphicon-chevron-right"></span>
+                        </button>
+                      </div>
+                    </div>
+                    <% if ($self->stash('this_user_mod')->allow_add_moderator || $user->is_admin) { %>
+                      <div class="tab-pane box-vanilla" id="moderator-tab">
+                        <%== $self->stash('moderator_table_data') %>
+                        <div class="btn-group moderation-page-button-group">
+                          <button type="button" class="btn btn-default moderation-first-page" data-what="moderatorship">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                          </button>
+                          <button type="button" class="btn btn-default moderation-previous-page" data-what="moderatorship">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                          </button>
+                        </div>
+                        Page <span id="moderator-page"><%= $self->stash('moderator_page') %></span> of <%= $self->stash('num_moderator_pages') %></span>
+                        <div class="btn-group moderation-page-button-group">
+                          <button type="button" class="btn btn-default moderation-next-page" data-what="moderatorship">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                          </button>
+                          <button type="button" class="btn btn-default moderation-last-page" data-what="moderatorship" data-last-page="<%= $self->stash('num_moderator_pages') %>">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                          </button>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <% stash es_config => { search_contexts => ['subscribed_with_me', 'im_following', 'global'], multiple => 1, label => "Add Moderator(s) to " . $stream->common_name, name => "add-moderatorship-input", class => ""}; %>
+                            <%= include 'widgets/entity_select'; %>
+                            <label for="add-moderatorship-add-moderators-checkbox">Allow new moderator(s) to add other new moderators?</label>
+                            <input id="add-moderatorship-add-moderators-checkbox" name="add-moderatorship-add-moderators-checkbox" type="checkbox"/>
+                            <br/>
+                            <button class="stream-moderate-add btn btn-primary" data-what="moderatorship" data-action="add" data-action="invite" data-stream-id="<%= $stream->unique_id %>">
+                              Add
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    <% } %>
+                    <div class="tab-pane box-vanilla" id="invite-tab">
+                      <%== $self->stash('invite_table_data') %>
+                      <div class="btn-group moderation-page-button-group">
+                        <button type="button" class="btn btn-default moderation-first-page" data-what="invite">
+                          <span class="glyphicon glyphicon-chevron-left"></span>
+                          <span class="glyphicon glyphicon-chevron-left"></span>
+                        </button>
+                        <button type="button" class="btn btn-default moderation-previous-page" data-what="invite">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </button>
+                      </div>
+                      Page <span id="invite-page"><%= $self->stash('invite_page') %></span> of <%= $self->stash('num_invite_pages') %></span>
+                      <div class="btn-group moderation-page-button-group">
+                        <button type="button" class="btn btn-default moderation-next-page" data-what="invite">
+                          <span class="glyphicon glyphicon-chevron-right"></span>
+                        </button>
+                        <button type="button" class="btn btn-default moderation-last-page" data-what="invite" data-last-page="<%= $self->stash('num_invite_pages') %>">
+                          <span class="glyphicon glyphicon-chevron-right"></span>
+                          <span class="glyphicon glyphicon-chevron-right"></span>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="tab-pane box-vanilla" id="profile-picture-tab">
+                    <form id="profile-picture-form" method="post" enctype="multipart/form-data" action="profile_picture">
+                        <div class="row">
+                            <div style="text-align: center" class="col-md-offset-2 col-md-8 col-xs-12">
+                                <img src="<%= $self->profile_picture_url_for_stream($stream, 'medium') %>" />
+                            </div>
+                        </div>
+                        <div style="padding-top: 18px" class="row">
+                            <div class="col-md-offset-2 col-md-8 col-xs-12">
+                                <input type="file" class="file" id="profile_picture" name="profile_picture" />
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  <div class="modal fade" style="display:none" id="save-moderator-clobber-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Really remove yourself as moderator?</h4>
+        </div>
+        <div class="modal-body">
+          You are about to remove yourself as moderator.  If you click <strong>Yes</strong> below, you will lose your
+  ability to manage subscribers, authors, and moderators, and you will be taken to the stream page.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" id="save-moderator-clobber-cancel" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary" id="save-moderator-clobber-ok" data-what="moderatorship" data-action="remove" data-stream-id="<%= $stream->unique_id %>" data-user-unique-id="<%= $user->unique_id %>" data-eject="1" >Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" style="display:none" id="save-moderator-toggle-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Really remove your ability to manage moderators?</h4>
+        </div>
+        <div class="modal-body">
+          You are about to remove your ability to manage moderators.  If you click <strong>Yes</strong> below, this page will reload without those capabilities.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" id="save-moderator-toggle-cancel" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary" id="save-moderator-toggle-ok" data-what="moderatorship" data-action="powerdown" data-stream-id="<%= $stream->unique_id %>" data-user-unique-id="<%= $user->unique_id %>" data-reload="1" >Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

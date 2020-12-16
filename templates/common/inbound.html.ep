@@ -1,0 +1,128 @@
+% my $user = $self->active_user;
+% my $stream = $self->stash('stream');
+% my $stream_display_name = $self->stash('stream_display_name');
+% my @authorized_authorships = defined $self->stash('authorized_authorships') ? @{$self->stash('authorized_authorships')} : ();
+
+<!-- inbound -->
+<div id="inbound">
+  <!-- modal -->
+  <div id="inbound-modal" style="display:none" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div id="inbound-modal-header" class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 id="inbound-modal-title" class="modal-title">Create New Post</h4>
+        </div>
+        <form name="submit-post" id="submit-post" class="box-vanilla clearfix">
+          <ul class="nav nav-tabs inbound-tabs" role="tablist">
+            <li role="presentation" data-mode="simple" id="inbound-simple-tab" class="inbound-mode-tab"><a href="#" id="inbound-simple-tab">Simple</a></li>
+            <li role="presentation" data-mode="advanced" id="inbound-advanced-tab" class="inbound-mode-tab"><a href="#" id="inbound-advanced-tab">Advanced</a></li>
+            <% if (!defined($stream) && $user->meritcommonscoin_balance > 0) { %>
+              <li role="presentation" data-mode="promo" id="inbound-promo-tab" class="inbound-mode-tab"><a href="#" id="inbound-promo-tab">Promotional</a></li>
+            <% } %>
+            <li role="presentation" data-mode="edit" id="inbound-edit-tab" class="inbound-edit-tab" style="display: none;"><a href="#" id="inbound-edit-tab">Edit</a></li>
+          </ul>
+          <div id="inbound-modal-content" class="modal-body row">
+            <div id="submit-post-wrapper" class="col-md-8 col-xs-12">
+              <!-- post-to -->
+              <div id="inbound-selector-container" class="form-group">
+                <strong class="advanced-element">Send Message To:</strong>
+                <div class="clearfix">
+                  <div class="form-group">
+                    <select<% if (defined $stream) { %> readonly<% } %> multiple name="stream" id="post-to">
+                    <% if (defined $stream) { %>
+                      <option value="<%= $stream->unique_id %>" selected>
+                        <%= $stream_display_name %> (<%= $stream->subscriber_count %>)
+                      </option>
+                    <% } %>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- from selector -->
+              <div id="inbound-from-selector-container" class="form-group advanced-element">
+                <label for="message-from"><strong>Post on behalf of:</strong></label>
+                <div class="clearfix">
+                  <div class="form-group">
+                    <select name="message-from" id="message-from">
+                      <option value="user:<%= $user->unique_id %>" selected><%= $user->common_name %> (myself)</option>
+                      <% foreach my $mod_stream ($self->streams->moderated_by($user)) { %>
+                        <option value="stream:<%= $mod_stream->unique_id %>"><%= $mod_stream->common_name %></option>
+                      <% } %>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- subject field, hidden in 'Simple' mode -->
+              <div id="inbound-subject-field-container" class="form-group advanced-element">
+                <div class="clearfix">
+                  <div class="form-group">
+                    <input class="form-control" type="text" name="message-subject" id="message-subject" placeholder="Subject (optional)"/>
+                  </div>
+                </div>
+              </div>
+              <!-- wysiwyg editor -->
+              <div class="form-group">
+                  <div id="inbound-area" placeholder="Type your message here..."></div>
+              </div>
+            </div>
+            <div class="inbound-message-summary col-md-4 col-xs-12 advanced-element">
+              <div class="row">
+                <div class="col-xs-12">
+                  <div id="recipient-count">
+                    <div class="row">
+                      <div class="odometer-label col-md-7 col-xs-12">
+                        <span>Recipients</span>
+                      </div>
+                      <div class="col-md-5 col-xs-12 odometer odometer-theme-minimal"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr class="promo-element"/>
+              <div class="row promo-element">
+                <div class="col-xs-12">
+                  <div id="coin-balance">
+                    <div class="row">
+                      <div class="odometer-label col-md-7 col-xs-12">
+                        <span>Coin Balance</span>
+                      </div>
+                      <div class="col-md-5 col-xs-12 odometer odometer-theme-minimal"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="cost-summary promo-element">
+                    <strong>Cost Summary: </strong>
+                    <span class="inbound-message-cost-summary">Sending this message will cost 
+                      <span class="inbound-message-price">0</span> <span class="inbound-message-price-word">coins</span>, and 
+                      leave you with a balance of 
+                      <span class="inbound-sender-balance">0</span> <span class="inbound-sender-balance-word">coins</span>.
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <hr/>
+              <div class="row">
+                <div class="col-xs-6">
+                  Disable Comments:
+                </div>
+                <div class="col-xs-6">
+                  <input type="checkbox" value="1" name="read-only" id="read-only-checkbox"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="inbound-modal-footer" class="modal-footer">
+            <div class="pull-right">
+              <button id="cancel" data-dismiss="modal" class="btn btn-default"><i class="fa fa-times"></i> Cancel&nbsp;</button>
+              <button id="post-it" class="btn meritcommons-button"><i class="fa fa-paper-plane"></i> Post</button>
+            </div>
+          </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</div><!-- /.inbound -->

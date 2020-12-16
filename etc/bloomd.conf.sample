@@ -1,0 +1,12 @@
+[bloomd]
+tcp_port = 8673
+bind_address = 127.0.0.1
+data_dir = /usr/local/meritcommons/var/bloomd
+workers = 1
+flush_interval = 60
+cold_interval = 3600
+initial_capacity = 100000000
+default_probability = 0.00001
+use_mmap = 0
+scale_size = 4
+probability_reduction = 0.9

@@ -1,0 +1,3 @@
+<a class="btn btn-xs primary" href="/s/<%= $stream->url_name %>/">
+    <i class="fa fa-streams"></i> <% $stream->common_name %>
+</a>

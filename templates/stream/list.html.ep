@@ -1,0 +1,116 @@
+%#    MeritCommons Portal
+%#    Copyright 2013 Wayne State University
+%#    All Rights Reserved
+
+% layout 'default';
+% title 'Available Streams';
+% my $user = $self->active_user;
+% my $page = $self->stash('page');
+% my $page_count = $self->stash('page_count');
+% my $first_page = $self->stash('first_page');
+
+<div id="content-wrapper" class="container">
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8 col-xs-12 general-panel">    
+            <div>
+
+                <div id="sort-by-dropdown" class="dropdown pull-right">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="sort-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Sort By
+                        <span class="caret"></span>
+                    </button>
+                    % my $cur_icon = '<i class="fa fa-angle-double-right"></i> ';
+                    <ul class="dropdown-menu" aria-labelledby="sort-dropdown">
+                        <li class="dropdown-header">Name</li>
+                        <li><a href="?sortby=name"><%== ($sortby eq 'name')?$cur_icon:'' %>Alphabetical</a></li>
+                        <li><a href="?sortby=name_rev"><%== ($sortby eq 'name_rev')?$cur_icon:'' %>Reverse Alphabetical</a></li>
+                        <li class="dropdown-header">Age</li>
+                        <li><a href="?sortby=newest"><%== ($sortby eq 'newest')?$cur_icon:'' %>Newest First</a></li>
+                        <li><a href="?sortby=oldest"><%== ($sortby eq 'oldest')?$cur_icon:'' %>Oldest First</a></li>
+                        <li class="dropdown-header">Size</li>
+                        <li><a href="?sortby=biggest"><%== ($sortby eq 'biggest')?$cur_icon:'' %>Biggest First</a></li>
+                        <li><a href="?sortby=smallest"><%== ($sortby eq 'smallest')?$cur_icon:'' %>Smallest First</a></li>
+                    </ul>
+                </div>
+
+                <h1>MeritCommons Stream Directory</h1>
+                <% foreach my $stream (@{$self->stash('streams')}) { %>
+                    <div class="stream-listing panel">
+                        <div class="panel-heading">
+                                <a href="/s/<%= $stream->url_name %>"
+                                    <% if ($stream->keywords) { %> title="Keywords: <%= $stream->keywords %> <% } %>
+                                "><%= $stream->common_name %></a>
+                                    % if ($user->is_moderator($stream)) { 
+                                        <span class="fa fa-gavel" title="You're a moderator on this stream"></span>
+                                    % }
+                                    % if ($user->is_author($stream)) { 
+                                        <span class="fa fa-pencil" title="You're an author on this stream"></span>
+                                    % }
+                                    % if ($user->is_subscriber($stream)) { 
+                                        <span class="fa fa-comment" title="You're a subscriber on this stream"></span>
+                                    % }
+                                <div class="pull-right subs">
+                                    % if ($stream->subscribers) { 
+                                        <%= $stream->get_authed_subscribers %> Subscriber<%= ($stream->get_authed_subscribers == 1)?'':'s' %>
+                                    % }
+                                </div>
+                        </div>
+                        % if ($stream->{description_trunc_html} or $stream->keywords) { 
+                        <div class="panel-body">
+                            <% if ($stream->{description_trunc_html}) { %>
+                            <div class="stream-description">
+                                <%== $stream->{description_trunc_html} %>
+                            </div>
+                            <% } %>
+                            % my @kw = split(',',$stream->keywords);
+                            % if (scalar @kw > 0) {
+                            <div class="keywords">Keywords:
+                              % my $fpass = 0;
+                              % foreach my $x (@kw) {
+                                % $x =~ s/^\s+|\s+$//g;
+                                % if ($fpass++ > 0) {
+                                    &middot;
+                                % }
+                                <a href="/search?query=<%= $x %>"><%= $x %></a>
+                              % }
+                            </div>
+                            % }
+                        </div>
+                        % }
+                    </div>
+                <% } %>
+
+                % if ($page_count > 1) {
+                <div class="btn-toolbar page-list" role="toolbar">
+                    % my $sortby_param = ($sortby ne 'name')?"?sortby=$sortby":'';
+                    <div class="btn-group">
+                        <a href="/streams/1<%= $sortby_param %>" class="btn btn-default"
+                            <%=  ($page <= 1)?'disabled="disabled"':'' %>
+                            title="First Page"><span class="glyphicon glyphicon-chevron-left"></span><span class="glyphicon glyphicon-chevron-left"></span></a>
+
+                        <a href="/streams/<%= ($page <= 1)?'1':($page - 1) %><%= $sortby_param %>" 
+                            <%=  ($page <= 1)?'disabled="disabled"':'' %>
+                            class="btn btn-default" title="Previous Page"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                    </div>
+                    <div class="btn-group">
+                        % for ($first_page .. $last_page) {
+                            % my $btn_class = ($page == $_)?'btn-primary':'btn-default';
+                            <a href="/streams/<%= $_ %><%= $sortby_param %>" class="btn <%= $btn_class %>" title="Go To Page <%= $_ %>"><%= $_ %></a>
+                        % }
+                    </div>
+                    <div class="btn-group">
+                        <a href="/streams/<%= $page+1 %><%= $sortby_param %>" class="btn btn-default" title="Next Page"
+                            <%=  ($page == $page_count)?'disabled="disabled"':'' %>
+                            ></span><span class="glyphicon glyphicon-chevron-right"></span></a>
+
+                        <a href="/streams/<%= $page_count %><%= $sortby_param %>" class="btn btn-default" title="Last Page"
+                            <%=  ($page == $page_count)?'disabled="disabled"':'' %>
+                            ><span class="glyphicon glyphicon-chevron-right"></span><span class="glyphicon glyphicon-chevron-right"></span></a>
+                    </div>
+                </div>
+                % }
+
+            </div>
+        </div>
+    </div>
+</div>

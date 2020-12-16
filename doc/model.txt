@@ -1,0 +1,127 @@
+--=DER SCHEMA=--
+
+-- [User]
+ Has a:
+   * id
+   * common_name
+   * user_class
+   * create_time
+   * modify_time
+   * last_login_time
+   * identity_resource
+   * role (rel)
+   * authentication_profile (rel)
+ Has many:
+   * created_links (rel)
+   * sessions (rel)
+   * groups (rel)
+   * streams (rel)
+
+-- [Group]
+ Has a:
+   * id
+   * common_name
+   * create_time
+   * modify_time
+ Has many:
+   * users (rel)
+
+-- [Session]
+ Has a:
+   * id
+   * create_time
+   * created_from
+   * heartbeat_time
+   * heartbeat_from
+   * expire_time
+   * key
+ Has many:
+   * session attributes (rel)
+
+-- [Session Attributes]
+  Has a:
+    * id
+    * k
+    * v
+    * session (rel)
+
+-- [Driver]
+  Has a:
+    * id
+    * version
+    * create_time
+    * install_time
+    * last_used_time
+    * maintainer
+    * stream (rel)
+
+-- [Stream]
+  Has a:
+    * id
+    * unique_id (sha256 hash of service:<their unique id>, e.g. fb:8283177721 for a facebook user)
+    * create_time
+    * modify_time
+    * driver (rel)
+    * user (rel)
+  Has many:
+    * messages (rel) MeritCommons::Model::Stream::Message
+
+-- [Message] MeritCommons::Model::Stream::Message
+  Has a:
+    * stream (rel) MeritCommons::Model::Stream
+    * submitter (rel) MeritCommons::Model::User
+    * body
+    * post_time
+    * create_time
+    * modify_time
+  Has many to many:
+    * hash_tags (rel) MeritCommons::Model::Stream::HashTag
+    * destination_users (rel) MeritCommons::Model::User
+    * destination_groups (rel) MeritCommons::Model::User::Groups
+    * moderators (rel) MeritCommons::Model::User
+
+-- [HashTag] MeritCommons::Model::Stream::HashTag
+  Has a:
+    * common_name
+    * create_time
+    * first_used_by (rel) MeritCommons::Model::User
+  Has many:
+    * messages (rel) MeritCommons::Model::Stream:Message
+
+-- [System] MeritCommons::Model::System
+  Has a:
+    * administrator_email
+    * administrator_common_name
+    * hostname
+    * port
+    * https_enabled
+    * gpg_enabled
+    * gpg_enforced
+    * create_time
+    * modify_time
+    * default_authentication_profile (rel) MeritCommons::Model::System::AuthenticationProfile
+  Might have:
+    * authentication_profiles (rel) MeritCommons::Model::System::AuthenticationProfile
+
+-- [AuthenticationProfile] MeritCommons::Model::System::AuthenticationProfile
+  Has a:
+    * protocol
+    * server
+    * host
+    * username
+    * password
+    * driver
+    * create_time
+    * modify_time
+
+-- [Link]
+  Has a:
+    * id
+    * href
+    * title
+    * image
+    * category
+    * collection (rel)
+  Has many:
+    * roles (rel)
+

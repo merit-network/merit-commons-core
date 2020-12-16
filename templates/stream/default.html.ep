@@ -1,0 +1,151 @@
+%#    MeritCommons Portal
+%#    Copyright 2013-2015 Wayne State University
+%#    All Rights Reserved
+
+% $c->stash(layout => 'default', backbone_view => 'views/stream/default');
+%
+% my $user = $self->active_user;
+% my $stream = $self->stash('stream');
+% my @subscriptions = @{$self->stash('subscriptions')};
+% my @authorized_authorships = @{$self->stash('authorized_authorships')};
+% my $stream_display_name;
+% if (defined $stream) {
+
+%# interpolate the relative link...
+%   if ($user || $self->config->{anonymous_stream_rss_feeds}) {
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for <%= $stream->common_name %>" href="<%= 
+    url_for('/s/' . $stream->url_name . '/rss.xml') 
+=%>" />
+%   }
+
+%   my $stream_name = $stream->common_name;
+%   $stream_display_name = ($user && $stream_name eq $user->common_name) ? 'My Feed' : ($user && $stream_name eq '_' .  $user->userid) ? 'You' : $stream_name;
+%   title "$stream_display_name";
+% } else {
+%   title "MeritCommons";    
+% }
+%
+% my ($js_sup, $session);
+% if ($session = $self->meritcommons_session) {
+%     $js_sup = $session->first_attribute_value('javascript_supported');
+% }
+% my $payload_message_count = ref $self->stash('payload_messages') eq "ARRAY" ? scalar(@{$self->stash('payload_messages')}) : 0;
+
+<script>
+    var subscriptions = {<%== join(',', (map { "'" . $_->unique_id . "':'" . $_->id . "'" } @subscriptions)) %>};
+    var messages = <%== $self->stash('payload_messages_json') %>;
+    var user_is_stream_moderator, user_is_admin, stream;
+
+    <% if ($stream) { %>
+        user_is_stream_moderator = <%== $user->can_moderate($stream) ? "true" : "false" %>;
+        stream = '<%== $stream->unique_id %>';
+    <% } %>
+    user_is_admin = <%== $user->is_admin ? "true" : "false" %>;
+    var stream_context = true;
+    var show_deletes = false;
+    if (user_is_stream_moderator || user_is_admin) {
+        show_deletes = true;
+    }
+</script>
+
+<script id='mustache-reply-context-inbound' type='text/x-mustache-template'>
+    <form name="submit-reply">
+
+    </form>
+</script>
+
+% my @sps;
+% if (ref($self->app->config->{status_prompts}) eq "ARRAY") {
+%     @sps = @{$self->app->config->{status_prompts}};
+% } else {
+%     @sps = ("What's on your mind?");
+% }
+% my $sp = $sps[int(rand(scalar(@sps)))];
+<div id="content-wrapper" class="container merge-container"<% if ($js_sup) { %> style="display: none"<% } %>>
+  <div class="row">
+    %= include "common/sidebar"
+    <% if ($user->config('narrow-message-column')) { %>
+      <% if ($user->config('links-on-right')) { %>
+        <div class="col-lg-4 col-lg-pull-8 col-md-4 col-md-pull-8">
+      <% } else { %>
+        <div class="col-lg-4 col-md-4">
+      <% } %>
+    <% } elsif ($user->config('links-on-right')) { %>
+      <div class="col-lg-8 col-lg-pull-4 col-md-8 col-md-pull-4">
+    <% } else { %>
+      <div class="col-lg-8 col-md-8">
+    <% } %>        
+    <% if (!$stream || ($stream && $user && $user->can_write($stream))) { %>
+      <% if ($self->msie) { %> 
+        <div class="alert alert-warning fade in">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <strong>Older Browser Detected</strong> MeritCommons makes use of several modern web techniques and features.  As a result, performance and functionality will be severely limited in this browser.  If you are 
+          using a modern browser, please make sure you have <strong>JavaScript support turned on</strong> and in the case of Internet Explorer 10+ make sure you <strong>turn Compatibility Mode off</strong>.  If you are using an older browser, please 
+          Please <a href="http://www.browser-update.org/update.html">consider upgrading to a newer browser</a>.
+        </div>
+      <% } elsif (!$self->meritcommons_session->websockets_supported) { %>
+        <div class="alert alert-warning fade in">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <strong>Some Functionality Disabled</strong> MeritCommons makes extensive use of <a href="http://en.wikipedia.org/wiki/WebSocket">WebSockets</a>, a relatively modern browser feature.  Without WebSockets, you will not see features like
+          realtime updating, notifications, etc.  To use MeritCommons with WebSockets and the other functionality that depend on them, you must be running at least Safari 6, Opera 18.0, Chrome 22, Firefox 20, or IE 10 or higher versions
+          of these browsers.  The <a href="http://www.browser-update.org/update.html">newest browser versions</a> are always recommended by the MeritCommons Project Team.
+        </div>
+      <% } %>
+      %= include 'common/flashes'
+    <% } %>
+   	<!-- Main Content (MESSAGES GO HERE!)
+    ======================= -->
+    <div class="row meritcommons-filter-tabs-container">
+      <ul class="col-xs-6 col-sm-6 nav nav-tabs meritcommons-filter-tabs">
+        <li role="presentation" class="active"><a data-filter="all" href="#">All Activity</a></li>
+      </ul>
+      <% if (!$stream || ($stream && $user && $user->can_write($stream))) { %>
+        <div class="btn-group pull-right">
+          <a class="btn meritcommons-button inbound-modal-open" href="#" id="open-inbound" data-mode="simple" role="button"><i class="fa fa-file"></i> New Post</a>
+          <button type="button" class="btn dropdown-toggle meritcommons-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="#" class="inbound-modal-open" data-mode="simple">Simple</a></li>
+            <li><a href="#" class="inbound-modal-open" data-mode="advanced">Advanced</a></li>
+            <% if (!$stream && $user->meritcommonscoin_balance > 0) { %>
+              <li><a href="#" class="inbound-modal-open" data-mode="promo">Promotional</a></li>
+            <% } %>
+          </ul>
+        </div>
+      <% } %>
+    </div>
+    <div id="messages-go-here">
+      <% foreach my $payload (@{$self->stash('payload_messages')}) { %>
+        <div class="thread" id="<%= $payload->{message_id} %>">
+          <div class="thread-parent">
+            <div date="<%= $payload->{post_time} %>" class="feed message">
+              <%== $self->render_mustache("message/$payload->{render_as}", { message => $payload }) %>
+            </div> <!-- /.message -->
+          </div> <!-- /.thread-parent -->
+        </div> <!-- /.thread -->
+      <% } %>
+        <div <%== $payload_message_count ? 'style="display: none;" ' : ''; %>class="jumbotron" id="no-messages">
+          <% if (defined $stream) { %>
+            <% if ($user->is_author($stream) || !$stream->requires_author_authorization) { %>
+              <p><small>There are currently no messages in this stream, perhaps you can contribute one?</small></p>
+            <% } else { %>
+              <p><small>There are currently no messages in this stream.</small></p>
+            <% } %>
+          <% } else { %>
+            <p><small>There are currently no messages in any of your subscribed streams, perhaps you can contribute one?</small></p>
+          <% } %> 
+        </div>
+      </div> <!-- /#messages-go-here -->
+
+      <div id="to-top">
+        <a href="#">
+          <span class="fa fa-chevron-up" aria-hidden="true"></span>
+          Back To Top
+        </a>
+      </div> <!-- /#to-top -->
+    </div>
+  </div>
+  %= include 'common/inbound', stream_display_name => $stream_display_name
+</div>
